@@ -3,7 +3,7 @@
 FROM golang:1.27-alpine
 WORKDIR /src
 
-COPY go.mod ./
+COPY go.mod go.sum ./
 RUN go mod download
 
 # Kod montowany jako wolumen w docker-compose, uruchamiany przez go run

@@ -27,10 +27,12 @@ services:
       - "8080:8080"
     volumes:
       - ./backend:/src
+      - ./data:/data:ro
       - go_mod_cache:/go/pkg/mod
       - go_build_cache:/root/.cache/go-build
     environment:
       - PORT=8080
+      - DB_PATH=/data/filharmonia.sqlite
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
       interval: 10s

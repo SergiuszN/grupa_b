@@ -104,6 +104,10 @@ api-shell: ## Otwiera powłokę w kontenerze backendu
 api-health: ## Sprawdza endpoint /healthz backendu
 	@curl -fsS http://localhost:8080/healthz && echo
 
+.PHONY: api-docs
+api-docs: ## Otwiera dokumentację API (Swagger UI) w przeglądarce
+	@open http://localhost:8080/api/docs 2>/dev/null || xdg-open http://localhost:8080/api/docs 2>/dev/null || echo "http://localhost:8080/api/docs"
+
 ##@ Kontenery
 .PHONY: image
 image: ## Buduje obrazy Dockera (web + api)

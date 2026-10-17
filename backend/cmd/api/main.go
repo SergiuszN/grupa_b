@@ -10,16 +10,27 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	_ "time/tzdata"
+
+	"github.com/SergiuszN/grupa_b/backend/internal/catalog"
 )
 
 func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)
 
+	dbPath := getenv("DB_PATH", "../data/filharmonia.sqlite")
+	store, err := catalog.Open(dbPath)
+	if err != nil {
+		slog.Error("open database", "path", dbPath, "err", err)
+		os.Exit(1)
+	}
+	defer store.Close()
+
 	addr := ":" + getenv("PORT", "8080")
 	srv := &http.Server{
 		Addr:              addr,
-		Handler:           newRouter(),
+		Handler:           newRouter(store),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
@@ -43,10 +54,11 @@ func main() {
 	}
 }
 
-func newRouter() http.Handler {
+func newRouter(store *catalog.Store) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", handleHealthz)
-	return mux
+	(&api{store: store, now: time.Now}).routes(mux)
+	return withCORS(mux)
 }
 
 func handleHealthz(w http.ResponseWriter, _ *http.Request) {
@@ -56,7 +68,9 @@ func handleHealthz(w http.ResponseWriter, _ *http.Request) {
 func writeJSON(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(v)
+	enc := json.NewEncoder(w)
+	enc.SetEscapeHTML(false)
+	_ = enc.Encode(v)
 }
 
 func getenv(key, fallback string) string {

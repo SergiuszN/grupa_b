@@ -1,0 +1,721 @@
+openapi: 3.0.3
+info:
+  title: Filharmonia Szczecin — public API
+  version: "1"
+  description: |
+    Publiczne API tylko do odczytu, oparte na bazie demo (`data/filharmonia.sqlite`).
+
+    - Język treści: `?lang=pl|en|de` albo nagłówek `Accept-Language` (domyślnie `pl`; brak tłumaczenia → tekst polski, pole `language`).
+    - Daty to dni kalendarzowe w strefie Europe/Warsaw (`YYYY-MM-DD`). Bez filtra daty listy pokazują to, co jest od dziś.
+    - Wartości list można podać po przecinku (`kind=jazz,chamber`) albo powtarzając parametr.
+    - Ceny i statusy biletów to stan z chwili pobrania danych, nie dane na żywo z systemu sprzedaży.
+servers:
+  - url: /
+security: []  # publiczne API, bez autoryzacji
+tags:
+  - name: Kalendarz
+  - name: Katalog
+  - name: Wyszukiwanie
+
+paths:
+  /api/v1/events:
+    get:
+      operationId: listEvents
+      tags: [Kalendarz]
+      summary: Wydarzenia (karty) z pasującymi terminami
+      description: Sortowane po najbliższym pasującym terminie. Każda karta zawiera tylko terminy spełniające filtr.
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - $ref: "#/components/parameters/when"
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/kind"
+        - $ref: "#/components/parameters/category"
+        - $ref: "#/components/parameters/audience"
+        - $ref: "#/components/parameters/age"
+        - $ref: "#/components/parameters/mood"
+        - $ref: "#/components/parameters/venue"
+        - $ref: "#/components/parameters/series"
+        - $ref: "#/components/parameters/artist"
+        - $ref: "#/components/parameters/ticket_status"
+        - $ref: "#/components/parameters/free"
+        - $ref: "#/components/parameters/price_max"
+        - $ref: "#/components/parameters/duration_min"
+        - $ref: "#/components/parameters/duration_max"
+        - $ref: "#/components/parameters/accessibility"
+        - $ref: "#/components/parameters/q"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: Lista wydarzeń
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/EventSummary" }
+                  meta: { $ref: "#/components/schemas/ListMeta" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /api/v1/events/{id}:
+    get:
+      operationId: getEvent
+      tags: [Kalendarz]
+      summary: Karta wydarzenia
+      description: Opis, wszystkie terminy z cennikiem, artyści z rolami, program, cykle, dla kogo, nastroje, dostępność.
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer, example: 1 }
+      responses:
+        "200":
+          description: Wydarzenie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/EventDetail" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/performances:
+    get:
+      operationId: listPerformances
+      tags: [Kalendarz]
+      summary: Widok kalendarza — pojedyncze terminy
+      description: Terminy chronologicznie, każdy z kartą wydarzenia. Filtry jak w `/api/v1/events`.
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - $ref: "#/components/parameters/when"
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/kind"
+        - $ref: "#/components/parameters/category"
+        - $ref: "#/components/parameters/audience"
+        - $ref: "#/components/parameters/age"
+        - $ref: "#/components/parameters/mood"
+        - $ref: "#/components/parameters/venue"
+        - $ref: "#/components/parameters/series"
+        - $ref: "#/components/parameters/artist"
+        - $ref: "#/components/parameters/ticket_status"
+        - $ref: "#/components/parameters/free"
+        - $ref: "#/components/parameters/price_max"
+        - $ref: "#/components/parameters/duration_min"
+        - $ref: "#/components/parameters/duration_max"
+        - $ref: "#/components/parameters/accessibility"
+        - $ref: "#/components/parameters/q"
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: Lista terminów
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/CalendarEntry" }
+                  meta: { $ref: "#/components/schemas/ListMeta" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /api/v1/artists:
+    get:
+      operationId: listArtists
+      tags: [Katalog]
+      summary: Artyści
+      parameters:
+        - name: q
+          in: query
+          description: Fragment nazwiska (bez znaczenia wielkość liter i znaki diakrytyczne).
+          schema: { type: string, example: karlowicz }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: Lista artystów
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/ArtistRef" }
+                  meta: { $ref: "#/components/schemas/ListMeta" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /api/v1/artists/{id}:
+    get:
+      operationId: getArtist
+      tags: [Katalog]
+      summary: Profil artysty
+      description: Biogram, role, nadchodzące wydarzenia (jako wykonawca lub kompozytor) i skomponowane utwory.
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer, example: 1 }
+      responses:
+        "200":
+          description: Artysta
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Artist" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/series:
+    get:
+      operationId: listSeries
+      tags: [Katalog]
+      summary: Cykle i festiwale
+      parameters:
+        - $ref: "#/components/parameters/lang"
+      responses:
+        "200":
+          description: Lista cykli
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Series" }
+
+  /api/v1/series/{slug}:
+    get:
+      operationId: getSeries
+      tags: [Katalog]
+      summary: Cykl z opisem i nadchodzącymi wydarzeniami
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string, example: akademia-m-odego-melomana-2026-2027-328 }
+      responses:
+        "200":
+          description: Cykl
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Series" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/venues:
+    get:
+      operationId: listVenues
+      tags: [Katalog]
+      summary: Sale i galerie
+      responses:
+        "200":
+          description: Lista miejsc
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Venue" }
+
+  /api/v1/venues/{slug}:
+    get:
+      operationId: getVenue
+      tags: [Katalog]
+      summary: Miejsce z informacją o dostępności i nadchodzącymi wydarzeniami
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string, example: sala-symfoniczna }
+      responses:
+        "200":
+          description: Miejsce
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Venue" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/filters:
+    get:
+      operationId: getFilters
+      tags: [Kalendarz]
+      summary: Wartości filtrów kalendarza z licznikami nadchodzących wydarzeń
+      parameters:
+        - $ref: "#/components/parameters/lang"
+      responses:
+        "200":
+          description: Filtry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Filters" }
+
+  /api/v1/search:
+    get:
+      operationId: search
+      tags: [Wyszukiwanie]
+      summary: Wyszukiwarka pogrupowana po typach treści
+      description: Bez znaczenia wielkość liter i znaki diakrytyczne (`karlowicz` = `Karłowicz`). Wydarzenia tylko nadchodzące.
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - name: q
+          in: query
+          required: true
+          schema: { type: string, minLength: 2, example: mendelssohn }
+        - name: limit
+          in: query
+          description: Maksymalna liczba wyników w każdej grupie.
+          schema: { type: integer, minimum: 1, maximum: 50, default: 10 }
+      responses:
+        "200":
+          description: Wyniki
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/SearchResults" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /healthz:
+    get:
+      operationId: healthz
+      summary: Healthcheck
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+
+components:
+  parameters:
+    lang:
+      name: lang
+      in: query
+      description: Język treści. Bez parametru decyduje `Accept-Language`, domyślnie `pl`.
+      schema: { type: string, enum: [pl, en, de] }
+    when:
+      name: when
+      in: query
+      description: |
+        Skrót zakresu dat (ma pierwszeństwo przed `from`/`to`):
+        `today`, `tomorrow`, `weekend` (sobota–niedziela), `week` (do niedzieli), `month` (do końca miesiąca), `all` (także przeszłe).
+      schema: { type: string, enum: [today, tomorrow, weekend, week, month, all] }
+    from:
+      name: from
+      in: query
+      description: Początek zakresu (domyślnie dziś). Termin pasuje, jeśli nachodzi na zakres.
+      schema: { type: string, format: date, example: "2026-11-01" }
+    to:
+      name: to
+      in: query
+      description: Koniec zakresu (włącznie).
+      schema: { type: string, format: date, example: "2026-11-30" }
+    kind:
+      name: kind
+      in: query
+      description: Rodzaj wydarzenia.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string, enum: [symphonic, chamber, jazz, concert, education, exhibition, tour, festival, external, other] }
+    category:
+      name: category
+      in: query
+      description: Kategoria kalendarza.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string, enum: [concerts, edu, exhibitions, others] }
+    audience:
+      name: audience
+      in: query
+      description: Dla kogo.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string, enum: [children, families, preschool, schools, youth, teachers, young-musicians, adults, seniors, beginners] }
+    age:
+      name: age
+      in: query
+      description: Wiek dziecka — pasują wydarzenia z zakresem wieku, który go obejmuje.
+      schema: { type: integer, minimum: 0, example: 5 }
+    mood:
+      name: mood
+      in: query
+      description: Nastrój (tabela obecnie nieotagowana — filtr nic nie zwróci).
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string, enum: [classical-super-hits, emotional, energy, relax, something-extraordinary] }
+    venue:
+      name: venue
+      in: query
+      description: Slug miejsca (zob. `/api/v1/venues`).
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string, example: sala-symfoniczna }
+    series:
+      name: series
+      in: query
+      description: Slug cyklu (zob. `/api/v1/series`).
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string }
+    artist:
+      name: artist
+      in: query
+      description: Id artysty — jako wykonawca albo kompozytor utworu z programu.
+      schema: { type: integer }
+    ticket_status:
+      name: ticket_status
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { $ref: "#/components/schemas/TicketStatus" }
+    free:
+      name: free
+      in: query
+      description: Tylko bezpłatne.
+      schema: { type: boolean }
+    price_max:
+      name: price_max
+      in: query
+      description: Najtańszy bilet nie droższy niż X zł (lub bezpłatne).
+      schema: { type: number, minimum: 0, example: 50 }
+    duration_min:
+      name: duration_min
+      in: query
+      description: Minimalny czas trwania w minutach (wydarzenia bez znanego czasu są pomijane).
+      schema: { type: integer, minimum: 0 }
+    duration_max:
+      name: duration_max
+      in: query
+      description: Maksymalny czas trwania w minutach (wydarzenia bez znanego czasu są pomijane).
+      schema: { type: integer, minimum: 0, example: 45 }
+    accessibility:
+      name: accessibility
+      in: query
+      description: Wszystkie podane rodzaje dostępności muszą mieć status `available` lub `partial`.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items: { type: string, enum: [mobility, visual, hearing, sensory] }
+    q:
+      name: q
+      in: query
+      description: Wyszukiwanie w tytułach (wszystkie języki), wykonawcach, utworach, kompozytorach i cyklach.
+      schema: { type: string }
+    limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+    offset:
+      name: offset
+      in: query
+      schema: { type: integer, minimum: 0, default: 0 }
+
+  responses:
+    BadRequest:
+      description: Niepoprawny parametr
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: Nie znaleziono
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, enum: [bad_request, not_found, internal] }
+            message: { type: string }
+    ListMeta:
+      type: object
+      properties:
+        total: { type: integer, description: Liczba wszystkich wyników (licznik filtrów) }
+        limit: { type: integer }
+        offset: { type: integer }
+    Language:
+      type: string
+      enum: [pl, en, de]
+    TicketStatus:
+      type: string
+      enum: [available, last_seats, sold_out, free, registration_required, not_yet_on_sale, box_office, cancelled, unknown]
+    VenueRef:
+      type: object
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        name: { type: string }
+    Performance:
+      type: object
+      properties:
+        id: { type: integer }
+        starts_at: { type: string, format: date-time, example: "2026-10-18T11:00:00+02:00" }
+        ends_at: { type: string, format: date-time, nullable: true }
+        venue:
+          type: object
+          allOf: [{ $ref: "#/components/schemas/VenueRef" }]
+          nullable: true
+        ticket_status: { $ref: "#/components/schemas/TicketStatus" }
+        price_min: { type: number, nullable: true }
+        price_max: { type: number, nullable: true }
+        currency: { type: string, example: PLN }
+        ticket_url: { type: string, nullable: true }
+        ticket_notes: { type: string, nullable: true, description: Tylko w karcie wydarzenia }
+        price_details:
+          type: array
+          description: Pełny cennik (tylko w karcie wydarzenia).
+          items:
+            type: object
+            properties:
+              zone: { type: string, example: Cała sala }
+              prices:
+                type: object
+                description: Rodzaj biletu (normalne, ulgowe, grupowe…) → cena.
+                additionalProperties:
+                  type: object
+                  properties:
+                    amount: { type: number }
+                    note: { type: string, nullable: true }
+    EventSummary:
+      type: object
+      properties:
+        id: { type: integer }
+        kind: { type: string }
+        calendar_category: { type: string, nullable: true }
+        season: { type: string, nullable: true }
+        language: { $ref: "#/components/schemas/Language" }
+        title: { type: string }
+        subtitle: { type: string, nullable: true }
+        summary: { type: string, nullable: true }
+        image_url: { type: string, nullable: true }
+        duration_minutes: { type: integer, nullable: true }
+        has_intermission: { type: boolean, nullable: true }
+        min_age: { type: integer, nullable: true }
+        max_age: { type: integer, nullable: true }
+        performances:
+          type: array
+          items: { $ref: "#/components/schemas/Performance" }
+    EventDetail:
+      allOf:
+        - $ref: "#/components/schemas/EventSummary"
+        - type: object
+          properties:
+            description: { type: string, nullable: true }
+            why_attend: { type: string, nullable: true }
+            audience_note: { type: string, nullable: true }
+            programme_notes: { type: string, nullable: true }
+            partners_note: { type: string, nullable: true }
+            seo_title: { type: string, nullable: true }
+            seo_description: { type: string, nullable: true }
+            playlist_url: { type: string, nullable: true }
+            source_url: { type: string }
+            scraped_at: { type: string, nullable: true }
+            available_languages:
+              type: array
+              items: { $ref: "#/components/schemas/Language" }
+            artists:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/ArtistRef"
+                  - type: object
+                    properties:
+                      role: { type: string, example: dyrygent }
+            works:
+              type: array
+              items: { $ref: "#/components/schemas/Work" }
+            series:
+              type: array
+              items: { $ref: "#/components/schemas/SeriesRef" }
+            audiences:
+              type: array
+              items:
+                type: object
+                properties:
+                  slug: { type: string }
+                  min_age: { type: integer, nullable: true }
+                  max_age: { type: integer, nullable: true }
+            moods:
+              type: array
+              items: { type: string }
+            accessibility:
+              type: array
+              items:
+                type: object
+                properties:
+                  type: { type: string, enum: [mobility, visual, hearing, sensory] }
+                  status: { type: string, enum: [available, partial, not_available, unknown] }
+                  notes: { type: string, nullable: true }
+                  source_url: { type: string, nullable: true }
+                  verified_at: { type: string, nullable: true }
+    CalendarEntry:
+      allOf:
+        - $ref: "#/components/schemas/Performance"
+        - type: object
+          properties:
+            event:
+              $ref: "#/components/schemas/EventSummary"
+    ArtistRef:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        type: { type: string, enum: [person, ensemble, orchestra, organization] }
+        image_url: { type: string, nullable: true }
+    Artist:
+      allOf:
+        - $ref: "#/components/schemas/ArtistRef"
+        - type: object
+          properties:
+            image_credit: { type: string, nullable: true }
+            source_url: { type: string, nullable: true }
+            language:
+              type: string
+              allOf: [{ $ref: "#/components/schemas/Language" }]
+              nullable: true
+            biography: { type: string, nullable: true }
+            roles:
+              type: array
+              items: { type: string }
+            events:
+              type: array
+              items: { $ref: "#/components/schemas/EventSummary" }
+            works:
+              type: array
+              items: { $ref: "#/components/schemas/Work" }
+    Work:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        composer:
+          type: object
+          allOf: [{ $ref: "#/components/schemas/ArtistRef" }]
+          nullable: true
+        duration_minutes: { type: integer, nullable: true }
+        audio_sample_url: { type: string, nullable: true }
+        full_recording_url: { type: string, nullable: true }
+    SeriesRef:
+      type: object
+      properties:
+        id: { type: integer }
+        slug: { type: string, nullable: true }
+        name: { type: string }
+    Series:
+      allOf:
+        - $ref: "#/components/schemas/SeriesRef"
+        - type: object
+          properties:
+            season: { type: string, nullable: true }
+            image_url: { type: string, nullable: true }
+            source_url: { type: string, nullable: true }
+            language:
+              type: string
+              allOf: [{ $ref: "#/components/schemas/Language" }]
+              nullable: true
+            description: { type: string, nullable: true, description: Tylko w szczegółach }
+            event_count: { type: integer }
+            events:
+              type: array
+              description: Tylko w szczegółach
+              items: { $ref: "#/components/schemas/EventSummary" }
+    Venue:
+      allOf:
+        - $ref: "#/components/schemas/VenueRef"
+        - type: object
+          properties:
+            type: { type: string, enum: [hall, gallery] }
+            address: { type: string, nullable: true }
+            city: { type: string }
+            postal_code: { type: string, nullable: true }
+            country_code: { type: string }
+            accessibility_notes: { type: string, nullable: true, description: Tylko w szczegółach }
+            seatplan_url: { type: string, nullable: true }
+            events:
+              type: array
+              description: Tylko w szczegółach
+              items: { $ref: "#/components/schemas/EventSummary" }
+    Option:
+      type: object
+      properties:
+        value: { type: string }
+        label: { type: string }
+        count: { type: integer }
+    Filters:
+      type: object
+      properties:
+        kinds: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        categories: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        audiences: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        moods: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        venues: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        series: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        ticket_status: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        accessibility: { type: array, items: { $ref: "#/components/schemas/Option" } }
+        languages: { type: array, items: { $ref: "#/components/schemas/Language" } }
+        date_range:
+          type: object
+          properties:
+            from: { type: string, format: date, nullable: true }
+            to: { type: string, format: date, nullable: true }
+        price_range:
+          type: object
+          properties:
+            min: { type: number, nullable: true }
+            max: { type: number, nullable: true }
+    SearchResults:
+      type: object
+      properties:
+        events: { type: array, items: { $ref: "#/components/schemas/EventSummary" } }
+        artists: { type: array, items: { $ref: "#/components/schemas/ArtistRef" } }
+        works: { type: array, items: { $ref: "#/components/schemas/Work" } }
+        series: { type: array, items: { $ref: "#/components/schemas/SeriesRef" } }

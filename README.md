@@ -6,6 +6,7 @@ Hackathonowy monorepo z aplikacją Next.js oraz demonstracyjnym modelem danych F
 
 - `apps/web` — aplikacja webowa (port 3000)
 - `apps/docs` — aplikacja dokumentacyjna (port 3001)
+- `backend/` — publiczne API w Go (port 8080), opis endpointów: `backend/README.md`
 - `parser/` — scraper publicznego repertuaru, schematy i importer SQLite
 
 Wymagania: Node.js 20+ oraz pnpm 10+.
