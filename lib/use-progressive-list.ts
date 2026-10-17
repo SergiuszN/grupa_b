@@ -7,10 +7,12 @@ export interface UseProgressiveListOptions {
   initialCount?: number;
   /** Number of items to append on each scroll trigger (default: 10) */
   pageSize?: number;
-  /** IntersectionObserver rootMargin (default: "300px" to pre-load smoothly before reaching the bottom) */
+  /** IntersectionObserver rootMargin (default: "50px") */
   rootMargin?: string;
   /** IntersectionObserver threshold (default: 0) */
   threshold?: number;
+  /** Simulated / intentional loading delay in ms (default: 1000ms) */
+  delayMs?: number;
 }
 
 export interface UseProgressiveListResult<T> {
@@ -38,7 +40,7 @@ export interface UseProgressiveListResult<T> {
  * Reusable hook for progressive list rendering and infinite scroll with IntersectionObserver.
  *
  * @param items Array of all items (or filtered items) to progressively display
- * @param options Configuration options (initialCount, pageSize, rootMargin, threshold)
+ * @param options Configuration options (initialCount, pageSize, rootMargin, threshold, delayMs)
  */
 export function useProgressiveList<T>(
   items: T[],
@@ -47,8 +49,9 @@ export function useProgressiveList<T>(
   const {
     initialCount = 10,
     pageSize = 10,
-    rootMargin = "300px",
+    rootMargin = "50px",
     threshold = 0,
+    delayMs = 1000,
   } = options;
 
   const [visibleCount, setVisibleCount] = useState(initialCount);
@@ -67,14 +70,14 @@ export function useProgressiveList<T>(
     if (!hasMore || isLoadingMore) return;
     setIsLoadingMore(true);
 
-    // Micro-delay for fluid UI rendering and visual feedback
+    // Intentional delay for testing progressive loading and glassmorphism skeletons
     const timer = setTimeout(() => {
       setVisibleCount((prev) => Math.min(prev + pageSize, items.length));
       setIsLoadingMore(false);
-    }, 120);
+    }, delayMs);
 
     return () => clearTimeout(timer);
-  }, [hasMore, isLoadingMore, items.length, pageSize]);
+  }, [hasMore, isLoadingMore, items.length, pageSize, delayMs]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;

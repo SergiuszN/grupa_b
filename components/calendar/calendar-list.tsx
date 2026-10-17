@@ -118,9 +118,10 @@ export function CalendarList({
     : [];
 
   const progressiveDays = useProgressiveList(activeDays, {
-    initialCount: 5,
-    pageSize: 5,
-    rootMargin: "400px",
+    initialCount: 4,
+    pageSize: 4,
+    rootMargin: "50px",
+    delayMs: 1200,
   });
 
   // Mode B: Flat events list
@@ -131,9 +132,10 @@ export function CalendarList({
     : [];
 
   const progressiveEvents = useProgressiveList(filteredEvents, {
-    initialCount: 10,
-    pageSize: 10,
-    rootMargin: "350px",
+    initialCount: 6,
+    pageSize: 6,
+    rootMargin: "50px",
+    delayMs: 1200,
   });
 
   return (
