@@ -1,16 +1,19 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
+import { useTransition } from "react";
 import { CalendarDays, Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import {
+  LOCALE_LABELS,
+  routing,
+  type Locale,
+  usePathname,
+  useRouter,
+} from "@/i18n/routing";
 
-const LANG_KEY = "filharmonia:lang";
-const LANGS = [
-  { code: "PL", name: "polski" },
-  { code: "EN", name: "angielski" },
-  { code: "DE", name: "niemiecki" },
-] as const;
+const FLAG: Record<Locale, string> = { pl: "pl", en: "gb", de: "de" };
 
 const toneClass = {
   dark: "text-paper",
@@ -27,21 +30,18 @@ const circleBase =
 
 export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const color = toneClass[tone];
-  const [lang, setLang] = useState(0);
-
-  useEffect(() => {
-    const saved = LANGS.findIndex(
-      (item) => item.code === localStorage.getItem(LANG_KEY),
-    );
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of the saved language
-    if (saved >= 0) setLang(saved);
-  }, []);
+  const locale = useLocale() as Locale;
+  const router = useRouter();
+  const pathname = usePathname();
+  const [pending, startTransition] = useTransition();
 
   function cycleLanguage() {
-    const next = (lang + 1) % LANGS.length;
-    setLang(next);
-    localStorage.setItem(LANG_KEY, LANGS[next].code);
+    const index = routing.locales.indexOf(locale);
+    const next = routing.locales[(index + 1) % routing.locales.length];
+
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
+    });
   }
 
   return (
@@ -58,14 +58,15 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
 
       <div className={`flex items-center gap-2 ${color}`}>
         <button
-          aria-label={`Język: ${LANGS[lang].name}. Zmień`}
-          className="focus-visible:outline-gold size-11 shrink-0 overflow-hidden rounded-full transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4"
+          aria-label={`Język: ${LOCALE_LABELS[locale].name}. Zmień`}
+          className="focus-visible:outline-gold size-11 shrink-0 overflow-hidden rounded-full transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-60"
+          disabled={pending}
           onClick={cycleLanguage}
           type="button"
         >
           <span
             aria-hidden="true"
-            className={`fi fi-${LANGS[lang].code.toLowerCase()} fis block leading-none`}
+            className={`fi fi-${FLAG[locale]} fis block leading-none`}
             style={{ fontSize: "44px" }}
           />
         </button>

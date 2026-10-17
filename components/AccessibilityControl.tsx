@@ -50,6 +50,7 @@ export function AccessibilityControl() {
       const saved = localStorage.getItem("a11y-preferences");
       if (saved) {
         const parsed = JSON.parse(saved) as Partial<A11yState>;
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of saved preferences
         setSettings((prev) => ({ ...prev, ...parsed }));
       }
     } catch {

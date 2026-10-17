@@ -71,20 +71,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hero: photograph plus the scrim from the Paper artboard, rebuilt in sRGB. */
+/* Hero scrim from the Paper artboard, rebuilt in sRGB. Sits above the
+   autoplaying gallery. */
 .hero-scrim {
-  background-color: var(--color-ink);
-  background-image:
-    linear-gradient(
-      180deg,
-      rgb(0 0 0 / 48%) 0%,
-      rgb(0 0 0 / 4%) 30%,
-      rgb(0 0 0 / 18%) 62%,
-      rgb(0 0 0 / 78%) 100%
-    ),
-    url("/images/hero-filharmonia.jpg");
-  background-position: 50%;
-  background-size: cover;
+  background-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 48%) 0%,
+    rgb(0 0 0 / 4%) 30%,
+    rgb(0 0 0 / 18%) 62%,
+    rgb(0 0 0 / 78%) 100%
+  );
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.hero-slide {
+  animation: hero-fade 1.2s ease-in-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    animation: none;
+  }
 }
 
 @keyframes rise {
