@@ -74,21 +74,45 @@ function GlassSkeletonList({ count = 1 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="flex h-[72px] items-center gap-3.5 rounded-2xl border border-line/50 bg-white/40 dark:bg-white/[0.04] px-3.5 backdrop-blur-md animate-pulse"
+          className="flex min-h-[88px] items-center gap-3.5 rounded-2xl border border-line/50 bg-white/40 dark:bg-white/[0.04] p-3 backdrop-blur-md animate-pulse"
           style={{ animationDelay: `${i * 140}ms` }}
         >
-          {/* Thumbnail Skeleton */}
-          <div className="size-[52px] shrink-0 rounded-xl bg-ink/10 dark:bg-white/10" />
+          {/* Zdjęcie (skeleton) */}
+          <div className="relative size-[72px] shrink-0 rounded-xl bg-ink/10 dark:bg-white/10 overflow-hidden" />
 
-          {/* Texts Skeleton */}
-          <div className="flex flex-1 flex-col gap-2 min-w-0">
-            <div className="h-2.5 w-16 rounded-full bg-gold/30" />
-            <div className="h-4 w-3/5 rounded bg-ink/15 dark:bg-white/15" />
+          {/* Treści skeletona */}
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            {/* Te trzy wartości w jednym rzędzie: kategoria ("to pierwsze"), data oraz godzina */}
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              {/* To pierwsze: kategoria */}
+              <div className="h-3 w-14 rounded-full bg-gold/40" />
+
+              <span className="size-1 rounded-full bg-ink/20 dark:bg-white/20" />
+
+              {/* Ta data */}
+              <div className="flex items-center gap-1">
+                <div className="size-3 rounded-sm bg-ink/20 dark:bg-white/20" />
+                <div className="h-2.5 w-16 rounded bg-ink/15 dark:bg-white/15" />
+              </div>
+
+              <span className="size-1 rounded-full bg-ink/20 dark:bg-white/20" />
+
+              {/* Ta godzina */}
+              <div className="flex items-center gap-1">
+                <div className="size-3 rounded-full bg-ink/20 dark:bg-white/20" />
+                <div className="h-2.5 w-10 rounded bg-ink/15 dark:bg-white/15" />
+              </div>
+            </div>
+
+            {/* Title (tytuł wydarzenia) */}
+            <div className="h-4.5 w-4/5 rounded-md bg-ink/20 dark:bg-white/20" />
+
+            {/* Podtytuł */}
             <div className="h-2.5 w-2/5 rounded bg-ink/10 dark:bg-white/10" />
           </div>
 
-          {/* Right Indicator Skeleton */}
-          <div className="size-7 shrink-0 rounded-full border border-line/40 bg-ink/5 dark:bg-white/5" />
+          {/* Wskaźnik boczny info/chevron */}
+          <div className="size-9 shrink-0 rounded-full border border-line/40 bg-ink/5 dark:bg-white/5" />
         </div>
       ))}
     </div>
