@@ -4,6 +4,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { SkipLink } from "@/components/SkipLink";
+import { AccessibilityControl } from "@/components/AccessibilityControl";
 import "../globals.css";
 
 const helveticaNow = localFont({
@@ -62,7 +64,9 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${helveticaNow.className} ${helveticaNow.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
+          <SkipLink />
           {children}
+          <AccessibilityControl />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -2,10 +2,22 @@ import { Link } from "@/i18n/routing";
 import { AudioWaveform } from "lucide-react";
 import { HeroGallery } from "@/components/landing/hero-gallery";
 import { SiteHeader } from "@/components/landing/site-header";
+import { setRequestLocale } from "next-intl/server";
 
-export default function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
-    <main className="bg-ink relative flex min-h-dvh flex-col overflow-clip">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="bg-ink relative flex min-h-dvh flex-col overflow-clip focus:outline-none"
+    >
       <HeroGallery />
       <div aria-hidden="true" className="hero-scrim absolute inset-0" />
 

@@ -12,6 +12,36 @@
   "LanguageSwitcher": {
     "label": "Język:",
     "pl": "Polski",
-    "en": "English"
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "A11y": {
+    "skipToContent": "Przejdź do głównej treści",
+    "languageSelector": "Wybór języka strony",
+    "currentLanguage": "Aktywny język",
+    "switchTo": "Zmień język na",
+    "newTab": "(otwiera się w nowej karcie)",
+    "panelTitle": "Ułatwienia dostępu (WCAG)",
+    "openPanel": "Otwórz panel ułatwień dostępu",
+    "closePanel": "Zamknij panel ułatwień dostępu",
+    "resetAll": "Resetuj",
+    "textSize": "Wielkość tekstu",
+    "textNormal": "100%",
+    "textLarge": "115%",
+    "textXLarge": "130%",
+    "contrast": "Kontrast",
+    "contrastNormal": "Domyślny",
+    "contrastHigh": "Wysoki",
+    "contrastYellowBlack": "Żółty / Czarny",
+    "highlightLinks": "Wyróżnij linki",
+    "bigCursor": "Duży kursor",
+    "textSpacing": "Większe odstępy tekstu",
+    "reduceMotion": "Wstrzymaj animacje",
+    "readingGuide": "Linijka do czytania",
+    "grayscale": "Skala szarości (czarno-biały)",
+    "readableFont": "Czcionka czytelna (dysleksja)",
+    "shortcutsTitle": "Skróty klawiszowe",
+    "shortcutA11y": "Alt + A: Panel dostępności",
+    "shortcutLang": "Alt + L: Zmień język"
   }
 }

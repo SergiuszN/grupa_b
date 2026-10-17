@@ -47,6 +47,13 @@
 
 html {
   color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 input,
@@ -80,7 +87,8 @@ body {
   background-size: cover;
 }
 
-@keyframes rise {  from {
+@keyframes rise {
+  from {
     opacity: 0;
     transform: translateY(12px);
   }
@@ -114,3 +122,77 @@ body {
   mask: url("/images/logo-mark.png") center / contain no-repeat;
 }
 
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Accessibility Control Modifiers (WCAG 2.1) */
+html[data-a11y-text="large"] {
+  font-size: 115%;
+}
+
+html[data-a11y-text="xlarge"] {
+  font-size: 130%;
+}
+
+html[data-a11y-contrast="high"] {
+  filter: contrast(135%);
+}
+
+html[data-a11y-contrast="yellow-black"],
+html[data-a11y-contrast="yellow-black"] body {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+html[data-a11y-contrast="yellow-black"] a,
+html[data-a11y-contrast="yellow-black"] button,
+html[data-a11y-contrast="yellow-black"] p,
+html[data-a11y-contrast="yellow-black"] h1,
+html[data-a11y-contrast="yellow-black"] h2,
+html[data-a11y-contrast="yellow-black"] h3,
+html[data-a11y-contrast="yellow-black"] span,
+html[data-a11y-contrast="yellow-black"] div:not([data-a11y-panel]) {
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+}
+
+html[data-a11y-cursor="big"],
+html[data-a11y-cursor="big"] * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 24 24' fill='%23000000' stroke='%23ffffff' stroke-width='1.5'%3E%3Cpath d='M3 3l7 18 3-7 7-3L3 3z'/%3E%3C/svg%3E"), auto !important;
+}
+
+html[data-a11y-links="true"] a {
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  text-decoration-thickness: 2px !important;
+  font-weight: 700 !important;
+}
+
+html[data-a11y-spacing="true"] body {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+  line-height: 1.8 !important;
+}
+
+html[data-a11y-motion="true"] *,
+html[data-a11y-motion="true"] {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-a11y-grayscale="true"] {
+  filter: grayscale(100%);
+}
+
+html[data-a11y-contrast="high"][data-a11y-grayscale="true"] {
+  filter: contrast(135%) grayscale(100%);
+}
+
+html[data-a11y-readable-font="true"] *,
+html[data-a11y-readable-font="true"] body {
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive, sans-serif !important;
+  letter-spacing: 0.04em !important;
+}

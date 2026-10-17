@@ -12,6 +12,36 @@
   "LanguageSwitcher": {
     "label": "Language:",
     "pl": "Polski",
-    "en": "English"
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "A11y": {
+    "skipToContent": "Skip to main content",
+    "languageSelector": "Language selector",
+    "currentLanguage": "Current language",
+    "switchTo": "Switch language to",
+    "newTab": "(opens in a new tab)",
+    "panelTitle": "Accessibility Settings",
+    "openPanel": "Open accessibility settings",
+    "closePanel": "Close accessibility settings",
+    "resetAll": "Reset",
+    "textSize": "Text size",
+    "textNormal": "100%",
+    "textLarge": "115%",
+    "textXLarge": "130%",
+    "contrast": "Contrast",
+    "contrastNormal": "Default",
+    "contrastHigh": "High",
+    "contrastYellowBlack": "Yellow / Black",
+    "highlightLinks": "Highlight links",
+    "bigCursor": "Large cursor",
+    "textSpacing": "Text spacing",
+    "reduceMotion": "Pause animations",
+    "readingGuide": "Reading guide / ruler",
+    "grayscale": "Grayscale mode",
+    "readableFont": "Dyslexia-friendly font",
+    "shortcutsTitle": "Keyboard shortcuts",
+    "shortcutA11y": "Alt + A: Accessibility panel",
+    "shortcutLang": "Alt + L: Switch language"
   }
 }
