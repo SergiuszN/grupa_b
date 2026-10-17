@@ -65,7 +65,7 @@ export type CalendarListProps = {
   emptyLabel: string;
 };
 
-function GlassSkeletonList({ count = 2 }: { count?: number }) {
+function GlassSkeletonList({ count = 1 }: { count?: number }) {
   return (
     <div
       aria-hidden="true"
@@ -355,13 +355,13 @@ export function CalendarList({
         {hasDayGroups ? (
           progressiveDays.hasMore && (
             <div ref={progressiveDays.sentinelRef} className="w-full">
-              <GlassSkeletonList count={2} />
+              <GlassSkeletonList count={1} />
             </div>
           )
         ) : (
           progressiveEvents.hasMore && (
             <div ref={progressiveEvents.sentinelRef} className="w-full">
-              <GlassSkeletonList count={2} />
+              <GlassSkeletonList count={1} />
             </div>
           )
         )}
