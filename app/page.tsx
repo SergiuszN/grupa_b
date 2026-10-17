@@ -1,102 +1,66 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@/components/ui/button";
-import styles from "./page.module.css";
-
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+import Link from "next/link";
+import { AudioWaveform } from "lucide-react";
+import { HeroGallery } from "@/components/landing/hero-gallery";
+import { SiteHeader } from "@/components/landing/site-header";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="bg-ink relative flex min-h-dvh flex-col overflow-clip">
+      <HeroGallery />
+      <div aria-hidden="true" className="hero-scrim absolute inset-0" />
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
-      </footer>
-    </div>
+      <div className="relative z-10 mx-auto flex w-full max-w-[1100px] flex-1 flex-col">
+        <SiteHeader />
+
+        <div className="flex-1" />
+
+        <section className="w-full px-6 pb-[calc(env(safe-area-inset-bottom)+36px)] md:pb-16">
+          <div className="md:max-w-[760px]">
+            <h1 className="rise text-hero md:text-[64px] md:leading-[66px] font-bold">
+              Filharmonia
+              <br />
+              zaczyna się online.
+            </h1>
+
+            <p className="rise text-body md:text-[17px] md:leading-[26px] mt-3.5 max-w-[342px] font-medium [animation-delay:90ms] md:mt-5 md:max-w-[460px]">
+              Zaczniemy od tego, co lubisz, i pokażemy Ci coś, czego jeszcze nie
+              znasz.
+            </p>
+
+            <div className="rise mt-7 flex gap-2.5 [animation-delay:180ms] md:mt-9">
+              <Link
+                aria-label="Porozmawiaj z przewodnikiem"
+                className="border-paper/50 text-paper hover:bg-paper/10 focus-visible:outline-paper flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                href="/voice"
+              >
+                <AudioWaveform aria-hidden="true" size={22} strokeWidth={1.7} />
+              </Link>
+
+              <Link
+                className="bg-gold hover:bg-gold-deep focus-visible:outline-paper flex h-14 flex-1 items-center justify-center gap-2.5 rounded-full text-base font-bold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                href="/start"
+              >
+                Pierwszy raz?
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                >
+                  <path
+                    d="M3 8h10M9 4l4 4-4 4"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.6"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }

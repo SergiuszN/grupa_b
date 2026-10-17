@@ -1,19 +1,104 @@
 @import "tailwindcss";
+@import "flag-icons/css/flag-icons.min.css";
 @source "../components";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Colour — source: Paper "Filharmonia" tokens */
+  --color-paper: #ffffff;
+  --color-ink: #111111;
+  --color-muted: #6e6a63;
+  --color-line: #e3dfd7;
+  --color-surface: #f7f5f1;
+  --color-gold: #ad891c;
+  --color-gold-deep: #8f7017;
+  --color-gold-soft: #f3ebd6;
+
+  /* Type */
+  --font-sans: Helvetica, "Helvetica Neue", Arial, sans-serif;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-title: 22px;
+  --text-title--line-height: 28px;
+  --text-display: 34px;
+  --text-display--line-height: 38px;
+  --text-hero: 40px;
+  --text-hero--line-height: 44px;
+  --text-hero--letter-spacing: -0.035em;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Hero: photograph plus the scrim from the Paper artboard, rebuilt in sRGB. */
+.hero-scrim {
+  background-color: var(--color-ink);
+  background-image:
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 48%) 0%,
+      rgb(0 0 0 / 4%) 30%,
+      rgb(0 0 0 / 18%) 62%,
+      rgb(0 0 0 / 78%) 100%
+    ),
+    url("/images/hero-filharmonia.jpg");
+  background-position: 50%;
+  background-size: cover;
+}
+
+@keyframes rise {  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+}
+
+/* Discover card — Paper artboard 04 · Eksploracja swipe. */
+.concert-card {
+  background-color: #e7e2d8;
+  background-image: url("/images/concert-hall.jpg");
+}
+
+/* Official Filharmonia Szczecin mark, used as an alpha mask so it inherits
+   currentColor (white on the hero, ink on paper screens). */
+.logo-mark {
+  background-color: currentColor;
+  -webkit-mask: url("/images/logo-mark.png") center / contain no-repeat;
+  mask: url("/images/logo-mark.png") center / contain no-repeat;
+}
+
