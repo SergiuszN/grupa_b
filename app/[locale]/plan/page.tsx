@@ -24,14 +24,14 @@ export default function Plan() {
     <Screen>
       <FlowSteps step={3} />
 
-      <div className="rise px-7 pt-9 pb-2">
-        <h1 className="text-display font-bold tracking-[-0.03em]">
-          {t("title")}
-        </h1>
-        <p className="text-body text-muted mt-2.5">{t("subtitle")}</p>
-      </div>
+      <div className="rise flex flex-1 flex-col justify-center px-6 py-5">
+        <div className="mb-8">
+          <h1 className="text-display font-bold tracking-[-0.03em]">
+            {t("title")}
+          </h1>
+          <p className="text-body text-muted mt-2.5">{t("subtitle")}</p>
+        </div>
 
-      <div className="flex flex-1 flex-col justify-center px-6 py-5">
         <div className="bg-surface flex flex-col gap-[18px] rounded-3xl px-[22px] pt-[22px] pb-[18px]">
           <div className="flex items-center justify-between">
             <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">

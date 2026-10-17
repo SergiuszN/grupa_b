@@ -1,23 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "@/i18n/routing";
 import {
   CalendarDays,
   ChevronRight,
+  Clock,
   Frame,
+  Info,
   LayoutGrid,
+  MapPin,
   Music,
   Play,
 } from "lucide-react";
 
-export type CalendarEvent = {
+export type CalendarTerm = {
   id: number;
+  eventId: number;
+  day: string;
+  time: string;
   category: "concerts" | "exhibitions" | "others";
   title: string;
-  meta: string;
+  subtitle: string | null;
   image: string | null;
+  venue: string | null;
   href: string | null;
   playable: boolean;
+};
+
+export type CalendarDay = {
+  key: string;
+  label: string;
+  date: string;
 };
 
 type Labels = {
@@ -38,25 +52,27 @@ const FILTERS = [
 
 type Filter = (typeof FILTERS)[number]["key"];
 
-const CATEGORY: Record<CalendarEvent["category"], keyof Labels> = {
+const CATEGORY: Record<CalendarTerm["category"], keyof Labels> = {
   concerts: "concerts",
   exhibitions: "exhibitions",
   others: "others",
 };
 
 export function CalendarList({
-  events,
+  days,
+  terms,
   labels,
   emptyLabel,
 }: {
-  events: CalendarEvent[];
+  days: CalendarDay[];
+  terms: CalendarTerm[];
   labels: Labels;
   emptyLabel: string;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
 
   const visible =
-    filter === "all" ? events : events.filter((event) => event.category === filter);
+    filter === "all" ? terms : terms.filter((term) => term.category === filter);
 
   return (
     <>
@@ -82,67 +98,97 @@ export function CalendarList({
         })}
       </div>
 
-      <div className="flex flex-1 flex-col px-5 pt-2.5 md:px-6">
+      <div className="flex flex-1 flex-col px-5 pt-2 md:px-6">
         {visible.length === 0 ? (
           <p className="text-muted px-1 py-8 text-[14px] leading-5">
             {emptyLabel}
           </p>
         ) : (
-          visible.map((event) => (
-            <article
-              className="border-line flex items-center gap-3.5 border-b px-1 py-4"
-              key={event.id}
-            >
-              <div className="relative size-[72px] shrink-0">
-                <div
-                  className="size-full overflow-clip rounded-xl bg-[#E7E2D8] bg-cover bg-[50%]"
-                  style={
-                    event.image
-                      ? { backgroundImage: `url(${event.image})` }
-                      : undefined
-                  }
-                />
-                {event.playable ? (
-                  <span className="bg-gold absolute right-1 bottom-1 flex size-[26px] items-center justify-center rounded-full">
-                    <Play
-                      aria-hidden="true"
-                      className="translate-x-px text-white"
-                      fill="currentColor"
-                      size={11}
-                      strokeWidth={0}
-                    />
-                  </span>
-                ) : null}
-              </div>
+          days.map((day) => {
+            const dayTerms = visible.filter((term) => term.day === day.key);
 
-              <div className="flex min-w-0 flex-1 flex-col gap-[3px]">
-                <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.12em]">
-                  {labels[CATEGORY[event.category]]}
-                </p>
-                <h2 className="text-[17px] leading-5 font-bold tracking-[-0.02em]">
-                  {event.title}
-                </h2>
-                <p className="text-muted text-[13px] leading-4">{event.meta}</p>
-              </div>
+            if (dayTerms.length === 0) return null;
 
-              {event.href ? (
-                <a
-                  className="focus-visible:outline-gold flex shrink-0 items-center gap-0.5 rounded-sm text-[13px] leading-4 font-medium focus-visible:outline-2 focus-visible:outline-offset-4"
-                  href={event.href}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  {labels.details}
-                  <ChevronRight aria-hidden="true" size={14} strokeWidth={1.4} />
-                </a>
-              ) : (
-                <span className="text-muted flex shrink-0 items-center text-[13px] leading-4">
-                  {labels.details}
-                  <ChevronRight aria-hidden="true" size={14} strokeWidth={1.4} />
-                </span>
-              )}
-            </article>
-          ))
+            return (
+              <section className="pt-7 first:pt-3" key={day.key}>
+                <header className="flex items-baseline justify-between gap-4 px-1">
+                  <h2 className="text-[30px] leading-8 font-bold tracking-[-0.03em]">
+                    {day.label}
+                  </h2>
+                  <p className="text-muted text-[12px] leading-4">{day.date}</p>
+                </header>
+
+                <div className="mt-2">
+                  {dayTerms.map((term) => (
+                    <Link
+                      className="border-line hover:bg-surface focus-visible:outline-gold flex items-center gap-3.5 border-b px-1 py-4 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2"
+                      href={`/calendar/${term.eventId}`}
+                      key={term.id}
+                    >
+                      <div className="relative size-[72px] shrink-0">
+                        <div
+                          className="size-full overflow-clip rounded-xl bg-[#E7E2D8] bg-cover bg-[50%]"
+                          style={
+                            term.image
+                              ? { backgroundImage: `url(${term.image})` }
+                              : undefined
+                          }
+                        />
+                        {term.playable ? (
+                          <span className="bg-gold absolute right-1 bottom-1 flex size-[26px] items-center justify-center rounded-full">
+                            <Play
+                              aria-hidden="true"
+                              className="translate-x-px text-white"
+                              fill="currentColor"
+                              size={11}
+                              strokeWidth={0}
+                            />
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <div className="flex min-w-0 flex-1 flex-col gap-[3px]">
+                        <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.12em]">
+                          {labels[CATEGORY[term.category]]}
+                        </p>
+                        <h3 className="text-[17px] leading-5 font-bold tracking-[-0.02em]">
+                          {term.title}
+                        </h3>
+                        {term.subtitle ? (
+                          <p className="text-muted text-[13px] leading-4">
+                            {term.subtitle}
+                          </p>
+                        ) : null}
+                        <p className="text-muted mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] leading-4">
+                          <span className="flex items-center gap-1">
+                            <Clock aria-hidden="true" size={12} strokeWidth={1.8} />
+                            {term.time}
+                          </span>
+                          {term.venue ? (
+                            <span className="flex items-center gap-1">
+                              <MapPin
+                                aria-hidden="true"
+                                size={12}
+                                strokeWidth={1.8}
+                              />
+                              {term.venue}
+                            </span>
+                          ) : null}
+                        </p>
+                      </div>
+
+                      <span
+                        aria-hidden="true"
+                        className="border-line text-ink flex size-9 shrink-0 items-center justify-center rounded-full border"
+                      >
+                        <Info size={16} strokeWidth={1.8} />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            );
+          })
         )}
 
         <p className="text-muted max-w-[310px] px-1 pt-[22px] text-[14px] leading-5">

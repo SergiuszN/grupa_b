@@ -1,6 +1,5 @@
-import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
 const TIPS = ["1", "2", "3"] as const;
@@ -10,7 +9,7 @@ export default async function Onboarding() {
 
   return (
     <Screen>
-      <FlowSteps step={7} />
+      <FlowSteps items={INFO_FLOW} step={0} />
 
       <div className="flex flex-col gap-4 px-6 pt-3">
         <div className="flex items-center justify-between">
@@ -58,18 +57,11 @@ export default async function Onboarding() {
           ))}
         </div>
 
-        <Link
-          className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex items-center justify-between rounded-full px-5 py-[13px] text-[14px] leading-[18px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
-          href="/directions"
-        >
-          {t("cta")}
-          <span aria-hidden="true">→</span>
-        </Link>
       </div>
 
       <div className="flex-1" />
 
-      <FlowArrows step={7} />
+      <FlowArrows items={INFO_FLOW} step={0} />
     </Screen>
   );
 }

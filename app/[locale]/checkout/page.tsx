@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
+import { CalendarDays, Share2, Ticket } from "lucide-react";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { useTranslations } from "next-intl";
@@ -39,7 +40,7 @@ export default function Checkout() {
 
       <div className="bg-surface mx-6 overflow-clip rounded-[20px]">
         <div
-          className="bg-ink h-[168px] bg-cover bg-[50%]"
+          className="bg-ink h-[248px] bg-cover bg-[50%]"
           style={{ backgroundImage: `url(${event.image})` }}
         />
 
@@ -49,7 +50,7 @@ export default function Checkout() {
           </h2>
           <p className="text-muted text-[14px] leading-[18px]">{event.date}</p>
           <p className="text-muted text-[14px] leading-[18px]">
-            {t("included", { count: people, people: label })}
+            {people} {label}
           </p>
         </div>
 
@@ -69,33 +70,36 @@ export default function Checkout() {
 
       <div className="flex flex-1 flex-col items-center gap-4 px-6 pt-[22px]">
         <Link
-          className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] w-full items-center justify-center rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+          className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] w-full items-center justify-center gap-2 rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/success"
         >
+          <Ticket aria-hidden="true" size={18} strokeWidth={1.8} />
           {t("buy")}
         </Link>
 
         <div className="flex items-center justify-center gap-[22px] text-[14px] leading-[18px] font-medium">
           <a
-            className="focus-visible:outline-gold rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+            className="focus-visible:outline-gold flex items-center gap-1.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
             href={calendar}
             rel="noreferrer"
             target="_blank"
           >
+            <CalendarDays aria-hidden="true" size={16} strokeWidth={1.7} />
             {t("calendar")}
           </a>
           <span aria-hidden="true" className="bg-gold size-1 rounded-full" />
           <button
-            className="focus-visible:outline-gold rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+            className="focus-visible:outline-gold flex items-center gap-1.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
             onClick={share}
             type="button"
           >
+            <Share2 aria-hidden="true" size={16} strokeWidth={1.7} />
             {t("share")}
           </button>
         </div>
       </div>
 
-      <FlowArrows step={5} />
+      <FlowArrows next={false} step={5} />
     </Screen>
   );
 }

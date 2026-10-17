@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
 const LEGEND = [
@@ -13,7 +13,7 @@ export default async function Directions() {
 
   return (
     <Screen>
-      <FlowSteps step={8} />
+      <FlowSteps items={INFO_FLOW} step={1} />
 
       <h1 className="px-6 pt-4 text-[32px] leading-9 font-bold tracking-[-0.03em]">
         {t("title")}
@@ -92,7 +92,7 @@ export default async function Directions() {
 
       <div className="flex-1" />
 
-      <FlowArrows step={8} />
+      <FlowArrows items={INFO_FLOW} step={1} />
     </Screen>
   );
 }

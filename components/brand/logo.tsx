@@ -1,6 +1,6 @@
 export function Logo({ className }: { className?: string }) {
   return (
-    <span className={`flex items-center gap-[9px] ${className ?? ""}`}>
+    <span className={`flex origin-left items-center gap-[9px] scale-[1.15] ${className ?? ""}`}>
       <span aria-hidden="true" className="logo-mark h-9 w-5 shrink-0" />
       <span className="flex flex-col">
         <span className="text-[9px] leading-[10px] font-bold tracking-[0.04em]">

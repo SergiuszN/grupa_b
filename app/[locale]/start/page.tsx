@@ -117,7 +117,7 @@ export default function Start() {
         </div>
       </div>
 
-      <FlowArrows step={1} />
+      <FlowArrows next={false} step={1} />
     </Screen>
   );
 }

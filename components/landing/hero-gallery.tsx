@@ -16,7 +16,7 @@ const IMAGES = [
   "/photos/symphonic-3.jpg",
 ];
 
-const INTERVAL = 5000;
+const INTERVAL = 6000;
 
 export function HeroGallery() {
   const [slides, setSlides] = useState([0]);
@@ -32,12 +32,10 @@ export function HeroGallery() {
   }, []);
 
   return (
-    <div aria-hidden="true" className="bg-ink absolute inset-0">
-      {slides.map((index, layer) => (
+    <div aria-hidden="true" className="bg-ink absolute inset-0" data-anim="gallery">
+      {slides.map((index) => (
         <div
-          className={`absolute inset-0 bg-cover bg-[50%] ${
-            layer === 0 ? "hero-slide" : ""
-          }`}
+          className="hero-slide absolute inset-0 bg-cover bg-[50%]"
           key={index}
           style={{ backgroundImage: `url(${IMAGES[index]})` }}
         />
