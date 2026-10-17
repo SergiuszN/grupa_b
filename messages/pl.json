@@ -1,0 +1,17 @@
+{
+  "HomePage": {
+    "title": "Witaj w projekcie!",
+    "subtitle": "Projekt z obsługą wielu języków za pomocą next-intl",
+    "editPrompt": "Zacznij od edycji",
+    "savePrompt": "Zapisz i zobacz zmiany natychmiast.",
+    "deployNow": "Wdróż teraz",
+    "readDocs": "Przeczytaj dokumentację",
+    "openAlert": "Otwórz powiadomienie",
+    "examples": "Przykłady"
+  },
+  "LanguageSwitcher": {
+    "label": "Język:",
+    "pl": "Polski",
+    "en": "English"
+  }
+}
