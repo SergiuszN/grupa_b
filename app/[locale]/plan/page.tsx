@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Minus, Plus } from "lucide-react";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
@@ -10,6 +11,7 @@ const MIN = 1;
 const MAX = 8;
 
 export default function Plan() {
+  const t = useTranslations("Plan");
   const [people, setPeople] = useState(2);
 
   function change(value: number) {
@@ -24,18 +26,16 @@ export default function Plan() {
 
       <div className="rise px-7 pt-9 pb-2">
         <h1 className="text-display font-bold tracking-[-0.03em]">
-          Ile Was będzie?
+          {t("title")}
         </h1>
-        <p className="text-body text-muted mt-2.5">
-          Zarezerwujemy miejsca obok siebie.
-        </p>
+        <p className="text-body text-muted mt-2.5">{t("subtitle")}</p>
       </div>
 
       <div className="flex flex-1 flex-col justify-center px-6 py-5">
         <div className="bg-surface flex flex-col gap-[18px] rounded-3xl px-[22px] pt-[22px] pb-[18px]">
           <div className="flex items-center justify-between">
             <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
-              LICZBA OSÓB
+              {t("count")}
             </p>
             <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-gold">
               {MIN} – {MAX}
@@ -44,7 +44,7 @@ export default function Plan() {
 
           <div className="flex items-center justify-between">
             <button
-              aria-label="Mniej osób"
+              aria-label={t("fewer")}
               className="border-ink focus-visible:outline-gold flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[26px] leading-none font-light transition-colors hover:bg-paper focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-30"
               disabled={people === MIN}
               onClick={() => change(people - 1)}
@@ -58,12 +58,12 @@ export default function Plan() {
                 {people}
               </p>
               <p className="mt-1 text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
-                {people === 1 ? "OSOBA" : people < 5 ? "OSOBY" : "OSÓB"}
+                {people === 1 ? t("one") : people < 5 ? t("few") : t("many")}
               </p>
             </div>
 
             <button
-              aria-label="Więcej osób"
+              aria-label={t("more")}
               className="bg-gold text-paper hover:bg-gold-deep focus-visible:outline-ink flex size-14 shrink-0 items-center justify-center rounded-full text-[26px] leading-none font-light transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-30"
               disabled={people === MAX}
               onClick={() => change(people + 1)}
@@ -86,8 +86,8 @@ export default function Plan() {
                 />
               ))}
               <input
-                aria-label="Liczba osób"
-                aria-valuetext={`${people} ${people === 1 ? "osoba" : "osoby"}`}
+                aria-label={t("slider")}
+                aria-valuetext={`${people} ${people === 1 ? t("one") : t("few")}`}
                 className="absolute inset-0 w-full cursor-pointer opacity-0"
                 max={MAX}
                 min={MIN}
@@ -103,7 +103,7 @@ export default function Plan() {
                 {MIN}
               </p>
               <p className="text-[11px] leading-[14px] tracking-[0.02em] text-muted">
-                przeciągnij w bok
+                {t("drag")}
               </p>
               <p className="text-[11px] leading-[14px] font-medium tracking-[0.06em] text-muted">
                 {MAX}

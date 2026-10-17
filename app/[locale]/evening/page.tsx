@@ -1,13 +1,14 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { useFlow } from "@/lib/use-flow";
 
 const BEFORE = [
-  { time: "18:30", title: "Drinki", place: "No Name Bar" },
-  { time: "19:15", title: "Spacer", place: "Wały Chrobrego" },
-  { time: "19:45", title: "Szatnia", place: "Wejście główne" },
+  { time: "18:30", title: "drinks", place: "barName" },
+  { time: "19:15", title: "walk", place: "walkPlace" },
+  { time: "19:45", title: "cloakroom", place: "cloakroomPlace" },
 ];
 
 function Row({
@@ -49,6 +50,7 @@ function Label({ children }: { children: string }) {
 }
 
 export default function Evening() {
+  const t = useTranslations("Evening");
   const { event, people } = useFlow();
 
   return (
@@ -57,15 +59,15 @@ export default function Evening() {
 
       <div className="flex flex-col gap-1.5 px-6 pt-3 pb-2.5">
         <p className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em] uppercase">
-          Wokół koncertu
+          {t("eyebrow")}
         </p>
         <h1 className="text-[30px] leading-[34px] font-bold tracking-[-0.03em]">
-          Najpierw miasto.
+          {t("title")}
         </h1>
       </div>
 
       <div className="px-6 pt-1.5">
-        <Label>PRZED</Label>
+        <Label>{t("before")}</Label>
         {BEFORE.map((item) => (
           <Row key={item.title} {...item} />
         ))}
@@ -79,7 +81,7 @@ export default function Evening() {
           <div className="from-ink/72 flex items-end bg-gradient-to-t to-transparent px-3.5 py-3">
             <div className="flex flex-col gap-0.5">
               <p className="text-gold text-[12px] leading-4 font-medium tracking-[0.12em]">
-                20:00 · KONCERT
+                {t("concert")}
               </p>
               <p className="text-[22px] leading-[26px] font-bold tracking-[-0.03em] text-white">
                 {event.title}
@@ -90,14 +92,19 @@ export default function Evening() {
       </div>
 
       <div className="px-6 pt-4">
-        <Label>PO</Label>
-        <Row last place={`Fino · na ${people}`} time="22:15" title="Kolacja" />
+        <Label>{t("after")}</Label>
+        <Row
+            last
+            place={t("dinnerPlace", { count: people })}
+            time="22:15"
+            title={t("dinner")}
+          />
       </div>
 
       <div className="flex-1" />
 
       <p className="text-muted px-6 pb-2 text-[14px] leading-5">
-        Możesz przesunąć każdy punkt.
+        {t("footnote")}
       </p>
 
       <FlowArrows step={4} />

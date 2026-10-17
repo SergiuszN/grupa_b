@@ -53,5 +53,126 @@
     "footnote": "Musik kannst du hören. Den Rest öffnest du in den Details.",
     "empty": "Keine Veranstaltungen in dieser Kategorie.",
     "unavailable": "Das Programm ist derzeit nicht verfügbar."
+  },
+  "Landing": {
+    "headline1": "Die Philharmonie",
+    "headline2": "beginnt online.",
+    "promise": "Wir starten mit dem, was du magst, und zeigen dir etwas, das du noch nicht kennst.",
+    "cta": "Zum ersten Mal?",
+    "voice": "Mit dem Guide sprechen"
+  },
+  "Nav": {
+    "home": "Filharmonia Szczecin — Startseite",
+    "programme": "Programm",
+    "menu": "Menü",
+    "closeMenu": "Menü schließen",
+    "language": "Sprache: {name}. Ändern"
+  },
+  "Menu": {
+    "programme": "Programm",
+    "forYou": "Für dich",
+    "edu": "EDUphilharmonie",
+    "discover": "Philharmonie entdecken",
+    "visit": "Besuch planen",
+    "account": "Mein Konto",
+    "contact": "KONTAKT"
+  },
+  "Quiz": {
+    "eyebrow": "Frage {current} / {total}",
+    "q1": "Hörst du lieber oder schaust du lieber?",
+    "q1a": "Hören",
+    "q1b": "Schauen",
+    "q2": "Klassisch oder modern?",
+    "q2a": "Klassisch",
+    "q2b": "Modern",
+    "q3": "Ausstellung oder Architektur?",
+    "q3a": "Ausstellung",
+    "q3b": "Architektur"
+  },
+  "Swipe": {
+    "like": "Das will ich",
+    "skip": "Nicht jetzt",
+    "cardAria": "{title}, {subtitle}. Nach rechts wischen zum Mögen, nach links zum Ablehnen.",
+    "endEyebrow": "Das sind alle Vorschläge",
+    "endTitle": "Wir haben einen Abend für deinen Geschmack gewählt.",
+    "backHome": "Zurück zum Anfang",
+    "endKind": "Ende",
+    "endBig": "Danke",
+    "endSubtitle": "Dein Abend steht schon.",
+    "endMeta": "Komm für weitere Vorschläge zurück."
+  },
+  "Plan": {
+    "title": "Wie viele seid ihr?",
+    "subtitle": "Wir reservieren Plätze nebeneinander.",
+    "count": "ANZAHL DER PERSONEN",
+    "one": "PERSON",
+    "few": "PERSONEN",
+    "many": "PERSONEN",
+    "drag": "seitlich ziehen",
+    "fewer": "Weniger Personen",
+    "more": "Mehr Personen",
+    "slider": "Anzahl der Personen"
+  },
+  "Evening": {
+    "eyebrow": "Rund um das Konzert",
+    "title": "Zuerst die Stadt.",
+    "before": "VORHER",
+    "after": "DANACH",
+    "concert": "20:00 · KONZERT",
+    "footnote": "Du kannst jeden Punkt verschieben.",
+    "drinks": "Drinks",
+    "walk": "Spaziergang",
+    "cloakroom": "Garderobe",
+    "dinner": "Abendessen",
+    "barName": "No Name Bar",
+    "walkPlace": "Wały Chrobrego",
+    "cloakroomPlace": "Haupteingang",
+    "dinnerPlace": "Fino · für {count}"
+  },
+  "Checkout": {
+    "eyebrow": "TICKET",
+    "title": "Dein Abend.",
+    "total": "GESAMT",
+    "included": "{count} {people} · Abendplan inklusive",
+    "one": "Person",
+    "few": "Personen",
+    "many": "Personen",
+    "buy": "Ticket kaufen",
+    "calendar": "Kalender",
+    "share": "Teilen"
+  },
+  "Success": {
+    "eyebrow": "BESTÄTIGUNG",
+    "title": "Das Ticket gehört dir.",
+    "body": "Wir haben es per E-Mail geschickt. Der Abendplan und die Tipps sind schon in der App.",
+    "start": "Los geht's",
+    "summary": "{title} · {date} · {count} {people}"
+  },
+  "Onboarding": {
+    "eyebrow": "WAS ANZIEHEN",
+    "counter": "08",
+    "tip1Title": "Dunkle Palette",
+    "tip1Text": "Schwarz, Marine, Graphit. Immer sicher.",
+    "tip2Title": "Bequeme Schuhe",
+    "tip2Text": "Absätze für den Abend, Flache fürs Taxi.",
+    "tip3Title": "Nichts Sportliches",
+    "tip3Text": "Flip-Flops und Shorts bleiben zu Hause.",
+    "cta": "Beispiele ansehen"
+  },
+  "Directions": {
+    "title": "Wie findest du uns?",
+    "venue": "FILHARMONIA",
+    "address": "ul. Małopolska 48, Szczecin",
+    "mapAria": "Karte: Philharmonie in der Małopolska-Straße 48",
+    "legend1": "12 Min. zu Fuß von Wały Chrobrego",
+    "legend2": "Tiefgarage · 4 Min.",
+    "legend3": "Straßenbahn · Haltestelle 3 Min."
+  },
+  "Voice": {
+    "hi": "Hallo!",
+    "title": "Ich bin dein Guide durch die Philharmonie.",
+    "subtitle": "Frag mich, was ich kann.",
+    "talk": "SPRICH MIT MIR",
+    "back": "Zurück"
   }
 }

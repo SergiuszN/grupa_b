@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import { CalendarDays, Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
@@ -31,6 +31,7 @@ const circleBase =
 
 export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const color = toneClass[tone];
+  const t = useTranslations("Nav");
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
@@ -55,12 +56,12 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
         href="/"
       >
         <Logo />
-        <span className="sr-only">Filharmonia Szczecin — strona główna</span>
+        <span className="sr-only">{t("home")}</span>
       </Link>
 
       <div className={`flex items-center gap-2 ${color}`}>
         <button
-          aria-label={`Język: ${LOCALE_LABELS[locale].name}. Zmień`}
+          aria-label={t("language", { name: LOCALE_LABELS[locale].name })}
           className="focus-visible:outline-gold size-11 shrink-0 overflow-hidden rounded-full transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-60"
           disabled={pending}
           onClick={cycleLanguage}
@@ -74,7 +75,7 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
         </button>
 
         <Link
-          aria-label="Repertuar"
+          aria-label={t("programme")}
           className={`${circleBase} ${circle[tone]}`}
           href="/calendar"
         >
@@ -83,7 +84,7 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
 
         <button
           aria-expanded={menuOpen}
-          aria-label="Menu"
+          aria-label={t("menu")}
           className={`${circleBase} ${circle[tone]}`}
           onClick={() => setMenuOpen(true)}
           type="button"

@@ -3,14 +3,16 @@
 import { Link } from "@/i18n/routing";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 
 const PRICE = 140;
 
 export default function Checkout() {
+  const t = useTranslations("Checkout");
   const { event, people } = useFlow();
 
-  const label = people === 1 ? "osoba" : people < 5 ? "osoby" : "osób";
+  const label = people === 1 ? t("one") : people < 5 ? t("few") : t("many");
   const calendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
     event.title,
   )}&location=${encodeURIComponent("Filharmonia Szczecin")}`;
@@ -28,10 +30,10 @@ export default function Checkout() {
 
       <div className="flex flex-col gap-1.5 px-6 pt-3.5 pb-4">
         <p className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em]">
-          BILET
+          {t("eyebrow")}
         </p>
         <h1 className="text-[32px] leading-9 font-bold tracking-[-0.03em]">
-          Twój wieczór.
+          {t("title")}
         </h1>
       </div>
 
@@ -47,7 +49,7 @@ export default function Checkout() {
           </h2>
           <p className="text-muted text-[14px] leading-[18px]">{event.date}</p>
           <p className="text-muted text-[14px] leading-[18px]">
-            {people} {label} · plan wieczoru w cenie
+            {t("included", { count: people, people: label })}
           </p>
         </div>
 
@@ -57,7 +59,7 @@ export default function Checkout() {
 
         <div className="flex items-end justify-between px-[18px] pt-2 pb-[18px]">
           <p className="text-muted pb-1.5 text-[12px] leading-4 font-medium tracking-[0.14em]">
-            RAZEM
+            {t("total")}
           </p>
           <p className="text-[32px] leading-9 font-bold tracking-[-0.03em]">
             {people * PRICE} zł
@@ -70,7 +72,7 @@ export default function Checkout() {
           className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] w-full items-center justify-center rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/success"
         >
-          Kup bilet
+          {t("buy")}
         </Link>
 
         <div className="flex items-center justify-center gap-[22px] text-[14px] leading-[18px] font-medium">
@@ -80,7 +82,7 @@ export default function Checkout() {
             rel="noreferrer"
             target="_blank"
           >
-            Kalendarz
+            {t("calendar")}
           </a>
           <span aria-hidden="true" className="bg-gold size-1 rounded-full" />
           <button
@@ -88,7 +90,7 @@ export default function Checkout() {
             onClick={share}
             type="button"
           >
-            Udostępnij
+            {t("share")}
           </button>
         </div>
       </div>

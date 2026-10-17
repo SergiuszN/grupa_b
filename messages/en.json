@@ -53,5 +53,126 @@
     "footnote": "You can listen to the music. The rest opens in the details.",
     "empty": "No events in this category.",
     "unavailable": "The programme is temporarily unavailable."
+  },
+  "Landing": {
+    "headline1": "The Philharmonic",
+    "headline2": "starts online.",
+    "promise": "We start with what you like, then show you something you have not heard yet.",
+    "cta": "First time?",
+    "voice": "Talk to the guide"
+  },
+  "Nav": {
+    "home": "Filharmonia Szczecin — home",
+    "programme": "Programme",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "language": "Language: {name}. Change"
+  },
+  "Menu": {
+    "programme": "Programme",
+    "forYou": "For you",
+    "edu": "EDUphilharmonic",
+    "discover": "Discover the Philharmonic",
+    "visit": "Plan your visit",
+    "account": "My account",
+    "contact": "CONTACT"
+  },
+  "Quiz": {
+    "eyebrow": "Question {current} / {total}",
+    "q1": "Do you prefer to listen or to watch?",
+    "q1a": "Listening",
+    "q1b": "Watching",
+    "q2": "Classical or contemporary?",
+    "q2a": "Classical",
+    "q2b": "Contemporary",
+    "q3": "Exhibition or architecture?",
+    "q3a": "Exhibition",
+    "q3b": "Architecture"
+  },
+  "Swipe": {
+    "like": "I want this",
+    "skip": "Not now",
+    "cardAria": "{title}, {subtitle}. Swipe right to like, left to dismiss.",
+    "endEyebrow": "That is every suggestion",
+    "endTitle": "We picked an evening for your taste.",
+    "backHome": "Back to start",
+    "endKind": "The end",
+    "endBig": "Thank you",
+    "endSubtitle": "Your evening is ready.",
+    "endMeta": "Come back for more suggestions."
+  },
+  "Plan": {
+    "title": "How many of you?",
+    "subtitle": "We will seat you together.",
+    "count": "NUMBER OF PEOPLE",
+    "one": "PERSON",
+    "few": "PEOPLE",
+    "many": "PEOPLE",
+    "drag": "drag sideways",
+    "fewer": "Fewer people",
+    "more": "More people",
+    "slider": "Number of people"
+  },
+  "Evening": {
+    "eyebrow": "Around the concert",
+    "title": "The city first.",
+    "before": "BEFORE",
+    "after": "AFTER",
+    "concert": "20:00 · CONCERT",
+    "footnote": "You can move every point.",
+    "drinks": "Drinks",
+    "walk": "A walk",
+    "cloakroom": "Cloakroom",
+    "dinner": "Dinner",
+    "barName": "No Name Bar",
+    "walkPlace": "Wały Chrobrego",
+    "cloakroomPlace": "Main entrance",
+    "dinnerPlace": "Fino · for {count}"
+  },
+  "Checkout": {
+    "eyebrow": "TICKET",
+    "title": "Your evening.",
+    "total": "TOTAL",
+    "included": "{count} {people} · evening plan included",
+    "one": "person",
+    "few": "people",
+    "many": "people",
+    "buy": "Buy ticket",
+    "calendar": "Calendar",
+    "share": "Share"
+  },
+  "Success": {
+    "eyebrow": "CONFIRMATION",
+    "title": "The ticket is yours.",
+    "body": "We sent it to your e-mail. The evening plan and tips are already in the app.",
+    "start": "Let's begin",
+    "summary": "{title} · {date} · {count} {people}"
+  },
+  "Onboarding": {
+    "eyebrow": "WHAT TO WEAR",
+    "counter": "08",
+    "tip1Title": "Dark palette",
+    "tip1Text": "Black, navy, graphite. Always safe.",
+    "tip2Title": "Comfortable shoes",
+    "tip2Text": "Heels for the evening, flats for the taxi.",
+    "tip3Title": "Nothing sporty",
+    "tip3Text": "Flip-flops and shorts stay at home.",
+    "cta": "See examples"
+  },
+  "Directions": {
+    "title": "How to find us?",
+    "venue": "FILHARMONIA",
+    "address": "ul. Małopolska 48, Szczecin",
+    "mapAria": "Map: the Philharmonic at 48 Małopolska Street",
+    "legend1": "12 min walk from Wały Chrobrego",
+    "legend2": "Underground car park · 4 min",
+    "legend3": "Tram · stop 3 min away"
+  },
+  "Voice": {
+    "hi": "Hello!",
+    "title": "I am your guide to the Philharmonic.",
+    "subtitle": "Ask me what I can do.",
+    "talk": "TALK TO ME",
+    "back": "Back"
   }
 }

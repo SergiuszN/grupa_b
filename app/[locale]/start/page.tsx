@@ -2,6 +2,7 @@
 
 import { useRouter } from "@/i18n/routing";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Building2, Ear, Eye, Frame, Music, Waves } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
@@ -11,35 +12,36 @@ import { TASTE_KEY } from "@/lib/taste";
 const QUESTIONS: {
   key: string;
   question: string;
-  options: { label: string; icon: LucideIcon }[];
+  options: { key: string; icon: LucideIcon }[];
 }[] = [
   {
     key: "mode",
-    question: "Wolisz słuchać czy oglądać?",
+    question: "q1",
     options: [
-      { label: "Słuchanie", icon: Ear },
-      { label: "Oglądanie", icon: Eye },
+      { key: "q1a", icon: Ear },
+      { key: "q1b", icon: Eye },
     ],
   },
   {
     key: "era",
-    question: "Klasycznie czy nowocześnie?",
+    question: "q2",
     options: [
-      { label: "Klasycznie", icon: Music },
-      { label: "Nowocześnie", icon: Waves },
+      { key: "q2a", icon: Music },
+      { key: "q2b", icon: Waves },
     ],
   },
   {
     key: "space",
-    question: "Wystawa czy architektura?",
+    question: "q3",
     options: [
-      { label: "Wystawa", icon: Frame },
-      { label: "Architektura", icon: Building2 },
+      { key: "q3a", icon: Frame },
+      { key: "q3b", icon: Building2 },
     ],
   },
 ];
 
 export default function Start() {
+  const t = useTranslations("Quiz");
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -73,16 +75,16 @@ export default function Start() {
 
       <div className="rise flex flex-1 flex-col justify-center px-6" key={step}>
         <p className="text-caption text-gold font-medium tracking-[0.16em] uppercase">
-          Pytanie {step + 1} / {QUESTIONS.length}
+          {t("eyebrow", { current: step + 1, total: QUESTIONS.length })}
         </p>
 
         <h1 className="text-display mt-3 max-w-[320px] font-bold">
-          {question.question}
+          {t(question.question)}
         </h1>
 
         <div className="mt-8 flex flex-col gap-3">
           {question.options.map((option, index) => {
-            const active = picked === option.label;
+            const active = picked === t(option.key);
             const Icon = option.icon;
 
             return (
@@ -92,14 +94,14 @@ export default function Start() {
                     ? "border-gold bg-gold text-white"
                     : "border-ink hover:bg-surface"
                 }`}
-                key={option.label}
-                onClick={() => choose(option.label)}
+                key={option.key}
+                onClick={() => choose(t(option.key))}
                 type="button"
               >
                 <span className="flex items-center gap-4">
                   <Icon aria-hidden="true" size={24} strokeWidth={1.5} />
                   <span className="text-[22px] leading-7 font-bold">
-                    {option.label}
+                    {t(option.key)}
                   </span>
                 </span>
                 <span

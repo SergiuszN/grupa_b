@@ -2,25 +2,26 @@
 
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Logo } from "@/components/brand/logo";
 
 const LINKS = [
-  { label: "Repertuar", href: "/calendar" },
-  { label: "Dla Ciebie", href: "/start" },
+  { key: "programme", href: "/calendar" },
+  { key: "forYou", href: "/start" },
   {
-    label: "EDUfilharmonia",
+    key: "edu",
     href: "https://filharmonia.szczecin.pl/edu_filharmonia",
   },
   {
-    label: "Odkryj Filharmonię",
+    key: "discover",
     href: "https://filharmonia.szczecin.pl/the_building",
   },
   {
-    label: "Planuj wizytę",
+    key: "visit",
     href: "https://filharmonia.szczecin.pl/zaplanuj_swoja_wizyte",
   },
-  { label: "Moje konto", href: "https://filharmonia.szczecin.pl/tickets" },
+  { key: "account", href: "https://filharmonia.szczecin.pl/tickets" },
 ] as const;
 
 const SOCIALS = [
@@ -42,6 +43,8 @@ const SOCIALS = [
 ] as const;
 
 export function MenuSheet({ onClose }: { onClose: () => void }) {
+  const t = useTranslations("Menu");
+  const tn = useTranslations("Nav");
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -64,7 +67,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      aria-label="Menu"
+      aria-label={tn("menu")}
       aria-modal="true"
       className="bg-gold text-ink fixed inset-0 z-50 overflow-y-auto"
       role="dialog"
@@ -77,11 +80,11 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
             onClick={onClose}
           >
             <Logo />
-            <span className="sr-only">Filharmonia Szczecin — strona główna</span>
+            <span className="sr-only">{tn("home")}</span>
           </Link>
 
           <button
-            aria-label="Zamknij menu"
+            aria-label={tn("closeMenu")}
             className="focus-visible:outline-ink flex size-11 items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4"
             onClick={onClose}
             ref={closeRef}
@@ -101,21 +104,21 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
               <a
                 className={className}
                 href={link.href}
-                key={link.label}
+                key={link.key}
                 rel="noreferrer"
                 target="_blank"
               >
-                {link.label}
+                {t(link.key)}
                 <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
               </a>
             ) : (
               <Link
                 className={className}
                 href={link.href}
-                key={link.label}
+                key={link.key}
                 onClick={onClose}
               >
-                {link.label}
+                {t(link.key)}
                 <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
               </Link>
             );
@@ -124,7 +127,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
 
         <div className="mt-auto pt-10">
           <p className="text-[11px] leading-[14px] font-medium tracking-[0.14em] opacity-70">
-            KONTAKT
+            {t("contact")}
           </p>
 
           <div className="mt-3 flex flex-col gap-1.5 text-[15px] leading-[22px]">

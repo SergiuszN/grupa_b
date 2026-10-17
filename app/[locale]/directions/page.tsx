@@ -1,13 +1,16 @@
+import { getTranslations } from "next-intl/server";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
 const LEGEND = [
-  { color: "bg-gold", text: "12 min pieszo z Wałów Chrobrego" },
-  { color: "bg-ink", text: "Parking podziemny · 4 min" },
-  { color: "bg-[#C8C4BC]", text: "Tramwaj · przystanek 3 min" },
-];
+  { color: "bg-gold", key: "legend1" },
+  { color: "bg-ink", key: "legend2" },
+  { color: "bg-[#C8C4BC]", key: "legend3" },
+] as const;
 
-export default function Directions() {
+export default async function Directions() {
+  const t = await getTranslations("Directions");
+
   return (
     <Screen>
       <FlowSteps step={8} />
@@ -43,7 +46,7 @@ export default function Directions() {
 
       <div className="mx-6 mt-3.5 h-[280px] overflow-clip rounded-[22px] bg-[#F4F1EA]">
         <svg
-          aria-label="Mapa: Filharmonia przy ul. Małopolskiej 48"
+          aria-label={t("mapAria")}
           className="h-full w-full"
           role="img"
           viewBox="0 0 350 280"
@@ -77,12 +80,12 @@ export default function Directions() {
 
       <div className="flex flex-col gap-3 px-6 pt-4">
         {LEGEND.map((item) => (
-          <div className="flex items-center gap-3" key={item.text}>
+          <div className="flex items-center gap-3" key={item.key}>
             <span
               aria-hidden="true"
               className={`size-2 shrink-0 rounded-full ${item.color}`}
             />
-            <p className="text-[14px] leading-[18px]">{item.text}</p>
+            <p className="text-[14px] leading-[18px]">{t(item.key)}</p>
           </div>
         ))}
       </div>

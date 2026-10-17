@@ -1,17 +1,20 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { Check, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
-import { EVENTS } from "@/lib/events";
+import { EVENTS, localizeEvent } from "@/lib/events";
 import { SWIPE_KEY } from "@/lib/taste";
 
 const THRESHOLD = 96;
 
 export default function Swipe() {
+  const t = useTranslations("Swipe");
+  const locale = useLocale();
   const router = useRouter();
   const [index, setIndex] = useState(0);
   const [dx, setDx] = useState(0);
@@ -20,7 +23,7 @@ export default function Swipe() {
   const [saved, setSaved] = useState<string | null>(null);
   const startX = useRef(0);
 
-  const card = EVENTS[index];
+  const card = EVENTS[index] ? localizeEvent(EVENTS[index], locale) : undefined;
   const step = Math.min(index + 1, EVENTS.length);
 
   function decide(direction: -1 | 1) {
@@ -34,7 +37,7 @@ export default function Swipe() {
         { id: card.id, choice: direction === 1 ? "tak" : "nie" },
       ]),
     );
-    setSaved(direction === 1 ? "To chcę" : "Nie teraz");
+    setSaved(direction === 1 ? t("like") : t("skip"));
     setExit(direction);
 
     window.setTimeout(() => {
@@ -71,7 +74,7 @@ export default function Swipe() {
 
       {card ? (
         <div
-          aria-label={`${card.title}, ${card.subtitle}. Przesuń w prawo, aby polubić, w lewo, aby odrzucić.`}
+          aria-label={t("cardAria", { title: card.title, subtitle: card.subtitle })}
           className="concert-card mx-4 mt-3 flex h-[min(420px,50dvh)] cursor-grab touch-none flex-col justify-end overflow-clip rounded-[24px] bg-cover bg-[50%_40%] select-none active:cursor-grabbing"
           key={card.id}
           onKeyDown={(event) => {
@@ -113,10 +116,10 @@ export default function Swipe() {
       ) : (
         <div className="bg-surface mx-4 mt-3 flex h-[min(420px,50dvh)] flex-col items-center justify-center gap-3 rounded-[24px] px-8 text-center">
           <p className="text-caption text-muted font-medium tracking-[0.16em] uppercase">
-            To wszystkie propozycje
+            {t("endEyebrow")}
           </p>
           <p className="text-title font-bold">
-            Dobraliśmy wieczór pod Twój gust.
+            {t("endTitle")}
           </p>
           <Link
             className="text-body mt-1 font-medium underline underline-offset-4"
@@ -129,22 +132,22 @@ export default function Swipe() {
 
       <div className="rise px-[22px] pt-[22px]" key={`copy-${index}`}>
         <p className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase">
-          {card ? card.kind : "Koniec"}
+          {card ? card.kind : t("endKind")}
         </p>
         <h1 className="mt-2.5 text-[38px] leading-[40px] font-bold tracking-[-0.03em]">
-          {card ? card.title : "Dziękujemy"}
+          {card ? card.title : t("endBig")}
         </h1>
         <p className="mt-1 text-[18px] leading-6 font-light">
-          {card ? card.subtitle : "Twój wieczór jest już ułożony."}
+          {card ? card.subtitle : t("endSubtitle")}
         </p>
         <p className="text-muted mt-3 text-[13px] leading-[19px]">
-          {card ? card.meta : "Wracaj po kolejne propozycje."}
+          {card ? card.meta : t("endMeta")}
         </p>
       </div>
 
       <div className="mt-auto flex gap-2.5 px-4 pt-6">
         <button
-          aria-label="Nie teraz"
+          aria-label={t("skip")}
           className="border-ink hover:bg-surface focus-visible:outline-gold flex h-14 flex-1 items-center justify-center gap-2 rounded-full border-[1.5px] text-[14px] font-medium tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 active:scale-[0.98] disabled:opacity-40"
           disabled={!card || exit !== null}
           onClick={() => decide(-1)}
@@ -154,7 +157,7 @@ export default function Swipe() {
           Nie teraz
         </button>
         <button
-          aria-label="To chcę"
+          aria-label={t("like")}
           className="bg-gold text-paper hover:bg-gold-deep focus-visible:outline-ink flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-[14px] font-bold tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 active:scale-[0.98] disabled:opacity-40"
           disabled={!card || exit !== null}
           onClick={() => decide(1)}
@@ -181,7 +184,7 @@ export default function Swipe() {
       <FlowArrows step={2} />
 
       <p aria-live="polite" className="sr-only">
-        {saved ? `Zapisane: ${saved}` : ""}
+        {saved ?? ""}
       </p>
     </Screen>
   );

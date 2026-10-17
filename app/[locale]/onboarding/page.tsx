@@ -1,23 +1,13 @@
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
-const TIPS = [
-  {
-    title: "Ciemna paleta",
-    text: "Czerń, granat, grafit. Zawsze bezpieczne.",
-  },
-  {
-    title: "Wygodne buty",
-    text: "Obcas na wieczór, płaskie do taksówki.",
-  },
-  {
-    title: "Nic ze sportu",
-    text: "Klapki i szorty zostają w domu.",
-  },
-];
+const TIPS = ["1", "2", "3"] as const;
 
-export default function Onboarding() {
+export default async function Onboarding() {
+  const t = await getTranslations("Onboarding");
+
   return (
     <Screen>
       <FlowSteps step={7} />
@@ -25,10 +15,10 @@ export default function Onboarding() {
       <div className="flex flex-col gap-4 px-6 pt-3">
         <div className="flex items-center justify-between">
           <p className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]">
-            JAK SIĘ UBRAĆ
+            {t("eyebrow")}
           </p>
           <p className="text-muted text-[11px] leading-[14px] tracking-[0.1em]">
-            08
+            {t("counter")}
           </p>
         </div>
 
@@ -39,7 +29,7 @@ export default function Onboarding() {
 
         <div className="bg-ink rounded-[20px] px-[18px] py-4">
           {TIPS.map((tip, index) => (
-            <div key={tip.title}>
+            <div key={tip}>
               <div
                 className={`flex gap-3.5 ${
                   index === 0
@@ -54,10 +44,10 @@ export default function Onboarding() {
                 </span>
                 <div className="flex flex-col gap-0.5">
                   <p className="text-[14px] leading-[18px] font-bold text-white">
-                    {tip.title}
+                    {t(`tip${tip}Title`)}
                   </p>
                   <p className="text-[13px] leading-[17px] text-white/60">
-                    {tip.text}
+                    {t(`tip${tip}Text`)}
                   </p>
                 </div>
               </div>
@@ -72,7 +62,7 @@ export default function Onboarding() {
           className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex items-center justify-between rounded-full px-5 py-[13px] text-[14px] leading-[18px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/directions"
         >
-          Zobacz przykłady
+          {t("cta")}
           <span aria-hidden="true">→</span>
         </Link>
       </div>

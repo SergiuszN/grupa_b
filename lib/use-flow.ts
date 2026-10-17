@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EVENTS } from "./events";
+import { useLocale } from "next-intl";
+import { EVENTS, localizeEvent } from "./events";
 import { PARTY_KEY, SWIPE_KEY } from "./taste";
 
 export function useFlow() {
+  const locale = useLocale();
   const [event, setEvent] = useState(EVENTS[0]);
   const [people, setPeople] = useState(2);
 
@@ -20,5 +22,5 @@ export function useFlow() {
     setPeople(Number(localStorage.getItem(PARTY_KEY)) || 2);
   }, []);
 
-  return { event, people };
+  return { event: localizeEvent(event, locale), people };
 }

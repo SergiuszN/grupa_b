@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight, Play } from "lucide-react";
+import {
+  CalendarDays,
+  ChevronRight,
+  Frame,
+  LayoutGrid,
+  Music,
+  Play,
+} from "lucide-react";
 
 export type CalendarEvent = {
   id: number;
@@ -22,8 +29,14 @@ type Labels = {
   footnote: string;
 };
 
-const FILTERS = ["all", "concerts", "exhibitions", "others"] as const;
-type Filter = (typeof FILTERS)[number];
+const FILTERS = [
+  { key: "all", Icon: LayoutGrid },
+  { key: "concerts", Icon: Music },
+  { key: "exhibitions", Icon: Frame },
+  { key: "others", Icon: CalendarDays },
+] as const;
+
+type Filter = (typeof FILTERS)[number]["key"];
 
 const CATEGORY: Record<CalendarEvent["category"], keyof Labels> = {
   concerts: "concerts",
@@ -48,12 +61,12 @@ export function CalendarList({
   return (
     <>
       <div className="flex gap-2 overflow-x-auto px-6 pt-4 pb-2 [scrollbar-width:none]">
-        {FILTERS.map((key) => {
+        {FILTERS.map(({ key, Icon }) => {
           const active = filter === key;
 
           return (
             <button
-              className={`focus-visible:outline-gold flex h-[34px] shrink-0 items-center rounded-full px-3.5 text-[13px] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
+              className={`focus-visible:outline-gold flex h-[34px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 active
                   ? "bg-ink text-paper"
                   : "border-line text-ink hover:bg-surface border"
@@ -62,6 +75,7 @@ export function CalendarList({
               onClick={() => setFilter(key)}
               type="button"
             >
+              <Icon aria-hidden="true" size={15} strokeWidth={1.6} />
               {labels[key]}
             </button>
           );

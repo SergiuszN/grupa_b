@@ -1,8 +1,11 @@
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 import { ArrowLeft, Mic } from "lucide-react";
 import { Screen } from "@/components/flow/screen";
 
-export default function Voice() {
+export default async function Voice() {
+  const t = await getTranslations("Voice");
+
   return (
     <Screen>
       <div className="flex flex-1 flex-col items-center justify-center pb-2.5 text-center">

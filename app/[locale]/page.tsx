@@ -2,7 +2,7 @@ import { Link } from "@/i18n/routing";
 import { AudioWaveform } from "lucide-react";
 import { HeroGallery } from "@/components/landing/hero-gallery";
 import { SiteHeader } from "@/components/landing/site-header";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export default async function Home({
   params,
@@ -11,6 +11,7 @@ export default async function Home({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Landing");
 
   return (
     <main
@@ -29,19 +30,18 @@ export default async function Home({
         <section className="w-full px-6 pb-[calc(env(safe-area-inset-bottom)+36px)] md:pb-16">
           <div className="md:max-w-[760px]">
             <h1 className="rise text-hero md:text-[64px] md:leading-[66px] font-bold">
-              Filharmonia
+              {t("headline1")}
               <br />
-              zaczyna się online.
+              {t("headline2")}
             </h1>
 
             <p className="rise text-body md:text-[17px] md:leading-[26px] mt-3.5 max-w-[342px] font-medium [animation-delay:90ms] md:mt-5 md:max-w-[460px]">
-              Zaczniemy od tego, co lubisz, i pokażemy Ci coś, czego jeszcze nie
-              znasz.
+              {t("promise")}
             </p>
 
             <div className="rise mt-7 flex gap-2.5 [animation-delay:180ms] md:mt-9">
               <Link
-                aria-label="Porozmawiaj z przewodnikiem"
+                aria-label={t("voice")}
                 className="border-paper/50 text-paper hover:bg-paper/10 focus-visible:outline-paper flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
                 href="/voice"
               >
@@ -52,7 +52,7 @@ export default async function Home({
                 className="bg-gold hover:bg-gold-deep focus-visible:outline-paper flex h-14 flex-1 items-center justify-center gap-2.5 rounded-full text-base font-bold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
                 href="/start"
               >
-                Pierwszy raz?
+                {t("cta")}
                 <svg
                   aria-hidden="true"
                   fill="none"

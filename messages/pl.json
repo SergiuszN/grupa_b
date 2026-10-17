@@ -53,5 +53,126 @@
     "footnote": "Muzykę możesz posłuchać. Resztę otwierasz w szczegółach.",
     "empty": "Brak wydarzeń w tej kategorii.",
     "unavailable": "Repertuar jest chwilowo niedostępny."
+  },
+  "Landing": {
+    "headline1": "Filharmonia",
+    "headline2": "zaczyna się online.",
+    "promise": "Zaczniemy od tego, co lubisz, i pokażemy Ci coś, czego jeszcze nie znasz.",
+    "cta": "Pierwszy raz?",
+    "voice": "Porozmawiaj z przewodnikiem"
+  },
+  "Nav": {
+    "home": "Filharmonia Szczecin — strona główna",
+    "programme": "Repertuar",
+    "menu": "Menu",
+    "closeMenu": "Zamknij menu",
+    "language": "Język: {name}. Zmień"
+  },
+  "Menu": {
+    "programme": "Repertuar",
+    "forYou": "Dla Ciebie",
+    "edu": "EDUfilharmonia",
+    "discover": "Odkryj Filharmonię",
+    "visit": "Planuj wizytę",
+    "account": "Moje konto",
+    "contact": "KONTAKT"
+  },
+  "Quiz": {
+    "eyebrow": "Pytanie {current} / {total}",
+    "q1": "Wolisz słuchać czy oglądać?",
+    "q1a": "Słuchanie",
+    "q1b": "Oglądanie",
+    "q2": "Klasycznie czy nowocześnie?",
+    "q2a": "Klasycznie",
+    "q2b": "Nowocześnie",
+    "q3": "Wystawa czy architektura?",
+    "q3a": "Wystawa",
+    "q3b": "Architektura"
+  },
+  "Swipe": {
+    "like": "To chcę",
+    "skip": "Nie teraz",
+    "cardAria": "{title}, {subtitle}. Przesuń w prawo, aby polubić, w lewo, aby odrzucić.",
+    "endEyebrow": "To wszystkie propozycje",
+    "endTitle": "Dobraliśmy wieczór pod Twój gust.",
+    "backHome": "Wróć na początek",
+    "endKind": "Koniec",
+    "endBig": "Dziękujemy",
+    "endSubtitle": "Twój wieczór jest już ułożony.",
+    "endMeta": "Wracaj po kolejne propozycje."
+  },
+  "Plan": {
+    "title": "Ile Was będzie?",
+    "subtitle": "Zarezerwujemy miejsca obok siebie.",
+    "count": "LICZBA OSÓB",
+    "one": "OSOBA",
+    "few": "OSOBY",
+    "many": "OSÓB",
+    "drag": "przeciągnij w bok",
+    "fewer": "Mniej osób",
+    "more": "Więcej osób",
+    "slider": "Liczba osób"
+  },
+  "Evening": {
+    "eyebrow": "Wokół koncertu",
+    "title": "Najpierw miasto.",
+    "before": "PRZED",
+    "after": "PO",
+    "concert": "20:00 · KONCERT",
+    "footnote": "Możesz przesunąć każdy punkt.",
+    "drinks": "Drinki",
+    "walk": "Spacer",
+    "cloakroom": "Szatnia",
+    "dinner": "Kolacja",
+    "barName": "No Name Bar",
+    "walkPlace": "Wały Chrobrego",
+    "cloakroomPlace": "Wejście główne",
+    "dinnerPlace": "Fino · na {count}"
+  },
+  "Checkout": {
+    "eyebrow": "BILET",
+    "title": "Twój wieczór.",
+    "total": "RAZEM",
+    "included": "{count} {people} · plan wieczoru w cenie",
+    "one": "osoba",
+    "few": "osoby",
+    "many": "osób",
+    "buy": "Kup bilet",
+    "calendar": "Kalendarz",
+    "share": "Udostępnij"
+  },
+  "Success": {
+    "eyebrow": "POTWIERDZENIE",
+    "title": "Bilet jest Twój.",
+    "body": "Wysłaliśmy go na e-mail. Plan wieczoru i wskazówki masz już w aplikacji.",
+    "start": "Zaczynamy",
+    "summary": "{title} · {date} · {count} {people}"
+  },
+  "Onboarding": {
+    "eyebrow": "JAK SIĘ UBRAĆ",
+    "counter": "08",
+    "tip1Title": "Ciemna paleta",
+    "tip1Text": "Czerń, granat, grafit. Zawsze bezpieczne.",
+    "tip2Title": "Wygodne buty",
+    "tip2Text": "Obcas na wieczór, płaskie do taksówki.",
+    "tip3Title": "Nic ze sportu",
+    "tip3Text": "Klapki i szorty zostają w domu.",
+    "cta": "Zobacz przykłady"
+  },
+  "Directions": {
+    "title": "Jak do nas trafić?",
+    "venue": "FILHARMONIA",
+    "address": "ul. Małopolska 48, Szczecin",
+    "mapAria": "Mapa: Filharmonia przy ul. Małopolskiej 48",
+    "legend1": "12 min pieszo z Wałów Chrobrego",
+    "legend2": "Parking podziemny · 4 min",
+    "legend3": "Tramwaj · przystanek 3 min"
+  },
+  "Voice": {
+    "hi": "Cześć!",
+    "title": "Jestem Twoim przewodnikiem po Filharmonii.",
+    "subtitle": "Zapytaj co umiem.",
+    "talk": "POROZMAWIAJ",
+    "back": "Wróć"
   }
 }

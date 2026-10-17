@@ -3,11 +3,15 @@
 import { Link } from "@/i18n/routing";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 
 export default function Success() {
+  const t = useTranslations("Success");
+  const tCheckout = useTranslations("Checkout");
   const { event, people } = useFlow();
-  const label = people === 1 ? "osoba" : people < 5 ? "osoby" : "osób";
+  const label =
+    people === 1 ? tCheckout("one") : people < 5 ? tCheckout("few") : tCheckout("many");
 
   return (
     <Screen>
@@ -33,18 +37,22 @@ export default function Success() {
         </div>
 
         <p className="text-gold mt-8 text-[12px] leading-4 font-medium tracking-[0.14em]">
-          POTWIERDZENIE
+          {t("eyebrow")}
         </p>
         <h1 className="text-display mt-2 font-bold tracking-[-0.03em]">
-          Bilet jest Twój.
+          {t("title")}
         </h1>
         <p className="text-muted mt-3 max-w-[300px] text-[15px] leading-[22px]">
-          Wysłaliśmy go na e-mail. Plan wieczoru i wskazówki masz już w
-          aplikacji.
+          {t("body")}
         </p>
 
         <p className="bg-surface mt-7 rounded-full px-4 py-2 text-[13px] leading-5 font-medium">
-          {event.title} · {event.date} · {people} {label}
+          {t("summary", {
+            title: event.title,
+            date: event.date,
+            count: people,
+            people: label,
+          })}
         </p>
       </div>
 
@@ -53,7 +61,7 @@ export default function Success() {
           className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] items-center justify-center rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/onboarding"
         >
-          Zaczynamy
+          {t("start")}
         </Link>
       </div>
 
