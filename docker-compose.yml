@@ -30,6 +30,9 @@ services:
       - ./data:/data:ro
       - go_mod_cache:/go/pkg/mod
       - go_build_cache:/root/.cache/go-build
+    env_file:
+      - path: .env
+        required: false
     environment:
       - PORT=8080
       - DB_PATH=/data/filharmonia.sqlite

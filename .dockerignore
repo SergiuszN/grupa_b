@@ -6,6 +6,7 @@ build
 out
 .git
 .gitignore
+.env
 .env*.local
 *.log
 npm-debug.log*

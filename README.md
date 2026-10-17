@@ -16,6 +16,14 @@ pnpm install
 pnpm dev
 ```
 
+## Zmienne środowiskowe
+
+```bash
+cp .env.example .env   # uzupełnij OPENROUTER_API_KEY
+```
+
+`.env` jest w `.gitignore` — nie commituj kluczy. `docker compose` wczytuje go do serwisu `api`.
+
 ## Baza demo
 
 Gotowa baza SQLite znajduje się w `data/filharmonia.sqlite`. Opis modelu: `parser/model-danych.md`.
