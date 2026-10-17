@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
 import { Minus, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { PARTY_KEY } from "@/lib/taste";

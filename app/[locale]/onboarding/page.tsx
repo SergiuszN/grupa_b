@@ -44,10 +44,10 @@ export default async function Onboarding() {
                 </span>
                 <div className="flex flex-col gap-0.5">
                   <p className="text-[14px] leading-[18px] font-bold text-white">
-                    {t(`tip${tip}Title`)}
+                    {t(`tip${tip}Title` as any)}
                   </p>
                   <p className="text-[13px] leading-[17px] text-white/60">
-                    {t(`tip${tip}Text`)}
+                    {t(`tip${tip}Text` as any)}
                   </p>
                 </div>
               </div>

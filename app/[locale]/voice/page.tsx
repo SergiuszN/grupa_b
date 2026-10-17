@@ -1,24 +1,30 @@
 import { Link } from "@/i18n/routing";
-import { getTranslations } from "next-intl/server";
 import { ArrowLeft, Mic } from "lucide-react";
 import { Screen } from "@/components/flow/screen";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export default async function Voice() {
+export default async function Voice({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("Voice");
 
   return (
     <Screen>
       <div className="flex flex-1 flex-col items-center justify-center pb-2.5 text-center">
         <p className="text-gold mb-3.5 text-[17px] leading-[22px] font-medium tracking-[0.02em]">
-          Cześć!
+          {t("greeting")}
         </p>
 
         <h1 className="max-w-[300px] text-[31px] leading-[112%] font-bold tracking-[-0.03em]">
-          Jestem Twoim przewodnikiem po Filharmonii.
+          {t("headline")}
         </h1>
 
         <p className="text-muted mt-[18px] max-w-[250px] text-[14px] leading-[150%]">
-          Zapytaj co umiem.
+          {t("prompt")}
         </p>
 
         <div className="relative mt-9 flex size-[190px] items-center justify-center">
@@ -35,7 +41,7 @@ export default async function Voice() {
         </div>
 
         <p className="mt-[22px] text-[12px] leading-4 font-medium tracking-[0.14em]">
-          POROZMAWIAJ
+          {t("talkCta")}
         </p>
       </div>
 
@@ -45,7 +51,7 @@ export default async function Voice() {
           href="/"
         >
           <ArrowLeft aria-hidden="true" size={18} strokeWidth={1.8} />
-          Wróć
+          {t("back")}
         </Link>
       </div>
     </Screen>

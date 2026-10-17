@@ -9,7 +9,7 @@ const BEFORE = [
   { time: "18:30", title: "drinks", place: "barName" },
   { time: "19:15", title: "walk", place: "walkPlace" },
   { time: "19:45", title: "cloakroom", place: "cloakroomPlace" },
-];
+] as const;
 
 function Row({
   time,
@@ -69,7 +69,12 @@ export default function Evening() {
       <div className="px-6 pt-1.5">
         <Label>{t("before")}</Label>
         {BEFORE.map((item) => (
-          <Row key={item.title} {...item} />
+          <Row
+            key={item.title}
+            place={t(item.place)}
+            time={item.time}
+            title={t(item.title)}
+          />
         ))}
       </div>
 
@@ -94,11 +99,11 @@ export default function Evening() {
       <div className="px-6 pt-4">
         <Label>{t("after")}</Label>
         <Row
-            last
-            place={t("dinnerPlace", { count: people })}
-            time="22:15"
-            title={t("dinner")}
-          />
+          last
+          place={t("dinnerPlace", { count: people })}
+          time="22:15"
+          title={t("dinner")}
+        />
       </div>
 
       <div className="flex-1" />

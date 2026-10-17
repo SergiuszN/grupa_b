@@ -16,16 +16,16 @@ export default async function Directions() {
       <FlowSteps step={8} />
 
       <h1 className="px-6 pt-4 text-[32px] leading-9 font-bold tracking-[-0.03em]">
-        Jak do nas trafić?
+        {t("title")}
       </h1>
 
       <div className="border-line mx-6 mt-4 flex items-center justify-between rounded-2xl border px-4 py-3.5">
         <div className="flex flex-col gap-[3px]">
           <p className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
-            FILHARMONIA
+            {t("venue")}
           </p>
           <p className="text-[16px] leading-5 font-medium">
-            ul. Małopolska 48, Szczecin
+            {t("address")}
           </p>
         </div>
         <svg

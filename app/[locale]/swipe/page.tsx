@@ -13,9 +13,9 @@ import { SWIPE_KEY } from "@/lib/taste";
 const THRESHOLD = 96;
 
 export default function Swipe() {
-  const t = useTranslations("Swipe");
   const locale = useLocale();
   const router = useRouter();
+  const t = useTranslations("Swipe");
   const [index, setIndex] = useState(0);
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -125,7 +125,7 @@ export default function Swipe() {
             className="text-body mt-1 font-medium underline underline-offset-4"
             href="/"
           >
-            Wróć na początek
+            {t("backHome")}
           </Link>
         </div>
       )}
@@ -154,7 +154,7 @@ export default function Swipe() {
           type="button"
         >
           <X aria-hidden="true" size={18} strokeWidth={1.8} />
-          Nie teraz
+          {t("skip")}
         </button>
         <button
           aria-label={t("like")}
@@ -164,7 +164,7 @@ export default function Swipe() {
           type="button"
         >
           <Check aria-hidden="true" size={18} strokeWidth={2} />
-          To chcę
+          {t("like")}
         </button>
       </div>
 

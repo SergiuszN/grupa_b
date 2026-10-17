@@ -1,16 +1,19 @@
+"use client";
+
 import { Link } from "@/i18n/routing";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const FLOW = [
-  { href: "/", label: "Start" },
-  { href: "/start", label: "Gust" },
-  { href: "/swipe", label: "Propozycje" },
-  { href: "/plan", label: "Plan" },
-  { href: "/evening", label: "Wieczór" },
-  { href: "/checkout", label: "Bilet" },
-  { href: "/success", label: "Potwierdzenie" },
-  { href: "/onboarding", label: "Przed wyjściem" },
-  { href: "/directions", label: "Dojazd" },
+  { href: "/", key: "stepHome" as const },
+  { href: "/start", key: "stepStart" as const },
+  { href: "/swipe", key: "stepSwipe" as const },
+  { href: "/plan", key: "stepPlan" as const },
+  { href: "/evening", key: "stepEvening" as const },
+  { href: "/checkout", key: "stepCheckout" as const },
+  { href: "/success", key: "stepSuccess" as const },
+  { href: "/onboarding", key: "stepOnboarding" as const },
+  { href: "/directions", key: "stepDirections" as const },
 ] as const;
 
 type Tone = "dark" | "light";
@@ -61,6 +64,7 @@ export function FlowArrows({
   step: number;
   tone?: Tone;
 }) {
+  const t = useTranslations("FlowNav");
   const previous = FLOW[step - 1];
   const next = FLOW[step + 1];
 
@@ -68,7 +72,7 @@ export function FlowArrows({
     <div className="flex items-center justify-between px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)]">
       {previous ? (
         <Link
-          aria-label={`Poprzedni krok: ${previous.label}`}
+          aria-label={t("prevStep", { label: t(previous.key) })}
           className={`${base} ${outline[tone]}`}
           href={previous.href}
         >
@@ -80,7 +84,7 @@ export function FlowArrows({
 
       {next ? (
         <Link
-          aria-label={`Następny krok: ${next.label}`}
+          aria-label={t("nextStep", { label: t(next.key) })}
           className={`${base} ${filled[tone]}`}
           href={next.href}
         >

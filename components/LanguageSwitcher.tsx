@@ -1,52 +1,42 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { routing, type Locale, usePathname, useRouter, LOCALE_LABELS } from "@/i18n/routing";
 import { useTransition } from "react";
 
+/**
+ * LanguageSwitcher — flag-icon pill, styled to match the SiteHeader.
+ * Replaces the manual localStorage-based switcher.
+ */
 export function LanguageSwitcher() {
-  const currentLocale = useLocale();
+  const currentLocale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const t = useTranslations("A11y");
 
-  const handleSelect = (nextLocale: Locale) => {
+  const currentIndex = routing.locales.indexOf(currentLocale);
+  const next = routing.locales[(currentIndex + 1) % routing.locales.length];
+  const nextMeta = LOCALE_LABELS[next];
+
+  function cycleLocale() {
     startTransition(() => {
-      router.replace(pathname, { locale: nextLocale });
+      router.replace(pathname, { locale: next });
     });
-  };
+  }
 
   return (
-    <nav
-      aria-label={t("languageSelector")}
-      className="inline-flex items-center gap-1 rounded-full border border-gray-300 dark:border-gray-700 p-1 bg-white/70 dark:bg-black/60 backdrop-blur-md shadow-sm"
+    <button
+      type="button"
+      onClick={cycleLocale}
+      disabled={isPending}
+      aria-label={`Język: ${LOCALE_LABELS[currentLocale].name}. Zmień na ${nextMeta.name}`}
+      className="focus-visible:outline-gold size-11 shrink-0 overflow-hidden rounded-full transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-60"
     >
-      {routing.locales.map((loc) => {
-        const isCurrent = currentLocale === loc;
-        const localeMeta = LOCALE_LABELS[loc];
-
-        return (
-          <button
-            key={loc}
-            type="button"
-            onClick={() => handleSelect(loc)}
-            disabled={isPending}
-            aria-current={isCurrent ? "true" : undefined}
-            aria-label={`${t("switchTo")} ${localeMeta.name}`}
-            className={`px-3 py-1 text-xs font-semibold uppercase rounded-full transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 ${
-              isCurrent
-                ? "bg-black text-white dark:bg-white dark:text-black shadow-sm"
-                : "text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
-            }`}
-          >
-            <span aria-hidden="true">{loc}</span>
-            <span className="sr-only">
-              {localeMeta.name} {isCurrent ? `(${t("currentLanguage")})` : ""}
-            </span>
-          </button>
-        );
-      })}
-    </nav>
+      <span
+        aria-hidden="true"
+        className={`fi fi-${currentLocale === "en" ? "gb" : currentLocale} fis block leading-none`}
+        style={{ fontSize: "44px" }}
+      />
+    </button>
   );
 }
