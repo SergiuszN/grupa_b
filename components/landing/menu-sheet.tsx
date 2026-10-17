@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
@@ -46,6 +46,23 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
   const t = useTranslations("Menu");
   const tn = useTranslations("Nav");
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    // Trigger fluid background transition on mount
+    const frame = requestAnimationFrame(() => setIsOpen(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  const handleClose = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setIsOpen(false);
+    setTimeout(() => {
+      onClose();
+    }, 450);
+  };
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -54,7 +71,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
     document.body.style.overflow = "hidden";
 
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") handleClose();
     }
 
     window.addEventListener("keydown", onKeyDown);
@@ -63,21 +80,27 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
       document.body.style.overflow = previous;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [onClose]);
+  }, []);
 
   return (
     <div
       aria-label={tn("menu")}
       aria-modal="true"
-      className="bg-gold text-ink fixed inset-0 z-50 overflow-y-auto"
+      className={`bg-gold text-ink fixed inset-0 z-50 overflow-y-auto transition-opacity duration-500 ease-in-out ${
+        isOpen && !isClosing ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
       role="dialog"
     >
-      <div className="mx-auto flex min-h-dvh w-full max-w-[1100px] flex-col px-6 pt-[calc(env(safe-area-inset-top)+21px)] pb-[calc(env(safe-area-inset-bottom)+32px)]">
+      <div
+        className={`mx-auto flex min-h-dvh w-full max-w-[1100px] flex-col px-6 pt-[calc(env(safe-area-inset-top)+21px)] pb-[calc(env(safe-area-inset-bottom)+32px)] transition-all duration-500 ease-out transform ${
+          isOpen && !isClosing ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+        }`}
+      >
         <div className="flex items-center justify-between">
           <Link
             className="focus-visible:outline-ink rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
             href="/"
-            onClick={onClose}
+            onClick={handleClose}
           >
             <Logo />
             <span className="sr-only">{tn("home")}</span>
@@ -85,8 +108,8 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
 
           <button
             aria-label={tn("closeMenu")}
-            className="focus-visible:outline-ink flex size-11 items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4"
-            onClick={onClose}
+            className="focus-visible:outline-ink flex size-11 items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4 cursor-pointer"
+            onClick={handleClose}
             ref={closeRef}
             type="button"
           >
@@ -116,7 +139,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
                 className={className}
                 href={link.href}
                 key={link.key}
-                onClick={onClose}
+                onClick={handleClose}
               >
                 {t(link.key)}
                 <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
