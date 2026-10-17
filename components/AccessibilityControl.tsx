@@ -253,7 +253,7 @@ export function AccessibilityControl() {
           )}
         </button>
 
-        {/* DESKTOP CAPSULE: floating bottom-6 right-6 pill */}
+        {/* DESKTOP CIRCLE: floating bottom-6 right-6 aspect-square rounded-full circle */}
         <div className="hidden md:block fixed bottom-6 right-6 z-50">
           <button
             ref={desktopTriggerRef}
@@ -263,20 +263,21 @@ export function AccessibilityControl() {
             aria-expanded={isOpen}
             aria-controls="a11y-dialog"
             aria-label={t("openPanel")}
-            className="group relative flex h-11 items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 text-paper backdrop-blur-xl transition-all duration-300 hover:border-gold/60 hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold cursor-pointer"
+            className="group relative flex size-12 aspect-square items-center justify-center rounded-full border border-white/20 bg-white/10 text-paper backdrop-blur-xl transition-all duration-300 hover:border-gold/60 hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold cursor-pointer"
           >
             {activeCount > 0 && (
               <span className="absolute inset-0 rounded-full bg-gold/10 animate-pulse" />
             )}
 
-            <Accessibility aria-hidden="true" size={17} strokeWidth={1.8} className="text-gold relative" />
-
-            <span className="text-caption font-bold tracking-[0.16em] uppercase text-paper relative">
-              {t("buttonLabel")}
-            </span>
+            <Accessibility
+              aria-hidden="true"
+              size={22}
+              strokeWidth={1.8}
+              className="text-gold relative transition-transform duration-300 group-hover:scale-110"
+            />
 
             {activeCount > 0 && (
-              <span className="flex size-5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-white relative">
+              <span className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-white">
                 {activeCount}
               </span>
             )}
