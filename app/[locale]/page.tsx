@@ -63,6 +63,7 @@ export default async function Home({
 
               <Link
                 className="bg-gold hover:bg-gold-deep focus-visible:outline-paper flex h-14 flex-1 items-center justify-center gap-2.5 rounded-full text-base font-bold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                data-cta
                 href="/start"
               >
                 {t("cta")}

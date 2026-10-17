@@ -118,6 +118,15 @@ body {
   [data-hero-root] [data-anim="line"] {
     transform: translateY(110%);
   }
+
+  [data-flow-screen] header,
+  [data-flow-screen] [data-flow],
+  [data-flow-screen] [data-flow-item],
+  [data-flow-screen] [data-flow-dot],
+  [data-flow-screen] [data-q],
+  [data-flow-screen] [data-copy] {
+    opacity: 0;
+  }
 }
 
 @keyframes rise {
@@ -217,7 +226,13 @@ html[data-a11y-motion="true"] {
 }
 
 html[data-a11y-motion="true"] [data-anim],
-html[data-a11y-motion="true"] [data-hero-root] header {
+html[data-a11y-motion="true"] [data-hero-root] header,
+html[data-a11y-motion="true"] [data-flow],
+html[data-a11y-motion="true"] [data-flow-item],
+html[data-a11y-motion="true"] [data-flow-dot],
+html[data-a11y-motion="true"] [data-q],
+html[data-a11y-motion="true"] [data-copy],
+html[data-a11y-motion="true"] [data-flow-screen] header {
   opacity: 1 !important;
   transform: none !important;
 }

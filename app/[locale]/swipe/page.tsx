@@ -4,12 +4,14 @@ import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { CalendarDays, Check, Clock, MapPin, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { EVENTS, localizeEvent } from "@/lib/events";
 import { PreviewPlayer } from "@/components/swipe/preview-player";
 import { SWIPE_KEY } from "@/lib/taste";
+import { prefersStillMotion } from "@/lib/motion";
 
 const THRESHOLD = 96;
 
@@ -23,9 +25,66 @@ export default function Swipe() {
   const [exit, setExit] = useState<-1 | 1 | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
   const startX = useRef(0);
+  const cardWrap = useRef<HTMLDivElement>(null);
+  const copyWrap = useRef<HTMLDivElement>(null);
 
   const card = EVENTS[index] ? localizeEvent(EVENTS[index], locale) : undefined;
   const step = Math.min(index + 1, EVENTS.length);
+
+  useEffect(() => {
+    if (prefersStillMotion()) {
+      if (cardWrap.current) {
+        gsap.set(cardWrap.current, {
+          autoAlpha: 1,
+          clearProps: "transform,visibility",
+        });
+      }
+      if (copyWrap.current) {
+        gsap.set(copyWrap.current.querySelectorAll("[data-copy]"), {
+          autoAlpha: 1,
+          y: 0,
+          clearProps: "transform,visibility",
+        });
+      }
+      return;
+    }
+
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    if (cardWrap.current) {
+      tl.fromTo(
+        cardWrap.current,
+        { y: 26, autoAlpha: 0, scale: 0.975 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.62,
+          clearProps: "transform,visibility",
+        },
+        0,
+      );
+    }
+
+    if (copyWrap.current) {
+      tl.fromTo(
+        copyWrap.current.querySelectorAll("[data-copy]"),
+        { y: 14, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.5,
+          stagger: 0.06,
+          clearProps: "transform,visibility",
+        },
+        0.16,
+      );
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, [index]);
 
   function decide(direction: -1 | 1) {
     if (!card || exit !== null) return;
@@ -75,7 +134,7 @@ export default function Swipe() {
 
       {card ? (
         <>
-          <div className="relative mx-6 mt-3 flex min-h-[220px] flex-1">
+          <div className="relative mx-6 mt-3 flex min-h-[220px] flex-1" ref={cardWrap}>
             <div
               aria-label={t("cardAria", {
                 title: card.title,
@@ -139,19 +198,28 @@ export default function Swipe() {
         </div>
       )}
 
-      <div className="rise px-6 pt-5" key={`copy-${index}`}>
-        <p className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase">
+      <div className="px-6 pt-5" key={`copy-${index}`} ref={copyWrap}>
+        <p
+          className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase"
+          data-copy
+        >
           {card ? card.kind : t("endKind")}
         </p>
-        <h1 className="mt-2.5 text-[34px] leading-9 font-bold tracking-[-0.03em]">
+        <h1
+          className="mt-2.5 text-[34px] leading-9 font-bold tracking-[-0.03em]"
+          data-copy
+        >
           {card ? card.title : t("endBig")}
         </h1>
-        <p className="mt-1 text-[17px] leading-6 font-light">
+        <p className="mt-1 text-[17px] leading-6 font-light" data-copy>
           {card ? card.subtitle : t("endSubtitle")}
         </p>
 
         {card ? (
-          <p className="text-muted mt-2 line-clamp-3 text-[14px] leading-5">
+          <p
+            className="text-muted mt-2 line-clamp-3 text-[14px] leading-5"
+            data-copy
+          >
             {card.description}
           </p>
         ) : null}

@@ -11,6 +11,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Screen } from "@/components/flow/screen";
 import { Link } from "@/i18n/routing";
 
+export const dynamic = "force-dynamic";
+
 type ApiEventDetail = {
   id: number;
   calendar_category: string | null;

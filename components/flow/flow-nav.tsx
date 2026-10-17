@@ -49,6 +49,7 @@ export function FlowSteps({
               ? "bg-gold w-[18px]"
               : `w-1.5 ${tone === "dark" ? "bg-paper/35" : "bg-[#D9D4CB]"}`
           }`}
+          data-flow-dot
           key={item.href}
         />
       ))}
@@ -91,7 +92,10 @@ export function FlowArrows({
   const label = nextLabel ?? t("nextStep");
 
   return (
-    <div className="flex items-center gap-3 px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)]">
+    <div
+      className="flex items-center gap-3 px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)]"
+      data-flow="actions"
+    >
       {previous ? (
         <Link
           aria-label={`Poprzedni krok: ${previous.label}`}

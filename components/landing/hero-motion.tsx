@@ -2,17 +2,7 @@
 
 import { useEffect } from "react";
 import { gsap } from "gsap";
-
-function prefersStillMotion() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
-
-  try {
-    const saved = localStorage.getItem("a11y-preferences");
-    return saved ? JSON.parse(saved).reduceMotion === true : false;
-  } catch {
-    return false;
-  }
-}
+import { prefersStillMotion } from "@/lib/motion";
 
 export function HeroMotion() {
   useEffect(() => {
@@ -26,6 +16,8 @@ export function HeroMotion() {
       gsap.set(animated, { opacity: 1, x: 0, y: 0, yPercent: 0, scale: 1, clearProps: "transform" });
       return;
     }
+
+    const cleanups: (() => void)[] = [];
 
     const ctx = gsap.context(() => {
       const gallery = q('[data-anim="gallery"]');
@@ -56,9 +48,39 @@ export function HeroMotion() {
         yoyo: true,
         delay: 2.4,
       });
+
+      q("[data-cta]").forEach((node) => {
+        const el = node as HTMLElement;
+        const down = () =>
+          gsap.to(el, { scale: 0.955, duration: 0.14, ease: "power2.out", overwrite: "auto" });
+        const up = () =>
+          gsap.to(el, {
+            scale: 1,
+            duration: 0.5,
+            ease: "elastic.out(1, 0.5)",
+            overwrite: "auto",
+          });
+
+        el.addEventListener("pointerdown", down);
+        el.addEventListener("pointerup", up);
+        el.addEventListener("pointerleave", up);
+        el.addEventListener("pointercancel", up);
+
+        cleanups.push(() => {
+          el.removeEventListener("pointerdown", down);
+          el.removeEventListener("pointerup", up);
+          el.removeEventListener("pointerleave", up);
+          el.removeEventListener("pointercancel", up);
+          gsap.killTweensOf(el);
+          gsap.set(el, { clearProps: "transform" });
+        });
+      });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      cleanups.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   return null;

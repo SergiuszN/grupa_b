@@ -27,6 +27,7 @@ function Row({
       className={`flex items-baseline gap-3.5 py-[9px] ${
         last ? "" : "border-line border-b"
       }`}
+      data-flow-item
     >
       <span className="text-muted w-[52px] shrink-0 text-[14px] leading-[18px] font-medium">
         {time}
@@ -58,10 +59,16 @@ export default function Evening() {
       <FlowSteps step={4} />
 
       <div className="flex flex-col gap-1.5 px-6 pt-3 pb-2.5">
-        <p className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em] uppercase">
+        <p
+          className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em] uppercase"
+          data-flow="eyebrow"
+        >
           {t("eyebrow")}
         </p>
-        <h1 className="text-[30px] leading-[34px] font-bold tracking-[-0.03em]">
+        <h1
+          className="text-[30px] leading-[34px] font-bold tracking-[-0.03em]"
+          data-flow="title"
+        >
           {t("title")}
         </h1>
       </div>
@@ -81,6 +88,7 @@ export default function Evening() {
       <div className="px-6 pt-3">
         <div
           className="bg-ink relative flex h-[296px] flex-col justify-end overflow-clip rounded-[18px] bg-cover bg-[50%]"
+          data-flow="media"
           style={{ backgroundImage: `url(${event.image})` }}
         >
           <div className="from-ink/72 flex items-end bg-gradient-to-t to-transparent px-3.5 py-3">

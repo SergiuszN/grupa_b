@@ -13,20 +13,27 @@ export default async function Onboarding() {
 
       <div className="flex flex-col gap-4 px-6 pt-3">
         <div className="flex items-center justify-between">
-          <p className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          <p
+            className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]"
+            data-flow="eyebrow"
+          >
             {t("eyebrow")}
           </p>
-          <p className="text-muted text-[11px] leading-[14px] tracking-[0.1em]">
+          <p
+            className="text-muted text-[11px] leading-[14px] tracking-[0.1em]"
+            data-flow="eyebrow"
+          >
             {t("counter")}
           </p>
         </div>
 
         <div
           className="h-[290px] rounded-[20px] bg-[#E7E2D8] bg-cover bg-[50%]"
+          data-flow="media"
           style={{ backgroundImage: "url(/images/hall-symphonic.jpg)" }}
         />
 
-        <div className="bg-ink rounded-[20px] px-[18px] py-4">
+        <div className="bg-ink rounded-[20px] px-[18px] py-4" data-flow="copy">
           {TIPS.map((tip, index) => (
             <div key={tip}>
               <div

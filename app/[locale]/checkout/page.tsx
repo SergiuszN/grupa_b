@@ -30,17 +30,24 @@ export default function Checkout() {
       <FlowSteps step={5} />
 
       <div className="flex flex-col gap-1.5 px-6 pt-3.5 pb-4">
-        <p className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em]">
+        <p
+          className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em]"
+          data-flow="eyebrow"
+        >
           {t("eyebrow")}
         </p>
-        <h1 className="text-[32px] leading-9 font-bold tracking-[-0.03em]">
+        <h1
+          className="text-[32px] leading-9 font-bold tracking-[-0.03em]"
+          data-flow="title"
+        >
           {t("title")}
         </h1>
       </div>
 
-      <div className="bg-surface mx-6 overflow-clip rounded-[20px]">
+      <div className="bg-surface mx-6 overflow-clip rounded-[20px]" data-flow="media">
         <div
           className="bg-ink h-[248px] bg-cover bg-[50%]"
+          data-flow="image"
           style={{ backgroundImage: `url(${event.image})` }}
         />
 
@@ -58,7 +65,10 @@ export default function Checkout() {
           <div className="border-gold w-[306px] max-w-[calc(100%-36px)] border-t-[1.5px] border-dashed" />
         </div>
 
-        <div className="flex items-end justify-between px-[18px] pt-2 pb-[18px]">
+        <div
+          className="flex items-end justify-between px-[18px] pt-2 pb-[18px]"
+          data-flow-item
+        >
           <p className="text-muted pb-1.5 text-[12px] leading-4 font-medium tracking-[0.14em]">
             {t("total")}
           </p>
@@ -68,7 +78,7 @@ export default function Checkout() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center gap-4 px-6 pt-[22px]">
+      <div className="flex flex-1 flex-col items-center gap-4 px-6 pt-[22px]" data-flow="actions">
         <Link
           className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] w-full items-center justify-center gap-2 rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/success"

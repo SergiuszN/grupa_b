@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { gsap } from "gsap";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { PARTY_KEY } from "@/lib/taste";
+import { prefersStillMotion } from "@/lib/motion";
 
 const MIN = 1;
 const MAX = 8;
@@ -13,6 +15,44 @@ const MAX = 8;
 export default function Plan() {
   const t = useTranslations("Plan");
   const [people, setPeople] = useState(2);
+  const numberRef = useRef<HTMLParagraphElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const shown = useRef(people);
+
+  useEffect(() => {
+    const el = numberRef.current;
+    const previous = shown.current;
+    shown.current = people;
+
+    if (!el || previous === people || prefersStillMotion()) return;
+
+    const counter = { value: previous };
+    const tl = gsap.timeline({
+      onUpdate: () => {
+        el.textContent = String(Math.round(counter.value));
+      },
+      onComplete: () => {
+        el.textContent = String(people);
+      },
+    });
+
+    tl.to(counter, { value: people, duration: 0.45, ease: "power2.out" }, 0);
+    tl.fromTo(el, { scale: 1.12 }, { scale: 1, duration: 0.55, ease: "back.out(2)" }, 0);
+
+    const bars = cardRef.current?.querySelectorAll("[data-bar]");
+    if (bars?.length) {
+      tl.fromTo(
+        bars,
+        { scaleY: 0.35, transformOrigin: "50% 100%" },
+        { scaleY: 1, duration: 0.3, stagger: 0.03, ease: "back.out(2)" },
+        0,
+      );
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, [people]);
 
   function change(value: number) {
     const next = Math.min(MAX, Math.max(MIN, value));
@@ -24,15 +64,24 @@ export default function Plan() {
     <Screen>
       <FlowSteps step={3} />
 
-      <div className="rise flex flex-1 flex-col justify-center px-6 py-5">
+      <div className="flex flex-1 flex-col justify-center px-6 py-5">
         <div className="mb-8">
-          <h1 className="text-display font-bold tracking-[-0.03em]">
+          <h1
+            className="text-display font-bold tracking-[-0.03em]"
+            data-flow="title"
+          >
             {t("title")}
           </h1>
-          <p className="text-body text-muted mt-2.5">{t("subtitle")}</p>
+          <p className="text-body text-muted mt-2.5" data-flow="copy">
+            {t("subtitle")}
+          </p>
         </div>
 
-        <div className="bg-surface flex flex-col gap-[18px] rounded-3xl px-[22px] pt-[22px] pb-[18px]">
+        <div
+          className="bg-surface flex flex-col gap-[18px] rounded-3xl px-[22px] pt-[22px] pb-[18px]"
+          data-flow="media"
+          ref={cardRef}
+        >
           <div className="flex items-center justify-between">
             <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
               {t("count")}
@@ -54,7 +103,10 @@ export default function Plan() {
             </button>
 
             <div aria-live="polite" className="flex flex-col items-center">
-              <p className="text-[96px] leading-[92px] font-light tracking-[-0.05em]">
+              <p
+                className="text-[96px] leading-[92px] font-light tracking-[-0.05em]"
+                ref={numberRef}
+              >
                 {people}
               </p>
               <p className="mt-1 text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
@@ -82,6 +134,7 @@ export default function Plan() {
                       ? "bg-gold h-[18px] w-[3px]"
                       : "bg-line h-2.5 w-0.5"
                   }`}
+                  data-bar
                   key={index}
                 />
               ))}

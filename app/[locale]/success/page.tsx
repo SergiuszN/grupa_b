@@ -2,10 +2,13 @@
 
 import { Link } from "@/i18n/routing";
 import { Check, Info } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
+import { prefersStillMotion } from "@/lib/motion";
 
 const CONFETTI = [
   { left: 6, delay: 0, duration: 2600, size: 8, color: "#AD891C", round: false },
@@ -32,8 +35,43 @@ export default function Success() {
   const t = useTranslations("Success");
   const tCheckout = useTranslations("Checkout");
   const { event, people } = useFlow();
+  const badgeRef = useRef<HTMLDivElement>(null);
   const label =
     people === 1 ? tCheckout("one") : people < 5 ? tCheckout("few") : tCheckout("many");
+
+  useEffect(() => {
+    const badge = badgeRef.current;
+    if (!badge || prefersStillMotion()) return;
+
+    const tl = gsap.timeline({ delay: 0.1 });
+    tl.fromTo(
+      badge,
+      { scale: 0.4, autoAlpha: 0 },
+      {
+        scale: 1,
+        autoAlpha: 1,
+        duration: 0.7,
+        ease: "back.out(2.4)",
+        clearProps: "transform,visibility",
+      },
+    );
+    tl.fromTo(
+      badge.querySelector("svg"),
+      { scale: 0.5, rotation: -25 },
+      {
+        scale: 1,
+        rotation: 0,
+        duration: 0.55,
+        ease: "back.out(3)",
+        clearProps: "transform",
+      },
+      0.18,
+    );
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
   return (
     <Screen>
@@ -61,7 +99,10 @@ export default function Success() {
       <FlowSteps step={6} />
 
       <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-        <div className="bg-gold-soft flex size-24 items-center justify-center rounded-full">
+        <div
+          className="bg-gold-soft flex size-24 items-center justify-center rounded-full"
+          ref={badgeRef}
+        >
           <Check
             aria-hidden="true"
             className="text-gold"
@@ -70,17 +111,26 @@ export default function Success() {
           />
         </div>
 
-        <p className="text-gold mt-8 text-[12px] leading-4 font-medium tracking-[0.14em]">
+        <p
+          className="text-gold mt-8 text-[12px] leading-4 font-medium tracking-[0.14em]"
+          data-flow="eyebrow"
+        >
           {t("eyebrow")}
         </p>
-        <h1 className="text-display mt-2 font-bold tracking-[-0.03em]">
+        <h1 className="text-display mt-2 font-bold tracking-[-0.03em]" data-flow="title">
           {t("title")}
         </h1>
-        <p className="text-muted mt-3 max-w-[300px] text-[15px] leading-[22px]">
+        <p
+          className="text-muted mt-3 max-w-[300px] text-[15px] leading-[22px]"
+          data-flow="copy"
+        >
           {t("body")}
         </p>
 
-        <p className="bg-surface mt-7 rounded-full px-4 py-2 text-[13px] leading-5 font-medium">
+        <p
+          className="bg-surface mt-7 rounded-full px-4 py-2 text-[13px] leading-5 font-medium"
+          data-flow-item
+        >
           {t("summary", {
             title: event.title,
             date: event.date,
@@ -90,7 +140,7 @@ export default function Success() {
         </p>
       </div>
 
-      <div className="px-6 pb-2">
+      <div className="px-6 pb-2" data-flow="actions">
         <Link
           className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] items-center justify-center gap-2 rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/onboarding"

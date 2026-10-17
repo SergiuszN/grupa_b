@@ -6,6 +6,8 @@ import {
 } from "@/components/calendar/calendar-list";
 import { Screen } from "@/components/flow/screen";
 
+export const dynamic = "force-dynamic";
+
 type ApiPerformance = {
   id: number;
   starts_at: string;
