@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -29,8 +29,13 @@ const helveticaNow = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "WUD Szczecin",
-  description: "Multilingual Next.js App with next-intl and Helvetica Now Display",
+  title: "Filharmonia Szczecin",
+  description:
+    "Zaczniemy od tego, co lubisz, i pokażemy Ci coś, czego jeszcze nie znasz.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#111111",
 };
 
 export function generateStaticParams() {

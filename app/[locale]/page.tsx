@@ -1,85 +1,66 @@
-import Image from "next/image";
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import styles from "../page.module.css";
+import { Link } from "@/i18n/routing";
+import { AudioWaveform } from "lucide-react";
+import { HeroGallery } from "@/components/landing/hero-gallery";
+import { SiteHeader } from "@/components/landing/site-header";
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-
-  const t = await getTranslations("HomePage");
-
+export default function Home() {
   return (
-    <div className={styles.page}>
-      <header className="w-full max-w-5xl flex justify-between items-center py-4">
-        <div className="font-semibold text-lg tracking-tight">WUD Szczecin</div>
-        <LanguageSwitcher />
-      </header>
+    <main className="bg-ink relative flex min-h-dvh flex-col overflow-clip">
+      <HeroGallery />
+      <div aria-hidden="true" className="hero-scrim absolute inset-0" />
 
-      <main className={styles.main}>
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">{t("title")}</h1>
-          <p className="text-gray-500 text-lg">{t("subtitle")}</p>
-        </div>
+      <div className="relative z-10 mx-auto flex w-full max-w-[1100px] flex-1 flex-col">
+        <SiteHeader />
 
-        <ol>
-          <li>
-            {t("editPrompt")} <code>app/[locale]/page.tsx</code>
-          </li>
-          <li>{t("savePrompt")}</li>
-        </ol>
+        <div className="flex-1" />
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            {t("deployNow")}
-          </a>
-          <a
-            href="https://next-intl.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            {t("readDocs")}
-          </a>
-        </div>
-        <Button appName="web" className={styles.secondary}>
-          {t("openAlert")}
-        </Button>
-      </main>
+        <section className="w-full px-6 pb-[calc(env(safe-area-inset-bottom)+36px)] md:pb-16">
+          <div className="md:max-w-[760px]">
+            <h1 className="rise text-hero md:text-[64px] md:leading-[66px] font-bold">
+              Filharmonia
+              <br />
+              zaczyna się online.
+            </h1>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://next-intl.dev"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          {t("examples")}
-        </a>
-      </footer>
-    </div>
+            <p className="rise text-body md:text-[17px] md:leading-[26px] mt-3.5 max-w-[342px] font-medium [animation-delay:90ms] md:mt-5 md:max-w-[460px]">
+              Zaczniemy od tego, co lubisz, i pokażemy Ci coś, czego jeszcze nie
+              znasz.
+            </p>
+
+            <div className="rise mt-7 flex gap-2.5 [animation-delay:180ms] md:mt-9">
+              <Link
+                aria-label="Porozmawiaj z przewodnikiem"
+                className="border-paper/50 text-paper hover:bg-paper/10 focus-visible:outline-paper flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                href="/voice"
+              >
+                <AudioWaveform aria-hidden="true" size={22} strokeWidth={1.7} />
+              </Link>
+
+              <Link
+                className="bg-gold hover:bg-gold-deep focus-visible:outline-paper flex h-14 flex-1 items-center justify-center gap-2.5 rounded-full text-base font-bold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                href="/start"
+              >
+                Pierwszy raz?
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                >
+                  <path
+                    d="M3 8h10M9 4l4 4-4 4"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.6"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }
