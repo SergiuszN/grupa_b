@@ -71,13 +71,13 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
           />
         </button>
 
-        <button
+        <Link
           aria-label="Repertuar"
           className={`${circleBase} ${circle[tone]}`}
-          type="button"
+          href="/calendar"
         >
           <CalendarDays aria-hidden="true" size={18} strokeWidth={1.6} />
-        </button>
+        </Link>
 
         <button
           aria-label="Menu"

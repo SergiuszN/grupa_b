@@ -43,5 +43,15 @@
     "shortcutsTitle": "Keyboard shortcuts",
     "shortcutA11y": "Alt + A: Accessibility panel",
     "shortcutLang": "Alt + L: Switch language"
+  },
+  "Calendar": {
+    "all": "All",
+    "concerts": "Music",
+    "exhibitions": "Exhibitions",
+    "others": "Events",
+    "details": "Details",
+    "footnote": "You can listen to the music. The rest opens in the details.",
+    "empty": "No events in this category.",
+    "unavailable": "The programme is temporarily unavailable."
   }
 }

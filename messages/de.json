@@ -43,5 +43,15 @@
     "shortcutsTitle": "Tastaturkürzel",
     "shortcutA11y": "Alt + A: Bedienungshilfen",
     "shortcutLang": "Alt + L: Sprache wechseln"
+  },
+  "Calendar": {
+    "all": "Alles",
+    "concerts": "Musik",
+    "exhibitions": "Ausstellung",
+    "others": "Veranstaltung",
+    "details": "Details",
+    "footnote": "Musik kannst du hören. Den Rest öffnest du in den Details.",
+    "empty": "Keine Veranstaltungen in dieser Kategorie.",
+    "unavailable": "Das Programm ist derzeit nicht verfügbar."
   }
 }

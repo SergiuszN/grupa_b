@@ -43,5 +43,15 @@
     "shortcutsTitle": "Skróty klawiszowe",
     "shortcutA11y": "Alt + A: Panel dostępności",
     "shortcutLang": "Alt + L: Zmień język"
+  },
+  "Calendar": {
+    "all": "Wszystko",
+    "concerts": "Muzyka",
+    "exhibitions": "Wystawa",
+    "others": "Wydarzenie",
+    "details": "Szczegóły",
+    "footnote": "Muzykę możesz posłuchać. Resztę otwierasz w szczegółach.",
+    "empty": "Brak wydarzeń w tej kategorii.",
+    "unavailable": "Repertuar jest chwilowo niedostępny."
   }
 }
