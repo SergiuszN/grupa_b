@@ -8,7 +8,6 @@ import {
   Frame,
   Info,
   LayoutGrid,
-  Loader2,
   MapPin,
   Music,
   Play,
@@ -65,6 +64,36 @@ export type CalendarListProps = {
   labels: CalendarLabels;
   emptyLabel: string;
 };
+
+function GlassSkeletonList({ count = 2 }: { count?: number }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="flex flex-col gap-2.5 pt-2 pb-4 pointer-events-none select-none"
+    >
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="flex h-[72px] items-center gap-3.5 rounded-2xl border border-line/50 bg-white/40 dark:bg-white/[0.04] px-3.5 backdrop-blur-md animate-pulse"
+          style={{ animationDelay: `${i * 140}ms` }}
+        >
+          {/* Thumbnail Skeleton */}
+          <div className="size-[52px] shrink-0 rounded-xl bg-ink/10 dark:bg-white/10" />
+
+          {/* Texts Skeleton */}
+          <div className="flex flex-1 flex-col gap-2 min-w-0">
+            <div className="h-2.5 w-16 rounded-full bg-gold/30" />
+            <div className="h-4 w-3/5 rounded bg-ink/15 dark:bg-white/15" />
+            <div className="h-2.5 w-2/5 rounded bg-ink/10 dark:bg-white/10" />
+          </div>
+
+          {/* Right Indicator Skeleton */}
+          <div className="size-7 shrink-0 rounded-full border border-line/40 bg-ink/5 dark:bg-white/5" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function CalendarList({
   events,
@@ -320,47 +349,17 @@ export function CalendarList({
           )
         )}
 
-        {/* PROGRESSIVE / LAZY SCROLL SENTINEL & CONTROLS */}
+        {/* PROGRESSIVE / LAZY SCROLL GLASSMORPHISM SKELETON SENTINEL */}
         {hasDayGroups ? (
           progressiveDays.hasMore && (
-            <div
-              ref={progressiveDays.sentinelRef}
-              className="flex flex-col items-center justify-center gap-2.5 py-8"
-            >
-              <div className="flex items-center gap-2 text-muted text-[13px] leading-4">
-                <Loader2 className="animate-spin text-gold" size={16} />
-                <span>
-                  {labels.loadingMore ?? "Wczytywanie kolejnych dni..."}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={progressiveDays.loadMore}
-                className="border-line text-ink hover:bg-surface focus-visible:outline-gold flex h-9 items-center justify-center rounded-full border px-4 text-[13px] font-medium transition-colors cursor-pointer"
-              >
-                {labels.loadMore ?? "Pokaż więcej"} ({progressiveDays.loadedCount} / {progressiveDays.totalCount})
-              </button>
+            <div ref={progressiveDays.sentinelRef} className="w-full">
+              <GlassSkeletonList count={2} />
             </div>
           )
         ) : (
           progressiveEvents.hasMore && (
-            <div
-              ref={progressiveEvents.sentinelRef}
-              className="flex flex-col items-center justify-center gap-2.5 py-8"
-            >
-              <div className="flex items-center gap-2 text-muted text-[13px] leading-4">
-                <Loader2 className="animate-spin text-gold" size={16} />
-                <span>
-                  {labels.loadingMore ?? "Wczytywanie kolejnych wydarzeń..."}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={progressiveEvents.loadMore}
-                className="border-line text-ink hover:bg-surface focus-visible:outline-gold flex h-9 items-center justify-center rounded-full border px-4 text-[13px] font-medium transition-colors cursor-pointer"
-              >
-                {labels.loadMore ?? "Pokaż więcej"} ({progressiveEvents.loadedCount} / {progressiveEvents.totalCount})
-              </button>
+            <div ref={progressiveEvents.sentinelRef} className="w-full">
+              <GlassSkeletonList count={2} />
             </div>
           )
         )}
