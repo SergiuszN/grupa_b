@@ -33,6 +33,7 @@ Lokalnie bez Dockera: `cd backend && go run ./cmd/api` (domyślnie `DB_PATH=../d
 | `GET /api/v1/venues`, `/venues/{slug}` | sale i galerie, szczegóły z dostępnością i wydarzeniami |
 | `GET /api/v1/filters` | wartości filtrów kalendarza z licznikami nadchodzących wydarzeń |
 | `GET /api/v1/search?q=` | wyszukiwarka pogrupowana: wydarzenia, artyści, utwory, cykle |
+| `POST /api/v1/assistant` | asystent głosowy — jedna tura rozmowy, odpowiedź jako strumień SSE (niżej) |
 
 Wyszukiwanie (`q`) ignoruje wielkość liter i polskie/niemieckie znaki: `karlowicz` = `Karłowicz`. Przeszukuje tytuły we wszystkich językach, wykonawców, utwory, kompozytorów i cykle.
 
@@ -71,3 +72,26 @@ curl 'localhost:8080/api/v1/search?q=karlowicz'
 ```
 
 Ceny i statusy biletów to stan z chwili pobrania danych, nie dane na żywo z systemu sprzedaży.
+
+## Asystent głosowy
+
+`POST /api/v1/assistant` (front woła go przez proxy `app/api/assistant/route.ts`). Wszystko przez OpenRouter, wymaga `OPENROUTER_API_KEY` — bez klucza endpoint zwraca 503, reszta API działa normalnie.
+
+1. **Mowa → tekst**: `microsoft/mai-transcribe-2`. Przeglądarka nagrywa i koduje WAV 16 kHz mono (webm model odrzuca). Wykryty język mowy (pl/en/de) wybiera język odpowiedzi i głos.
+2. **Agent**: `openai/gpt-6-luna` (`reasoning: none` — szybsze, a w testach bez straty jakości) w pętli z narzędziami, maks. 6 kroków:
+   - `search_events` — wyszukiwanie hybrydowe + filtry kalendarza (daty, rodzaj, wiek, cena, sala, dostępność),
+   - `get_event_details` — pełna karta wydarzenia,
+   - `show_events` — wysyła 1–3 karty z biletami na ekran (zdarzenie `events`).
+3. **Tekst → mowa**: `microsoft/mai-voice-2.1` (głos Harper pl/en/de). Odpowiedź modelu jest strumieniowana i cięta na zdania; zdania są syntezowane równolegle i wysyłane po kolei jako klipy MP3, więc pierwsze zdanie gra, zanim model skończy pisać.
+
+Zdarzenia SSE: `transcript`, `tool`, `events`, `delta`, `audio`, `done`, `error` — szczegóły w OpenAPI. Historię rozmowy trzyma klient i odsyła ją w `history`.
+
+### Indeks wyszukiwania (FTS5 + embeddingi)
+
+`data/search.sqlite` — osobny plik obok bazy katalogu (ta zostaje tylko do odczytu): jeden dokument na wydarzenie i język (tytuł, opisy, wykonawcy, program, cykle, sale, grupy odbiorców), tabela FTS5 na tekście bez polskich znaków oraz embeddingi `openai/text-embedding-3-small` jako BLOB float32. Zapytanie łączy ranking BM25 z podobieństwem cosinusowym (wektory w pamięci API) przez reciprocal rank fusion, a potem przechodzi przez zwykłe filtry kalendarza. Bez indeksu asystent działa dalej, na samym wyszukiwaniu tekstowym `q`.
+
+```bash
+make index         # w Dockerze; lokalnie: make local-index
+```
+
+Po zmianie danych trzeba przebudować indeks — embeddingi niezmienionych dokumentów są brane z poprzedniego pliku, więc ponowne budowanie jest tanie. Modele można nadpisać zmiennymi z `.env.example`.

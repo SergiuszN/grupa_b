@@ -96,6 +96,10 @@ api-tidy: ## Porządkuje zależności (go mod tidy)
 .PHONY: api-check
 api-check: api-vet api-test ## Pełny test jakości backendu: vet + testy
 
+.PHONY: index
+index: ## Buduje indeks asystenta (FTS5 + embeddingi) w data/search.sqlite
+	$(DC) run --rm -v ./data:/data-rw api go run ./cmd/index -db /data/filharmonia.sqlite -out /data-rw/search.sqlite
+
 .PHONY: api-shell
 api-shell: ## Otwiera powłokę w kontenerze backendu
 	$(GO) sh
@@ -125,6 +129,10 @@ local-dev: ## Uruchamia Next.js na hoście (port 3000)
 .PHONY: local-api-dev
 local-api-dev: ## Uruchamia backend Go na hoście (port 8080)
 	$(LOADENV) cd backend && PORT=$${PORT:-8080} DB_PATH=$${DB_PATH:-../data/filharmonia.sqlite} go run ./cmd/api
+
+.PHONY: local-index
+local-index: ## Buduje indeks asystenta na hoście (data/search.sqlite)
+	$(LOADENV) cd backend && go run ./cmd/index -db ../data/filharmonia.sqlite -out ../data/search.sqlite
 
 .PHONY: local-up
 local-up: ## Uruchamia równolegle frontend i backend na hoście

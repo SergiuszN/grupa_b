@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/SergiuszN/grupa_b/backend/internal/assistant"
 	"github.com/SergiuszN/grupa_b/backend/internal/catalog"
 )
 
@@ -16,8 +17,9 @@ import (
 var warsaw = mustLoadLocation("Europe/Warsaw")
 
 type api struct {
-	store *catalog.Store
-	now   func() time.Time
+	store     *catalog.Store
+	assistant *assistant.Assistant // nil without OPENROUTER_API_KEY
+	now       func() time.Time
 }
 
 // badRequest is a validation error reported to the client as 400.
@@ -38,6 +40,7 @@ func (a *api) routes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/v1/venues/{slug}", a.handleVenue)
 	mux.HandleFunc("GET /api/v1/filters", a.handleFilters)
 	mux.HandleFunc("GET /api/v1/search", a.handleSearch)
+	mux.HandleFunc("POST /api/v1/assistant", a.handleAssistant)
 	mux.HandleFunc("GET /api/v1/openapi.yaml", handleOpenAPI)
 	mux.HandleFunc("GET /api/docs", handleDocs)
 }
@@ -61,6 +64,7 @@ func (a *api) handleIndex(w http.ResponseWriter, _ *http.Request) {
 			"GET /api/v1/venues/{slug}",
 			"GET /api/v1/filters",
 			"GET /api/v1/search",
+			"POST /api/v1/assistant",
 		},
 	})
 }
@@ -405,7 +409,7 @@ func withCORS(next http.Handler) http.Handler {
 		h.Set("Access-Control-Allow-Origin", "*")
 		h.Set("Vary", "Accept-Language")
 		if r.Method == http.MethodOptions {
-			h.Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+			h.Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 			h.Set("Access-Control-Allow-Headers", "Accept-Language, Content-Type")
 			h.Set("Access-Control-Max-Age", "86400")
 			w.WriteHeader(http.StatusNoContent)

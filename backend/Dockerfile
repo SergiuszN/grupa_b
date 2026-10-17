@@ -11,9 +11,13 @@ RUN CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api
 FROM alpine:3.22
 RUN apk add --no-cache ca-certificates wget \
  && mkdir -p /data \
- && wget -qO /data/filharmonia.sqlite https://raw.githubusercontent.com/SergiuszN/grupa_b/main/data/filharmonia.sqlite
+ && wget -qO /data/filharmonia.sqlite https://raw.githubusercontent.com/SergiuszN/grupa_b/main/data/filharmonia.sqlite \
+ && (wget -qO /data/search.sqlite https://raw.githubusercontent.com/SergiuszN/grupa_b/main/data/search.sqlite \
+     || rm -f /data/search.sqlite)
 COPY --from=build /out/api /api
 ENV DB_PATH=/data/filharmonia.sqlite
+# Assistant search index (FTS5 + embeddings); without it the assistant uses plain text search.
+ENV SEARCH_DB_PATH=/data/search.sqlite
 ENV PORT=8080
 EXPOSE 8080
 CMD ["/api"]

@@ -27,6 +27,7 @@ type Filter struct {
 	DurationMax   *int
 	Accessibility []string // every listed type must be available or partial
 	Query         string
+	IDs           []int64 // only these events
 	Limit, Offset int
 }
 
@@ -165,6 +166,9 @@ func (f Filter) where() (string, []any) {
 	}
 	if f.To != "" {
 		add("substr(p.starts_at, 1, 10) <= ?", f.To)
+	}
+	if len(f.IDs) > 0 {
+		add("e.id IN ("+placeholders(len(f.IDs))+")", anyArgs(f.IDs)...)
 	}
 	in("e.kind", f.Kinds)
 	in("e.calendar_category", f.Categories)
