@@ -5,44 +5,33 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 RUN apk add --no-cache libc6-compat
-
-# 1. Prune monorepo for web
-FROM base AS pruner
-WORKDIR /app
-RUN npm install -g turbo@^2
-COPY . .
-RUN turbo prune web --docker
-
-# 2. Install dependencies (cached layer)
-FROM base AS installer
 WORKDIR /app
 
-COPY --from=pruner /app/out/json/ .
-COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
-
+# 1. Install dependencies
+FROM base AS deps
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# 3. Development stage for hot-reload inside container
+# 2. Development stage for hot-reload inside container
 FROM base AS dev
 WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN pnpm install
 EXPOSE 3000
-CMD ["pnpm", "dev", "--filter=web"]
+CMD ["pnpm", "dev"]
 
-# 4. Build application
+# 3. Build application
 FROM base AS builder
 WORKDIR /app
-COPY --from=installer /app/ .
-COPY --from=pruner /app/out/full/ .
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-RUN pnpm turbo run build --filter=web...
+RUN pnpm build
 
-# 5. Production runner
+# 4. Production runner
 FROM node:22-alpine AS runner
 WORKDIR /app
 
@@ -56,12 +45,12 @@ RUN adduser --system --uid 1001 nextjs
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/apps/web/public ./apps/web/public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
 EXPOSE 3000
 
-CMD ["node", "apps/web/server.js"]
+CMD ["node", "server.js"]

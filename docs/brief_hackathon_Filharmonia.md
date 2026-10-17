@@ -10,14 +10,14 @@ Stworzyć koncept nowej strony internetowej dla **Filharmonii im. Mieczysława K
 
 Projekt powstaje w podejściu **mobile first** i musi w pełni obsługiwać desktop.
 
-| | |
-|---|---|
-| **Zamawiający** | Filharmonia im. Mieczysława Karłowicza w Szczecinie (FS) |
-| **Adresaci briefu** | Zespoły hackathonowe: front-end, back-end, UX/UI, data/AI |
-| **Charakter rezultatu** | Koncepcja nowej strony internetowej; nie wdrożenie produkcyjne |
-| **Materiały źródłowe** | Brief „Nowa strona internetowa FS” (założenia wstępne), arkusz „Funkcjonalności na nowej stronie www FS” |
-| **Języki serwisu** | polski, angielski, niemiecki |
-| **Standard dostępności** | WCAG 2.2 AA |
+|                          |                                                                                                          |
+| ------------------------ | -------------------------------------------------------------------------------------------------------- |
+| **Zamawiający**          | Filharmonia im. Mieczysława Karłowicza w Szczecinie (FS)                                                 |
+| **Adresaci briefu**      | Zespoły hackathonowe: front-end, back-end, UX/UI, data/AI                                                |
+| **Charakter rezultatu**  | Koncepcja nowej strony internetowej; nie wdrożenie produkcyjne                                           |
+| **Materiały źródłowe**   | Brief „Nowa strona internetowa FS” (założenia wstępne), arkusz „Funkcjonalności na nowej stronie www FS” |
+| **Języki serwisu**       | polski, angielski, niemiecki                                                                             |
+| **Standard dostępności** | WCAG 2.2 AA                                                                                              |
 
 ---
 
@@ -45,27 +45,27 @@ Projekt powstaje w podejściu **mobile first** i musi w pełni obsługiwać desk
 
 Strona działa jak wejście do budynku: na koncert, na wystawę, na warsztaty, do historii, do orkiestry, do architektury, do świata Karłowicza.
 
-| Obszar | Przykłady treści |
-|---|---|
-| Koncerty | symfoniczne, kameralne, jazz, cykle (np. FilHERmonia, Filharmonia Light), festiwale |
-| EDUfilharmonia | dzieci, rodziny, przedszkola, szkoły, młodzież, nauczyciele, młodzi muzycy, dorośli |
-| Wystawy | Galeria Poziom 4. i Art.Room, z własnym kalendarzem wystaw |
-| Budynek | architektura, Sala Symfoniczna, Sala Kameralna, galerie, nagrody, zwiedzanie PL / EN / DE |
-| Orkiestra i artyści | muzycy, dyrygenci, soliści, nagrania, tournée |
-| Projekty | m.in. International Lutosławski Youth Orchestra (ILYO), „Słyszę Dobre Dźwięki”, projekty międzynarodowe |
+| Obszar              | Przykłady treści                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| Koncerty            | symfoniczne, kameralne, jazz, cykle (np. FilHERmonia, Filharmonia Light), festiwale                     |
+| EDUfilharmonia      | dzieci, rodziny, przedszkola, szkoły, młodzież, nauczyciele, młodzi muzycy, dorośli                     |
+| Wystawy             | Galeria Poziom 4. i Art.Room, z własnym kalendarzem wystaw                                              |
+| Budynek             | architektura, Sala Symfoniczna, Sala Kameralna, galerie, nagrody, zwiedzanie PL / EN / DE               |
+| Orkiestra i artyści | muzycy, dyrygenci, soliści, nagrania, tournée                                                           |
+| Projekty            | m.in. International Lutosławski Youth Orchestra (ILYO), „Słyszę Dobre Dźwięki”, projekty międzynarodowe |
 
 ### Grupy odbiorców
 
-| Persona | Potrzeba | Kluczowy ekran |
-|---|---|---|
-| Stały bywalec, meloman | szybko znaleźć koncert, skład, program; zarządzać biletami | kalendarz, wydarzenie, panel klienta |
-| Debiutant | „Nie znam się na muzyce klasycznej. Co mogę zobaczyć?” | „Zacznij tutaj”, „Pomóż mi wybrać”, AI |
-| Rodzic | coś dla dziecka w określonym wieku, w weekend | filtr „dla dzieci”, EDUfilharmonia |
-| Nauczyciel, szkoła | oferta dla grup, zasady rezerwacji | EDUfilharmonia, oferta dla szkół |
-| Turysta (PL / EN / DE) | kiedy i za ile zwiedzać, w jakim języku | Zwiedzanie, Planuj wizytę |
-| Osoba z niepełnosprawnością | czego się spodziewać przed wizytą | znaczniki dostępności przy wydarzeniu |
-| Partner biznesowy | dlaczego i jak wspierać Filharmonię | Partnerzy |
-| Dziennikarz | komunikaty, zdjęcia, logo, biogramy | Strefa mediów |
+| Persona                     | Potrzeba                                                   | Kluczowy ekran                         |
+| --------------------------- | ---------------------------------------------------------- | -------------------------------------- |
+| Stały bywalec, meloman      | szybko znaleźć koncert, skład, program; zarządzać biletami | kalendarz, wydarzenie, panel klienta   |
+| Debiutant                   | „Nie znam się na muzyce klasycznej. Co mogę zobaczyć?”     | „Zacznij tutaj”, „Pomóż mi wybrać”, AI |
+| Rodzic                      | coś dla dziecka w określonym wieku, w weekend              | filtr „dla dzieci”, EDUfilharmonia     |
+| Nauczyciel, szkoła          | oferta dla grup, zasady rezerwacji                         | EDUfilharmonia, oferta dla szkół       |
+| Turysta (PL / EN / DE)      | kiedy i za ile zwiedzać, w jakim języku                    | Zwiedzanie, Planuj wizytę              |
+| Osoba z niepełnosprawnością | czego się spodziewać przed wizytą                          | znaczniki dostępności przy wydarzeniu  |
+| Partner biznesowy           | dlaczego i jak wspierać Filharmonię                        | Partnerzy                              |
+| Dziennikarz                 | komunikaty, zdjęcia, logo, biogramy                        | Strefa mediów                          |
 
 ### Marka i warstwa wizualna
 
@@ -82,109 +82,109 @@ Strona działa jak wejście do budynku: na koncert, na wystawę, na warsztaty, d
 
 ### Trzy czwarte użytkowników korzysta z telefonu
 
-| Wskaźnik | Wartość |
-|---|---|
-| Wejścia z telefonu | **74%** |
-| Aktywni użytkownicy w miesiąc | **11 922** |
-| Wyświetlenia podstron | **69 380** |
-| Średni czas zaangażowania (min:s) | **2:32** |
+| Wskaźnik                          | Wartość    |
+| --------------------------------- | ---------- |
+| Wejścia z telefonu                | **74%**    |
+| Aktywni użytkownicy w miesiąc     | **11 922** |
+| Wyświetlenia podstron             | **69 380** |
+| Średni czas zaangażowania (min:s) | **2:32**   |
 
 | Urządzenie | Udział |
-|---|---|
-| Telefon | 74,0% |
-| Komputer | 24,7% |
-| Tablet | 1,3% |
+| ---------- | ------ |
+| Telefon    | 74,0%  |
+| Komputer   | 24,7%  |
+| Tablet     | 1,3%   |
 
-*Źródło: Google Analytics obecnej strony. Urządzenia: marzec 2026; pozostałe dane: od 8 września do 8 października 2026.*
+_Źródło: Google Analytics obecnej strony. Urządzenia: marzec 2026; pozostałe dane: od 8 września do 8 października 2026._
 
 ### Ruch dzień po dniu
 
 - **Aktywni użytkownicy dziennie:** najwięcej użytkowników 2 października (ok. 720).
 - **Wyświetlenia podstron dziennie:** szczyty 8 września (ok. 3,3 tys.) i 2 października (ok. 3,0 tys.).
 
-*(Okres: 8.09–8.10.2026; w oryginale wykresy liniowe.)*
+_(Okres: 8.09–8.10.2026; w oryginale wykresy liniowe.)_
 
 ### Systemy, przeglądarki i ekrany
 
 **Android i iOS: ok. 75%**
 
 | System operacyjny | Użytkownicy |
-|---|---|
-| Android | 5,4 tys. |
-| iOS | 4,6 tys. |
-| Windows | 2,5 tys. |
-| Macintosh | 646 |
-| Linux | 90 |
-| Chrome OS | 11 |
+| ----------------- | ----------- |
+| Android           | 5,4 tys.    |
+| iOS               | 4,6 tys.    |
+| Windows           | 2,5 tys.    |
+| Macintosh         | 646         |
+| Linux             | 90          |
+| Chrome OS         | 11          |
 
 **Chrome i Safari przeważają**
 
 | Przeglądarka | Użytkownicy (ok.) |
-|---|---|
-| Chrome | 6,7 tys. |
-| Safari | 4,1 tys. |
-| Firefox | 630 |
-| Webview | 510 |
-| Edge | 490 |
-| Samsung | 470 |
-| Opera | 120 |
+| ------------ | ----------------- |
+| Chrome       | 6,7 tys.          |
+| Safari       | 4,1 tys.          |
+| Firefox      | 630               |
+| Webview      | 510               |
+| Edge         | 490               |
+| Samsung      | 470               |
+| Opera        | 120               |
 
 **5 z 7 ekranów to telefony**
 
-| Rozdzielczość ekranu | Użytkownicy (ok.) | Typ |
-|---|---|---|
-| 390×844 | 1 340 | telefon |
-| 393×852 | 1 170 | telefon |
-| 1920×1080 | 960 | komputer |
-| 384×832 | 890 | telefon |
-| 360×780 | 710 | telefon |
-| 402×874 | 600 | telefon |
-| 1536×864 | 560 | komputer |
+| Rozdzielczość ekranu | Użytkownicy (ok.) | Typ      |
+| -------------------- | ----------------- | -------- |
+| 390×844              | 1 340             | telefon  |
+| 393×852              | 1 170             | telefon  |
+| 1920×1080            | 960               | komputer |
+| 384×832              | 890               | telefon  |
+| 360×780              | 710               | telefon  |
+| 402×874              | 600               | telefon  |
+| 1536×864             | 560               | komputer |
 
-*Źródło: Google Analytics obecnej strony, marzec 2026. Przeglądarki i rozdzielczości: wartości przybliżone, odczytane z wykresów.*
+_Źródło: Google Analytics obecnej strony, marzec 2026. Przeglądarki i rozdzielczości: wartości przybliżone, odczytane z wykresów._
 
 ### Kto odwiedza stronę
 
 **Szczecin: 28% użytkowników i najdłuższe wizyty (3 min 18 s)**
 
-| Miasto | Aktywni użytkownicy |
-|---|---|
-| Szczecin | 3 356 |
-| Warszawa | 3 041 |
-| Wrocław | 1 368 |
-| Poznań | 1 027 |
-| Gdańsk | 923 |
-| Bydgoszcz | 477 |
-| (nieustalone) | 444 |
-| Pruszków | 308 |
-| Łódź | 269 |
-| Berlin | 227 |
+| Miasto        | Aktywni użytkownicy |
+| ------------- | ------------------- |
+| Szczecin      | 3 356               |
+| Warszawa      | 3 041               |
+| Wrocław       | 1 368               |
+| Poznań        | 1 027               |
+| Gdańsk        | 923                 |
+| Bydgoszcz     | 477                 |
+| (nieustalone) | 444                 |
+| Pruszków      | 308                 |
+| Łódź          | 269                 |
+| Berlin        | 227                 |
 
 **Wiek: przeważają osoby 35+, najdłużej zostają osoby 65+ (3 min 02 s)** — dla 71% wiek nieznany.
 
-| Wiek | Aktywni użytkownicy |
-|---|---|
-| 18–24 | 254 |
-| 25–34 | 641 |
-| 35–44 | 810 |
-| 45–54 | 927 |
-| 55–64 | 677 |
-| 65+ | 765 |
+| Wiek  | Aktywni użytkownicy |
+| ----- | ------------------- |
+| 18–24 | 254                 |
+| 25–34 | 641                 |
+| 35–44 | 810                 |
+| 45–54 | 927                 |
+| 55–64 | 677                 |
+| 65+   | 765                 |
 
 ### Najpopularniejsze podstrony
 
-| Podstrona | Wyświetlenia | Użytkownicy | Średni czas |
-|---|---:|---:|---:|
-| Strona główna (/pl) | 11 551 | 4 700 | 1 min 07 s |
-| Repertuar | 5 590 | 2 526 | 1 min 06 s |
-| Inauguracja 79. sezonu artystycznego | 3 005 | 1 233 | 1 min 01 s |
-| Strona główna EN (/en) | 1 344 | 572 | 53 s |
-| Koncerty zewnętrzne we wrześniu 2026 | 1 328 | 928 | 35 s |
-| FilHERmonia: Poranek w wielkim mieście | 1 152 | 642 | 46 s |
-| Koncerty zewnętrzne w październiku 2026 | 1 061 | 729 | 58 s |
-| Cykl: Koncerty zewnętrzne | 1 013 | 536 | 32 s |
-| Koncert prezydencki | 996 | 349 | 1 min 03 s |
-| Strona główna DE (/de) | 941 | 413 | 1 min 08 s |
+| Podstrona                               | Wyświetlenia | Użytkownicy | Średni czas |
+| --------------------------------------- | -----------: | ----------: | ----------: |
+| Strona główna (/pl)                     |       11 551 |       4 700 |  1 min 07 s |
+| Repertuar                               |        5 590 |       2 526 |  1 min 06 s |
+| Inauguracja 79. sezonu artystycznego    |        3 005 |       1 233 |  1 min 01 s |
+| Strona główna EN (/en)                  |        1 344 |         572 |        53 s |
+| Koncerty zewnętrzne we wrześniu 2026    |        1 328 |         928 |        35 s |
+| FilHERmonia: Poranek w wielkim mieście  |        1 152 |         642 |        46 s |
+| Koncerty zewnętrzne w październiku 2026 |        1 061 |         729 |        58 s |
+| Cykl: Koncerty zewnętrzne               |        1 013 |         536 |        32 s |
+| Koncert prezydencki                     |          996 |         349 |  1 min 03 s |
+| Strona główna DE (/de)                  |          941 |         413 |  1 min 08 s |
 
 ### Co z tego wynika dla konceptu
 
@@ -200,15 +200,15 @@ Strona działa jak wejście do budynku: na koncert, na wystawę, na warsztaty, d
 
 ### Krótsza droga od wejścia na stronę do decyzji i zakupu biletu
 
-| Cel FS | Miernik (propozycja) | Co w koncepcie na niego działa |
-|---|---|---|
-| Więcej sprzedanych biletów online | konwersja wydarzenie, koszyk, zakup | czytelna karta wydarzenia, CTA „Kup bilet” zawsze widoczne, sugestie podobnych koncertów |
-| Nowa publiczność | udział nowych kupujących; użycie „Pomóż mi wybrać” | ścieżka „Zacznij tutaj”, kategorie nastrojów, asystent AI |
-| Szybkie znajdowanie informacji | czas do znalezienia wydarzenia; skuteczność wyszukiwarki | kalendarz z filtrami, wyszukiwarka języka naturalnego |
-| Wiedza o odbiorcach | liczba kont w panelu klienta, ulubione, zgody marketingowe | panel klienta, powiadomienia |
-| Mniej pytań do kasy i biura | spadek pytań powtarzalnych (dojazd, szatnia, dostępność) | „Planuj wizytę”, AI oparte na faktach FS |
-| Pełna dostępność | zgodność z WCAG 2.2 AA | dostępność wbudowana w komponenty i treści |
-| Wizerunek miejsca otwartego | ruch w sekcjach Budynek, Historia, Wystawy, Zwiedzanie | odkrywalne treści, oś czasu, archiwum |
+| Cel FS                            | Miernik (propozycja)                                       | Co w koncepcie na niego działa                                                           |
+| --------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Więcej sprzedanych biletów online | konwersja wydarzenie, koszyk, zakup                        | czytelna karta wydarzenia, CTA „Kup bilet” zawsze widoczne, sugestie podobnych koncertów |
+| Nowa publiczność                  | udział nowych kupujących; użycie „Pomóż mi wybrać”         | ścieżka „Zacznij tutaj”, kategorie nastrojów, asystent AI                                |
+| Szybkie znajdowanie informacji    | czas do znalezienia wydarzenia; skuteczność wyszukiwarki   | kalendarz z filtrami, wyszukiwarka języka naturalnego                                    |
+| Wiedza o odbiorcach               | liczba kont w panelu klienta, ulubione, zgody marketingowe | panel klienta, powiadomienia                                                             |
+| Mniej pytań do kasy i biura       | spadek pytań powtarzalnych (dojazd, szatnia, dostępność)   | „Planuj wizytę”, AI oparte na faktach FS                                                 |
+| Pełna dostępność                  | zgodność z WCAG 2.2 AA                                     | dostępność wbudowana w komponenty i treści                                               |
+| Wizerunek miejsca otwartego       | ruch w sekcjach Budynek, Historia, Wystawy, Zwiedzanie     | odkrywalne treści, oś czasu, archiwum                                                    |
 
 ---
 
@@ -236,12 +236,12 @@ Strona działa jak wejście do budynku: na koncert, na wystawę, na warsztaty, d
 
 #### Punkty przełamania (propozycja)
 
-| Zakres | Układ |
-|---|---|
-| 360–599 px | 1 kolumna, dolna nawigacja, arkusze dolne |
-| 600–1023 px | 2 kolumny kart, nawigacja dolna lub górna |
-| 1024–1439 px | menu górne, 3 kolumny kart, panel boczny filtrów |
-| od 1440 px | treść do ok. 1320 px szerokości, więcej „powietrza”, nie więcej elementów |
+| Zakres       | Układ                                                                     |
+| ------------ | ------------------------------------------------------------------------- |
+| 360–599 px   | 1 kolumna, dolna nawigacja, arkusze dolne                                 |
+| 600–1023 px  | 2 kolumny kart, nawigacja dolna lub górna                                 |
+| 1024–1439 px | menu górne, 3 kolumny kart, panel boczny filtrów                          |
+| od 1440 px   | treść do ok. 1320 px szerokości, więcej „powietrza”, nie więcej elementów |
 
 ### Dostępność wbudowana, nie doklejona
 
@@ -338,6 +338,7 @@ Kolejność bloków na telefonie, od góry ekranu. Na desktopie te same bloki w 
 Kalendarz jest osobną podstroną i sercem serwisu. Użytkownik pyta, a kalendarz od razu pokazuje wyniki.
 
 Przykładowe pytania:
+
 - „Co jest w ten weekend?”
 - „Co jest dla dzieci?”
 - „Pokaż mi jazz”
@@ -347,23 +348,24 @@ Przykładowe pytania:
 - „Jakie wystawy są teraz otwarte?”
 
 **Wymagania**
+
 - Możliwość udostępnienia linku z wybranymi filtrami i licznik wyników.
 - Czytelny stan „brak wyników” z propozycją alternatyw.
 - Status biletów na karcie: dostępne, ostatnie miejsca, wyprzedane.
 
 **Filtry kalendarza**
 
-| Filtr | Wartości |
-|---|---|
-| Kiedy | dziś, jutro, ten weekend, ten tydzień, miesiąc, zakres dat |
-| Rodzaj | symfoniczny, kameralny, jazz, edukacja, wystawa, zwiedzanie, festiwal, wydarzenie zewnętrzne |
-| Dla kogo | dzieci (z wiekiem), rodziny, młodzież, szkoły, dorośli, debiutanci |
-| Nastrój | Classical super hits, Emotional, Energy, Relaks, Coś niezwykłego (jak w serwisach streamingowych) |
-| Miejsce | Sala Symfoniczna, Sala Kameralna, galerie, poza budynkiem |
-| Cena | bezpłatne, do X zł, zakres |
-| Czas trwania | do 45 min, do 90 min, dłużej |
-| Dostępność | ruchowa, wzrokowa, słuchowa, informacje sensoryczne |
-| Wykonawca, kompozytor, cykl | wyszukiwanie w filtrze |
+| Filtr                       | Wartości                                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------------------- |
+| Kiedy                       | dziś, jutro, ten weekend, ten tydzień, miesiąc, zakres dat                                        |
+| Rodzaj                      | symfoniczny, kameralny, jazz, edukacja, wystawa, zwiedzanie, festiwal, wydarzenie zewnętrzne      |
+| Dla kogo                    | dzieci (z wiekiem), rodziny, młodzież, szkoły, dorośli, debiutanci                                |
+| Nastrój                     | Classical super hits, Emotional, Energy, Relaks, Coś niezwykłego (jak w serwisach streamingowych) |
+| Miejsce                     | Sala Symfoniczna, Sala Kameralna, galerie, poza budynkiem                                         |
+| Cena                        | bezpłatne, do X zł, zakres                                                                        |
+| Czas trwania                | do 45 min, do 90 min, dłużej                                                                      |
+| Dostępność                  | ruchowa, wzrokowa, słuchowa, informacje sensoryczne                                               |
+| Wykonawca, kompozytor, cykl | wyszukiwanie w filtrze                                                                            |
 
 ### 6.3 Karta wydarzenia — wszystko o wydarzeniu w jednym miejscu
 
@@ -405,7 +407,7 @@ Przykład interakcji:
 
 > **Użytkownik:** Jaki koncert jest w sobotę?
 >
-> **Asystent:** *[Tytuł koncertu]* · [godzina], [sala] · [wykonawcy] · [krótki opis]
+> **Asystent:** _[Tytuł koncertu]_ · [godzina], [sala] · [wykonawcy] · [krótki opis]
 > `[Zobacz wydarzenie]` `[Kup bilet]`
 
 ### 6.6–6.9 Wyszukiwarka, panel klienta, odsłuch, orkiestra
@@ -474,7 +476,7 @@ Różne zasady rezerwacji (bilet, zapis, grupa szkolna) muszą być jasno rozró
 
 Każdy zespół pokazuje w koncepcji nowej strony internetowej co najmniej trzy scenariusze, w tym **obowiązkowo A na telefonie**.
 
-#### A. Debiutant *(obowiązkowy)* — „Nie znam się na muzyce klasycznej”
+#### A. Debiutant _(obowiązkowy)_ — „Nie znam się na muzyce klasycznej”
 
 1. Wchodzi z telefonu, wybiera „Zacznij tutaj” lub „Pomóż mi wybrać”.
 2. Odpowiada na 5 pytań, dostaje 3–5 propozycji.
@@ -535,33 +537,33 @@ Stack jest wolnym wyborem zespołu. **Żaden kanał nie czyta bezpośrednio z sy
 
 ### Model treści — treści to powiązane obiekty, nie strony
 
-| Typ treści | Kluczowe pola | Relacje |
-|---|---|---|
-| Wydarzenie | tytuł, data i godzina, sala, czas trwania, przerwa, cena od–do, typ, grupa docelowa, wiek, nastrój, opis „dlaczego warto”, dostępność, status biletów, link zakupu | artyści, utwory, cykl lub festiwal, miejsce |
-| Artysta | imię i nazwisko, rola lub instrument, biogram, zdjęcie | wydarzenia, nagrania, orkiestra |
-| Utwór | tytuł, kompozytor, czas trwania, fragment audio | wydarzenia, nagrania |
-| Cykl, festiwal | nazwa, sezon, opis, karnety | wydarzenia |
-| Wystawa | tytuł, daty, galeria, artyści, kurator, wernisaż, galeria zdjęć | miejsce |
-| Oferta edukacyjna | grupa, wiek, sposób zapisu, co uczestnik zyska | wydarzenia |
-| Miejsce | sala lub galeria, plan, dostępność | wydarzenia, wystawy |
-| Artykuł, historia | tekst, media, data, tagi | artyści, wydarzenia, oś czasu |
-| FAQ, informacja praktyczna | pytanie, odpowiedź, kategoria | źródło wiedzy dla AI |
+| Typ treści                 | Kluczowe pola                                                                                                                                                      | Relacje                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
+| Wydarzenie                 | tytuł, data i godzina, sala, czas trwania, przerwa, cena od–do, typ, grupa docelowa, wiek, nastrój, opis „dlaczego warto”, dostępność, status biletów, link zakupu | artyści, utwory, cykl lub festiwal, miejsce |
+| Artysta                    | imię i nazwisko, rola lub instrument, biogram, zdjęcie                                                                                                             | wydarzenia, nagrania, orkiestra             |
+| Utwór                      | tytuł, kompozytor, czas trwania, fragment audio                                                                                                                    | wydarzenia, nagrania                        |
+| Cykl, festiwal             | nazwa, sezon, opis, karnety                                                                                                                                        | wydarzenia                                  |
+| Wystawa                    | tytuł, daty, galeria, artyści, kurator, wernisaż, galeria zdjęć                                                                                                    | miejsce                                     |
+| Oferta edukacyjna          | grupa, wiek, sposób zapisu, co uczestnik zyska                                                                                                                     | wydarzenia                                  |
+| Miejsce                    | sala lub galeria, plan, dostępność                                                                                                                                 | wydarzenia, wystawy                         |
+| Artykuł, historia          | tekst, media, data, tagi                                                                                                                                           | artyści, wydarzenia, oś czasu               |
+| FAQ, informacja praktyczna | pytanie, odpowiedź, kategoria                                                                                                                                      | źródło wiedzy dla AI                        |
 
 Każdy typ treści ma pełne wersje PL / EN / DE (tłumaczenie treści, nie tylko menu) oraz pola SEO.
 
 ### Systemy, z którymi łączy się serwis
 
-| System | Rola | Uwagi dla hackathonu |
-|---|---|---|
-| System biletowy (iksoris) | sprzedaż, status miejsc, plan sali, bilety klienta | użyć mocka API; pokazać punkt integracji i obsługę statusów |
-| CMS headless | treści, tłumaczenia, media, role redakcyjne | dowolny (np. Strapi, Sanity, Payload, Directus) |
-| Wyszukiwarka | pełnotekstowa i semantyczna | np. Meilisearch, Typesense, baza wektorowa |
-| Asystent AI (LLM + RAG) | odpowiedzi tylko z treści FS, karty z CTA | pokazać cytowanie źródła i zachowanie przy braku wiedzy |
-| Audio | fragmenty utworów | niezależność od dostawcy (pliki własne lub platforma streamingowa) |
-| Cyfrowe archiwum FS | historia, plakaty, programy, nagrania | linkowanie lub osadzanie |
-| Newsletter, CRM | zapis, segmentacja wg zainteresowań | zgody RODO |
-| Analityka | ścieżki, konwersje, wyszukiwane frazy | rozwiązanie zgodne z RODO, baner zgód |
-| Mapy | dojazd, parking | link do natywnej nawigacji |
+| System                    | Rola                                               | Uwagi dla hackathonu                                               |
+| ------------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
+| System biletowy (iksoris) | sprzedaż, status miejsc, plan sali, bilety klienta | użyć mocka API; pokazać punkt integracji i obsługę statusów        |
+| CMS headless              | treści, tłumaczenia, media, role redakcyjne        | dowolny (np. Strapi, Sanity, Payload, Directus)                    |
+| Wyszukiwarka              | pełnotekstowa i semantyczna                        | np. Meilisearch, Typesense, baza wektorowa                         |
+| Asystent AI (LLM + RAG)   | odpowiedzi tylko z treści FS, karty z CTA          | pokazać cytowanie źródła i zachowanie przy braku wiedzy            |
+| Audio                     | fragmenty utworów                                  | niezależność od dostawcy (pliki własne lub platforma streamingowa) |
+| Cyfrowe archiwum FS       | historia, plakaty, programy, nagrania              | linkowanie lub osadzanie                                           |
+| Newsletter, CRM           | zapis, segmentacja wg zainteresowań                | zgody RODO                                                         |
+| Analityka                 | ścieżki, konwersje, wyszukiwane frazy              | rozwiązanie zgodne z RODO, baner zgód                              |
+| Mapy                      | dojazd, parking                                    | link do natywnej nawigacji                                         |
 
 ### Wymagania przekrojowe
 
@@ -577,27 +579,27 @@ Każdy typ treści ma pełne wersje PL / EN / DE (tłumaczenie treści, nie tylk
 
 ### Serwisy filharmonii do obejrzenia
 
-| Serwis | Co obejrzeć |
-|---|---|
-| Philharmonie Luxembourg (TOP) | strona główna do przewijania, panel klienta, sugestie podobnych koncertów, odsłuch, podstrona festiwalu |
-| Concertgebouworkest | sugestie podobnych koncertów, odsłuch, agenda |
-| Het Concertgebouw Amsterdam | inspiracja ogólna |
-| Dresdner Philharmonie | inspiracja ogólna |
-| Philharmonie de Paris | inspiracja ogólna |
-| Oslo-Filharmonien | smaksguide, wzorzec dla „Pomóż mi wybrać” |
-| Berliner Philharmoniker | inspiracja ogólna |
-| Wiener Philharmoniker | proste menu górne, kalendarz koncertów |
-| Orchestre philharmonique de Strasbourg | sugestie podobnych koncertów |
-| Gewandhausorchester Leipzig | festiwal jako podstrona serwisu |
+| Serwis                                 | Co obejrzeć                                                                                             |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Philharmonie Luxembourg (TOP)          | strona główna do przewijania, panel klienta, sugestie podobnych koncertów, odsłuch, podstrona festiwalu |
+| Concertgebouworkest                    | sugestie podobnych koncertów, odsłuch, agenda                                                           |
+| Het Concertgebouw Amsterdam            | inspiracja ogólna                                                                                       |
+| Dresdner Philharmonie                  | inspiracja ogólna                                                                                       |
+| Philharmonie de Paris                  | inspiracja ogólna                                                                                       |
+| Oslo-Filharmonien                      | smaksguide, wzorzec dla „Pomóż mi wybrać”                                                               |
+| Berliner Philharmoniker                | inspiracja ogólna                                                                                       |
+| Wiener Philharmoniker                  | proste menu górne, kalendarz koncertów                                                                  |
+| Orchestre philharmonique de Strasbourg | sugestie podobnych koncertów                                                                            |
+| Gewandhausorchester Leipzig            | festiwal jako podstrona serwisu                                                                         |
 
 ### Wzorce poszczególnych rozwiązań
 
-| Rozwiązanie | Wzorzec |
-|---|---|
-| Kalendarz z filtrami | Nowy Teatr, kalendarz; Concertgebouworkest; Wiener Philharmoniker |
-| Asystent AI | omn.art.pl |
-| Znajdź swój koncert | Oslo-Filharmonien (smaksguide) |
-| Kategorie nastrojów | serwisy streamingowe (playlisty: „Classical super hits”, „Emotional”, „Energy”) |
+| Rozwiązanie          | Wzorzec                                                                         |
+| -------------------- | ------------------------------------------------------------------------------- |
+| Kalendarz z filtrami | Nowy Teatr, kalendarz; Concertgebouworkest; Wiener Philharmoniker               |
+| Asystent AI          | omn.art.pl                                                                      |
+| Znajdź swój koncert  | Oslo-Filharmonien (smaksguide)                                                  |
+| Kategorie nastrojów  | serwisy streamingowe (playlisty: „Classical super hits”, „Emotional”, „Energy”) |
 
 ---
 
@@ -617,14 +619,14 @@ Koncepcja nowej strony internetowej w wersji mobile i desktop oraz prezentacja n
 
 ### Kryteria oceny — jak oceniamy koncepty
 
-| Kryterium | Waga | Co oceniamy |
-|---|---:|---|
-| Doświadczenie użytkownika mobile | 25% | czy ścieżka od wejścia do biletu jest krótka i oczywista na telefonie |
-| Odkrywanie i wybór | 20% | kalendarz, filtry, „Pomóż mi wybrać”, rekomendacje, AI prowadzące do działania |
-| Jakość wizualna i zgodność z marką | 15% | minimalizm, elegancja, typografia, kompozycja, adaptacja na desktop |
-| Dostępność | 15% | WCAG 2.2 AA w praktyce, znaczniki dostępności przy wydarzeniach |
-| Architektura i skalowalność | 15% | model treści, API-first, realność integracji, wydajność |
-| Wykonalność wdrożenia | 10% | czy koncept da się przekazać wykonawcy zewnętrznemu jako specyfikację |
+| Kryterium                          | Waga | Co oceniamy                                                                    |
+| ---------------------------------- | ---: | ------------------------------------------------------------------------------ |
+| Doświadczenie użytkownika mobile   |  25% | czy ścieżka od wejścia do biletu jest krótka i oczywista na telefonie          |
+| Odkrywanie i wybór                 |  20% | kalendarz, filtry, „Pomóż mi wybrać”, rekomendacje, AI prowadzące do działania |
+| Jakość wizualna i zgodność z marką |  15% | minimalizm, elegancja, typografia, kompozycja, adaptacja na desktop            |
+| Dostępność                         |  15% | WCAG 2.2 AA w praktyce, znaczniki dostępności przy wydarzeniach                |
+| Architektura i skalowalność        |  15% | model treści, API-first, realność integracji, wydajność                        |
+| Wykonalność wdrożenia              |  10% | czy koncept da się przekazać wykonawcy zewnętrznemu jako specyfikację          |
 
 ### Materiały
 
