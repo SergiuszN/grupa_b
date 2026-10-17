@@ -108,6 +108,58 @@ api-health: ## Sprawdza endpoint /healthz backendu
 api-docs: ## Otwiera dokumentację API (Swagger UI) w przeglądarce
 	@open http://localhost:8080/api/docs 2>/dev/null || xdg-open http://localhost:8080/api/docs 2>/dev/null || echo "http://localhost:8080/api/docs"
 
+##@ Lokalnie (bez Dockera, wymaga Node >= 20 i Go na hoście)
+# pnpm z PATH, a gdy go brak - przez corepack (dostarczany z Node)
+PNPM   := $(shell command -v pnpm >/dev/null 2>&1 && echo pnpm || echo corepack pnpm)
+# Zmienne z .env (np. OPENROUTER_API_KEY) ładowane do procesu backendu
+LOADENV := set -a; [ -f .env ] && . ./.env; set +a;
+
+.PHONY: local-install
+local-install: ## Instaluje zależności frontendu na hoście (pnpm install)
+	$(PNPM) install
+
+.PHONY: local-dev
+local-dev: ## Uruchamia Next.js na hoście (port 3000)
+	API_URL=$${API_URL:-http://localhost:8080} $(PNPM) dev
+
+.PHONY: local-api-dev
+local-api-dev: ## Uruchamia backend Go na hoście (port 8080)
+	$(LOADENV) cd backend && PORT=$${PORT:-8080} DB_PATH=$${DB_PATH:-../data/filharmonia.sqlite} go run ./cmd/api
+
+.PHONY: local-up
+local-up: ## Uruchamia równolegle frontend i backend na hoście
+	$(MAKE) -j2 local-dev local-api-dev
+
+.PHONY: local-build
+local-build: ## Buduje produkcyjnie na hoście (pnpm build)
+	NODE_ENV=production $(PNPM) build
+
+.PHONY: local-lint
+local-lint: ## ESLint na hoście
+	$(PNPM) lint
+
+.PHONY: local-check-types
+local-check-types: ## Sprawdza typy TypeScript na hoście
+	$(PNPM) check-types
+
+.PHONY: local-format
+local-format: ## Prettier na hoście
+	$(PNPM) format
+
+.PHONY: local-check
+local-check: local-lint local-check-types local-build ## Pełny test jakości frontendu na hoście
+
+.PHONY: local-api-test
+local-api-test: ## Testy backendu na hoście (go test)
+	cd backend && go test ./...
+
+.PHONY: local-api-vet
+local-api-vet: ## Statyczna analiza backendu na hoście (go vet)
+	cd backend && go vet ./...
+
+.PHONY: local-api-check
+local-api-check: local-api-vet local-api-test ## Pełny test jakości backendu na hoście
+
 ##@ Kontenery
 .PHONY: image
 image: ## Buduje obrazy Dockera (web + api)
