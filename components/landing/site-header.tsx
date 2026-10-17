@@ -2,9 +2,10 @@
 
 import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { CalendarDays, Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import { MenuSheet } from "@/components/landing/menu-sheet";
 import {
   LOCALE_LABELS,
   routing,
@@ -34,6 +35,7 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const router = useRouter();
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   function cycleLanguage() {
     const index = routing.locales.indexOf(locale);
@@ -80,13 +82,17 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
         </Link>
 
         <button
+          aria-expanded={menuOpen}
           aria-label="Menu"
           className={`${circleBase} ${circle[tone]}`}
+          onClick={() => setMenuOpen(true)}
           type="button"
         >
           <Menu aria-hidden="true" size={18} strokeWidth={1.8} />
         </button>
       </div>
+
+      {menuOpen ? <MenuSheet onClose={() => setMenuOpen(false)} /> : null}
     </header>
   );
 }
