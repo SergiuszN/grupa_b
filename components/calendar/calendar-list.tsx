@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "@/i18n/routing";
 import {
   CalendarDays,
   ChevronRight,
@@ -12,7 +13,6 @@ import {
   Music,
   Play,
 } from "lucide-react";
-import { Link } from "@/i18n/routing";
 import type { CalendarDay, CalendarTerm } from "@/lib/calendar-performances";
 import { useProgressiveList } from "@/lib/use-progressive-list";
 
@@ -117,7 +117,13 @@ export function CalendarList({
     ? days.filter((day) => visibleTerms.some((term) => term.day === day.key))
     : [];
 
-  const progressiveDays = useProgressiveList(activeDays, {
+  const {
+    visibleItems: visibleDays,
+    hasMore: hasMoreDays,
+    sentinelRef: daysSentinelRef,
+    loadedCount: loadedDaysCount,
+    totalCount: totalDaysCount,
+  } = useProgressiveList(activeDays, {
     initialCount: 4,
     pageSize: 4,
     rootMargin: "50px",
@@ -131,7 +137,13 @@ export function CalendarList({
       : events.filter((e) => e.category === filter)
     : [];
 
-  const progressiveEvents = useProgressiveList(filteredEvents, {
+  const {
+    visibleItems: visibleEvents,
+    hasMore: hasMoreEvents,
+    sentinelRef: eventsSentinelRef,
+    loadedCount: loadedEventsCount,
+    totalCount: totalEventsCount,
+  } = useProgressiveList(filteredEvents, {
     initialCount: 6,
     pageSize: 6,
     rootMargin: "50px",
@@ -171,7 +183,7 @@ export function CalendarList({
               {emptyLabel}
             </p>
           ) : (
-            progressiveDays.visibleItems.map((day, dayIndex) => {
+            visibleDays.map((day, dayIndex) => {
               const dayTerms = visibleTerms.filter((term) => term.day === day.key);
               if (dayTerms.length === 0) return null;
 
@@ -286,7 +298,7 @@ export function CalendarList({
               {emptyLabel}
             </p>
           ) : (
-            progressiveEvents.visibleItems.map((event, eventIndex) => {
+            visibleEvents.map((event, eventIndex) => {
               const itemKey =
                 event.id !== null && event.id !== undefined
                   ? `event-${event.id}`
@@ -353,14 +365,14 @@ export function CalendarList({
 
         {/* PROGRESSIVE / LAZY SCROLL SKELETON SENTINEL */}
         {hasDayGroups ? (
-          progressiveDays.hasMore && (
-            <div ref={progressiveDays.sentinelRef} className="w-full">
+          hasMoreDays && (
+            <div ref={daysSentinelRef} className="w-full">
               <CalendarSkeletonItem />
             </div>
           )
         ) : (
-          progressiveEvents.hasMore && (
-            <div ref={progressiveEvents.sentinelRef} className="w-full">
+          hasMoreEvents && (
+            <div ref={eventsSentinelRef} className="w-full">
               <CalendarSkeletonItem />
             </div>
           )
@@ -370,8 +382,8 @@ export function CalendarList({
           <p className="max-w-[310px] px-1">{labels.footnote}</p>
           <span className="shrink-0 text-right text-[12px] tabular-nums font-medium">
             {hasDayGroups
-              ? `${progressiveDays.loadedCount} / ${progressiveDays.totalCount} dni`
-              : `${progressiveEvents.loadedCount} / ${progressiveEvents.totalCount}`}
+              ? `${loadedDaysCount} / ${totalDaysCount} dni`
+              : `${loadedEventsCount} / ${totalEventsCount}`}
           </span>
         </div>
       </div>

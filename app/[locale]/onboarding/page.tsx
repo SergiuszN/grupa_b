@@ -1,6 +1,5 @@
-import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
 const TIPS = ["1", "2", "3"] as const;
@@ -10,24 +9,31 @@ export default async function Onboarding() {
 
   return (
     <Screen>
-      <FlowSteps step={7} />
+      <FlowSteps items={INFO_FLOW} step={0} />
 
       <div className="flex flex-col gap-4 px-6 pt-3">
         <div className="flex items-center justify-between">
-          <p className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          <p
+            className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]"
+            data-flow="eyebrow"
+          >
             {t("eyebrow")}
           </p>
-          <p className="text-muted text-[11px] leading-[14px] tracking-[0.1em]">
+          <p
+            className="text-muted text-[11px] leading-[14px] tracking-[0.1em]"
+            data-flow="eyebrow"
+          >
             {t("counter")}
           </p>
         </div>
 
         <div
           className="h-[290px] rounded-[20px] bg-[#E7E2D8] bg-cover bg-[50%]"
+          data-flow="media"
           style={{ backgroundImage: "url(/images/hall-symphonic.jpg)" }}
         />
 
-        <div className="bg-ink rounded-[20px] px-[18px] py-4">
+        <div className="bg-ink rounded-[20px] px-[18px] py-4" data-flow="copy">
           {TIPS.map((tip, index) => (
             <div key={tip}>
               <div
@@ -58,18 +64,11 @@ export default async function Onboarding() {
           ))}
         </div>
 
-        <Link
-          className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex items-center justify-between rounded-full px-5 py-[13px] text-[14px] leading-[18px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
-          href="/directions"
-        >
-          {t("cta")}
-          <span aria-hidden="true">→</span>
-        </Link>
       </div>
 
       <div className="flex-1" />
 
-      <FlowArrows step={7} />
+      <FlowArrows items={INFO_FLOW} step={0} />
     </Screen>
   );
 }

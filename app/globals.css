@@ -90,12 +90,42 @@ body {
 }
 
 .hero-slide {
-  animation: hero-fade 1.2s ease-in-out both;
+  animation: hero-fade 1.7s ease-in-out both;
+  will-change: opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-slide {
     animation: none;
+  }
+}
+
+/* Initial states for the GSAP entrance, so nothing flashes before it runs.
+   Only applied when scripting is on and motion is not reduced; <noscript>
+   and reduced-motion visitors get the final state directly. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-hero-root] [data-anim="gallery"] {
+    opacity: 0;
+    transform: scale(1.14);
+  }
+
+  [data-hero-root] [data-anim="scrim"],
+  [data-hero-root] header,
+  [data-hero-root] [data-anim="copy"] {
+    opacity: 0;
+  }
+
+  [data-hero-root] [data-anim="line"] {
+    transform: translateY(110%);
+  }
+
+  [data-flow-screen] header,
+  [data-flow-screen] [data-flow],
+  [data-flow-screen] [data-flow-item],
+  [data-flow-screen] [data-flow-dot],
+  [data-flow-screen] [data-q],
+  [data-flow-screen] [data-copy] {
+    opacity: 0;
   }
 }
 
@@ -195,6 +225,18 @@ html[data-a11y-motion="true"] {
   scroll-behavior: auto !important;
 }
 
+html[data-a11y-motion="true"] [data-anim],
+html[data-a11y-motion="true"] [data-hero-root] header,
+html[data-a11y-motion="true"] [data-flow],
+html[data-a11y-motion="true"] [data-flow-item],
+html[data-a11y-motion="true"] [data-flow-dot],
+html[data-a11y-motion="true"] [data-q],
+html[data-a11y-motion="true"] [data-copy],
+html[data-a11y-motion="true"] [data-flow-screen] header {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 html[data-a11y-grayscale="true"] {
   filter: grayscale(100%);
 }
@@ -207,4 +249,26 @@ html[data-a11y-readable-font="true"] *,
 html[data-a11y-readable-font="true"] body {
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive, sans-serif !important;
   letter-spacing: 0.04em !important;
+}
+
+/* Purchase confirmation confetti. */
+@keyframes confetti-fall {
+  from {
+    opacity: 1;
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 108vh, 0) rotate(600deg);
+  }
+}
+
+.confetti-piece {
+  animation: confetti-fall 2.8s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    display: none;
+  }
 }

@@ -12,7 +12,10 @@ import (
 	"time"
 	_ "time/tzdata"
 
+	"github.com/SergiuszN/grupa_b/backend/internal/assistant"
 	"github.com/SergiuszN/grupa_b/backend/internal/catalog"
+	"github.com/SergiuszN/grupa_b/backend/internal/openrouter"
+	"github.com/SergiuszN/grupa_b/backend/internal/search"
 )
 
 func main() {
@@ -30,7 +33,7 @@ func main() {
 	addr := ":" + getenv("PORT", "8080")
 	srv := &http.Server{
 		Addr:              addr,
-		Handler:           newRouter(store),
+		Handler:           newRouter(store, newAssistant(store)),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
@@ -54,11 +57,35 @@ func main() {
 	}
 }
 
-func newRouter(store *catalog.Store) http.Handler {
+func newRouter(store *catalog.Store, asst *assistant.Assistant) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", handleHealthz)
-	(&api{store: store, now: time.Now}).routes(mux)
+	(&api{store: store, assistant: asst, now: time.Now}).routes(mux)
 	return withCORS(mux)
+}
+
+// newAssistant sets up the voice assistant when an OpenRouter key is present.
+// Without the search index it still works, with plain text search only.
+func newAssistant(store *catalog.Store) *assistant.Assistant {
+	client := openrouter.New(os.Getenv("OPENROUTER_API_KEY"))
+	if client == nil {
+		slog.Warn("OPENROUTER_API_KEY not set, assistant disabled")
+		return nil
+	}
+	indexPath := getenv("SEARCH_DB_PATH", "../data/search.sqlite")
+	index, err := search.Open(indexPath)
+	if err != nil {
+		slog.Warn("search index not loaded, run `make index`", "path", indexPath, "err", err)
+		index = nil
+	} else {
+		slog.Info("search index loaded", "path", indexPath, "documents", index.Size(), "visitor_info", index.InfoSize(), "model", index.Model())
+	}
+	cfg := assistant.DefaultConfig
+	cfg.ChatModel = getenv("ASSISTANT_MODEL", cfg.ChatModel)
+	cfg.ReasoningEffort = getenv("ASSISTANT_REASONING", cfg.ReasoningEffort)
+	cfg.TranscribeModel = getenv("TRANSCRIBE_MODEL", cfg.TranscribeModel)
+	cfg.SpeechModel = getenv("SPEECH_MODEL", cfg.SpeechModel)
+	return assistant.New(client, store, index, cfg)
 }
 
 func handleHealthz(w http.ResponseWriter, _ *http.Request) {

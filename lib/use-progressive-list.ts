@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export interface UseProgressiveListOptions {
   /** Initial number of items to display (default: 10) */
@@ -22,8 +22,8 @@ export interface UseProgressiveListResult<T> {
   hasMore: boolean;
   /** Function to manually trigger loading more items */
   loadMore: () => void;
-  /** Ref to attach to the sentinel element at the bottom of the list */
-  sentinelRef: React.RefObject<HTMLDivElement | null>;
+  /** Callback ref to attach to the sentinel element at the bottom of the list */
+  sentinelRef: (node: HTMLDivElement | null) => void;
   /** Whether more items are currently being loaded */
   isLoadingMore: boolean;
   /** Total count of items in the source list */
@@ -38,9 +38,6 @@ export interface UseProgressiveListResult<T> {
 
 /**
  * Reusable hook for progressive list rendering and infinite scroll with IntersectionObserver.
- *
- * @param items Array of all items (or filtered items) to progressively display
- * @param options Configuration options (initialCount, pageSize, rootMargin, threshold, delayMs)
  */
 export function useProgressiveList<T>(
   items: T[],
@@ -56,13 +53,15 @@ export function useProgressiveList<T>(
 
   const [visibleCount, setVisibleCount] = useState(initialCount);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Reset to initial count whenever the input list length or first item identity changes
-  const firstItemKey = (items[0] as { id?: string | number } | undefined)?.id ?? items.length;
-  useEffect(() => {
+  const currentKey = (items[0] as { id?: string | number } | undefined)?.id ?? items.length;
+  const [prevKey, setPrevKey] = useState(currentKey);
+
+  if (prevKey !== currentKey) {
+    setPrevKey(currentKey);
     setVisibleCount(initialCount);
-  }, [items.length, firstItemKey, initialCount]);
+  }
 
   const hasMore = visibleCount < items.length;
 
@@ -70,7 +69,6 @@ export function useProgressiveList<T>(
     if (!hasMore || isLoadingMore) return;
     setIsLoadingMore(true);
 
-    // Intentional delay for testing progressive loading and glassmorphism skeletons
     const timer = setTimeout(() => {
       setVisibleCount((prev) => Math.min(prev + pageSize, items.length));
       setIsLoadingMore(false);
@@ -79,26 +77,32 @@ export function useProgressiveList<T>(
     return () => clearTimeout(timer);
   }, [hasMore, isLoadingMore, items.length, pageSize, delayMs]);
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel || !hasMore) return;
+  const sentinelRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry?.isIntersecting) {
-          loadMore();
-        }
-      },
-      {
-        rootMargin,
-        threshold,
-      },
-    );
+      if (!node || !hasMore) return;
 
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [hasMore, loadMore, rootMargin, threshold]);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            loadMore();
+          }
+        },
+        {
+          rootMargin,
+          threshold,
+        },
+      );
+
+      observer.observe(node);
+      observerRef.current = observer;
+    },
+    [hasMore, loadMore, rootMargin, threshold],
+  );
 
   const loadedCount = Math.min(visibleCount, items.length);
   const progressPercent =

@@ -302,6 +302,49 @@ paths:
                   data: { $ref: "#/components/schemas/SearchResults" }
         "400": { $ref: "#/components/responses/BadRequest" }
 
+  /api/v1/assistant:
+    post:
+      operationId: assistant
+      tags: [Asystent]
+      summary: Asystent głosowy — jedna tura rozmowy (strumień SSE)
+      description: |
+        Przyjmuje nagranie (WAV, base64) albo tekst i odpowiada strumieniem Server-Sent Events.
+        Mowa → tekst: `microsoft/mai-transcribe-2`; agent z narzędziami (wyszukiwanie hybrydowe FTS5 + embeddingi,
+        karta wydarzenia, pokazanie kart na ekranie): `openai/gpt-6-luna`; tekst → mowa zdanie po zdaniu: `microsoft/mai-voice-2.1`.
+        Wymaga `OPENROUTER_API_KEY` (bez klucza 503). Historia rozmowy jest po stronie klienta.
+
+        Zdarzenia (`event:` + JSON w `data:`):
+        `transcript` {text, language} · `tool` {name} · `events` {events: [karty]} · `sources` {sources: [{title, url}]} · `delta` {text} ·
+        `audio` {seq, text, data: MP3 w base64} · `done` {text, language} · `error` {code, message}.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lang: { type: string, enum: [pl, en, de], description: "Język interfejsu; przy nagraniu decyduje wykryty język mowy." }
+                audio: { type: string, format: byte, description: Nagranie w base64 }
+                audio_format: { type: string, default: wav, example: wav }
+                text: { type: string, description: Pytanie wpisane zamiast nagrania, example: "Co polecasz na ten weekend?" }
+                speak: { type: boolean, default: true, description: false = bez syntezy mowy }
+                history:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role: { type: string, enum: [user, assistant] }
+                      content: { type: string }
+      responses:
+        "200":
+          description: Strumień zdarzeń
+          content:
+            text/event-stream:
+              schema: { type: string }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "503":
+          description: Asystent nieskonfigurowany
+
   /healthz:
     get:
       operationId: healthz

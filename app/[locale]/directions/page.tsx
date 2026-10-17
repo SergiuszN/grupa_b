@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
 const LEGEND = [
@@ -13,13 +13,19 @@ export default async function Directions() {
 
   return (
     <Screen>
-      <FlowSteps step={8} />
+      <FlowSteps items={INFO_FLOW} step={1} />
 
-      <h1 className="px-6 pt-4 text-[32px] leading-9 font-bold tracking-[-0.03em]">
+      <h1
+        className="px-6 pt-4 text-[32px] leading-9 font-bold tracking-[-0.03em]"
+        data-flow="title"
+      >
         {t("title")}
       </h1>
 
-      <div className="border-line mx-6 mt-4 flex items-center justify-between rounded-2xl border px-4 py-3.5">
+      <div
+        className="border-line mx-6 mt-4 flex items-center justify-between rounded-2xl border px-4 py-3.5"
+        data-flow="copy"
+      >
         <div className="flex flex-col gap-[3px]">
           <p className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
             {t("venue")}
@@ -44,7 +50,7 @@ export default async function Directions() {
         </svg>
       </div>
 
-      <div className="mx-6 mt-3.5 h-[280px] overflow-clip rounded-[22px] bg-[#F4F1EA]">
+      <div className="mx-6 mt-3.5 h-[280px] overflow-clip rounded-[22px] bg-[#F4F1EA]" data-flow="media">
         <svg
           aria-label={t("mapAria")}
           className="h-full w-full"
@@ -80,7 +86,7 @@ export default async function Directions() {
 
       <div className="flex flex-col gap-3 px-6 pt-4">
         {LEGEND.map((item) => (
-          <div className="flex items-center gap-3" key={item.key}>
+          <div className="flex items-center gap-3" data-flow-item key={item.key}>
             <span
               aria-hidden="true"
               className={`size-2 shrink-0 rounded-full ${item.color}`}
@@ -92,7 +98,7 @@ export default async function Directions() {
 
       <div className="flex-1" />
 
-      <FlowArrows step={8} />
+      <FlowArrows items={INFO_FLOW} step={1} />
     </Screen>
   );
 }

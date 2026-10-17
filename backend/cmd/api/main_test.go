@@ -66,7 +66,7 @@ func total(body map[string]any) int {
 
 func TestHealthz(t *testing.T) {
 	rec := httptest.NewRecorder()
-	newRouter(nil).ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/healthz", nil))
+	newRouter(nil, nil).ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/healthz", nil))
 
 	if rec.Code != http.StatusOK {
 		t.Fatalf("status = %d, want 200", rec.Code)
@@ -258,7 +258,7 @@ func TestOpenAPI(t *testing.T) {
 
 	// Every endpoint listed in the index must be documented in the spec.
 	for _, e := range get(t, h, "/api/v1", http.StatusOK)["endpoints"].([]any) {
-		path := strings.TrimPrefix(e.(string), "GET ")
+		_, path, _ := strings.Cut(e.(string), " ")
 		if !strings.Contains(spec, "\n  "+path+":\n") {
 			t.Errorf("endpoint %s is missing from openapi.yaml", path)
 		}
@@ -268,5 +268,15 @@ func TestOpenAPI(t *testing.T) {
 	h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/api/docs", nil))
 	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "/api/v1/openapi.yaml") {
 		t.Fatalf("docs page: status %d", rec.Code)
+	}
+}
+
+func TestAssistantDisabled(t *testing.T) {
+	h := newTestServer(t) // no OpenRouter key in tests
+
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, httptest.NewRequest(http.MethodPost, "/api/v1/assistant", strings.NewReader(`{"text":"Co gracie?"}`)))
+	if rec.Code != http.StatusServiceUnavailable {
+		t.Fatalf("status = %d, want 503; body: %s", rec.Code, rec.Body.String())
 	}
 }

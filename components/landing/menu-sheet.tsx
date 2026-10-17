@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
@@ -55,14 +55,14 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (isClosing) return;
     setIsClosing(true);
     setIsOpen(false);
     setTimeout(() => {
       onClose();
     }, 450);
-  };
+  }, [isClosing, onClose]);
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -80,7 +80,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
       document.body.style.overflow = previous;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
+  }, [handleClose]);
 
   return (
     <div

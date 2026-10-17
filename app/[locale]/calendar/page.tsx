@@ -1,7 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CalendarList } from "@/components/calendar/calendar-list";
 import { Screen } from "@/components/flow/screen";
-import { getCalendarEvents } from "@/lib/calendar-events";
+import { getCalendarData } from "@/lib/calendar-performances";
+
+export const dynamic = "force-dynamic";
 
 export default async function CalendarPage({
   params,
@@ -12,13 +14,17 @@ export default async function CalendarPage({
   setRequestLocale(locale);
   const t = await getTranslations("Calendar");
 
-  const events = await getCalendarEvents(locale);
+  const { terms, days } = await getCalendarData(locale, {
+    today: t("today"),
+    tomorrow: t("tomorrow"),
+    inWeek: t("inWeek"),
+  });
 
   return (
     <Screen>
       <CalendarList
-        emptyLabel={events.length === 0 ? t("unavailable") : t("empty")}
-        events={events}
+        days={days}
+        emptyLabel={terms.length === 0 ? t("unavailable") : t("empty")}
         labels={{
           all: t("all"),
           concerts: t("concerts"),
@@ -27,6 +33,7 @@ export default async function CalendarPage({
           details: t("details"),
           footnote: t("footnote"),
         }}
+        terms={terms}
       />
     </Screen>
   );
