@@ -6,19 +6,19 @@ Model danych i demonstracyjna baza SQLite przygotowane na podstawie briefu oraz 
 
 - `data/filharmonia.sqlite` — gotowa baza do podpięcia do prototypu.
 - `data/filharmonia_events.json` — surowy, sprawdzalny zrzut danych źródłowych.
-- `db/schema.sqlite.sql` — schemat SQLite.
-- `db/schema.postgres.sql` — wariant PostgreSQL, jeśli będzie potrzebny później.
-- `scripts/scrape_filharmonia.py` — pobiera repertuar z publicznej strony.
-- `scripts/load_sqlite.py` — ładuje JSON do SQLite.
-- `docs/model-danych.md` — opis encji i ograniczeń danych.
+- `parser/schema.sqlite.sql` — schemat SQLite.
+- `parser/schema.postgres.sql` — wariant PostgreSQL, jeśli będzie potrzebny później.
+- `parser/scrape_filharmonia.py` — pobiera repertuar z publicznej strony.
+- `parser/load_sqlite.py` — ładuje JSON do SQLite.
+- `parser/model-danych.md` — opis encji i ograniczeń danych.
 
 ## Odświeżenie danych
 
 Wymagany jest Python 3, bez dodatkowych bibliotek:
 
 ```bash
-python3 scripts/scrape_filharmonia.py --limit 30 --output data/filharmonia_events.json
-python3 scripts/load_sqlite.py --reset
+python3 parser/scrape_filharmonia.py --limit 30 --output data/filharmonia_events.json
+python3 parser/load_sqlite.py --reset
 ```
 
 Domyślnie scraper pobiera wydarzenia od bieżącej chwili, w tym dostępne wersje EN/DE. Opcja `--from-date ''` uwzględnia też archiwalne wystąpienia. Scraper sprawdza `robots.txt`, ogranicza tempo zapytań i korzysta z publicznych stron wydarzeń.
