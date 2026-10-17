@@ -1,13 +1,15 @@
 "use client";
 
 import { useRouter } from "@/i18n/routing";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Building2, Ear, Eye, Frame, Music, Waves } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { gsap } from "gsap";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { TASTE_KEY } from "@/lib/taste";
+import { prefersStillMotion } from "@/lib/motion";
 
 const QUESTIONS: {
   key: string;
@@ -46,15 +48,72 @@ export default function Start() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [picked, setPicked] = useState<string | null>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   const question = QUESTIONS[step];
 
-  function choose(option: string) {
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const marks = stage.querySelectorAll("[data-q]");
+
+    if (prefersStillMotion()) {
+      gsap.set(marks, { autoAlpha: 1, y: 0, clearProps: "transform,visibility" });
+      return;
+    }
+
+    const q = gsap.utils.selector(stage);
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.fromTo(
+      q("[data-q-eyebrow]"),
+      { y: 8, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 0.4 },
+    )
+      .fromTo(
+        q("[data-q-title]"),
+        { y: 26, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.62 },
+        "-=0.26",
+      )
+      .fromTo(
+        q("[data-q-option]"),
+        { y: 18, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.07 },
+        "-=0.34",
+      );
+
+    return () => {
+      tl.kill();
+    };
+  }, [step]);
+
+  function choose(option: string, element: HTMLButtonElement) {
     if (picked) return;
 
+    const still = prefersStillMotion();
     const next = { ...answers, [question.key]: option };
     setPicked(option);
     setAnswers(next);
+
+    if (!still) {
+      gsap
+        .timeline()
+        .to(element, { scale: 0.96, duration: 0.12, ease: "power2.out" })
+        .to(element, { scale: 1, duration: 0.42, ease: "back.out(2.4)" });
+    }
+
+    window.setTimeout(() => {
+      if (!still && stageRef.current) {
+        gsap.to(stageRef.current, {
+          y: -22,
+          autoAlpha: 0,
+          duration: 0.26,
+          ease: "power2.in",
+        });
+      }
+    }, 210);
 
     window.setTimeout(() => {
       setPicked(null);
@@ -66,19 +125,27 @@ export default function Start() {
       }
 
       setStep(step + 1);
-    }, 240);
+    }, still ? 140 : 540);
   }
 
   return (
     <Screen>
       <FlowSteps step={1} />
 
-      <div className="rise flex flex-1 flex-col justify-center px-6" key={step}>
-        <p className="text-caption text-gold font-medium tracking-[0.16em] uppercase">
+      <div
+        className="flex flex-1 flex-col justify-center px-6"
+        key={step}
+        ref={stageRef}
+      >
+        <p
+          className="text-caption text-gold font-medium tracking-[0.16em] uppercase"
+          data-q
+          data-q-eyebrow
+        >
           {t("eyebrow", { current: step + 1, total: QUESTIONS.length })}
         </p>
 
-        <h1 className="text-display mt-3 max-w-[320px] font-bold">
+        <h1 className="text-display mt-3 max-w-[320px] font-bold" data-q data-q-title>
           {t(question.question)}
         </h1>
 
@@ -94,8 +161,10 @@ export default function Start() {
                     ? "border-gold bg-gold text-white"
                     : "border-ink hover:bg-surface"
                 }`}
+                data-q
+                data-q-option
                 key={option.key}
-                onClick={() => choose(t(option.key))}
+                onClick={(event) => choose(t(option.key), event.currentTarget)}
                 type="button"
               >
                 <span className="flex items-center gap-4">
@@ -117,7 +186,7 @@ export default function Start() {
         </div>
       </div>
 
-      <FlowArrows step={1} />
+      <FlowArrows next={false} step={1} />
     </Screen>
   );
 }

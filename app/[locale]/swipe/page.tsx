@@ -3,12 +3,15 @@
 import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
-import { Check, X } from "lucide-react";
-import { useRef, useState } from "react";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { CalendarDays, Check, Clock, MapPin, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { EVENTS, localizeEvent } from "@/lib/events";
+import { PreviewPlayer } from "@/components/swipe/preview-player";
 import { SWIPE_KEY } from "@/lib/taste";
+import { prefersStillMotion } from "@/lib/motion";
 
 const THRESHOLD = 96;
 
@@ -22,9 +25,66 @@ export default function Swipe() {
   const [exit, setExit] = useState<-1 | 1 | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
   const startX = useRef(0);
+  const cardWrap = useRef<HTMLDivElement>(null);
+  const copyWrap = useRef<HTMLDivElement>(null);
 
   const card = EVENTS[index] ? localizeEvent(EVENTS[index], locale) : undefined;
   const step = Math.min(index + 1, EVENTS.length);
+
+  useEffect(() => {
+    if (prefersStillMotion()) {
+      if (cardWrap.current) {
+        gsap.set(cardWrap.current, {
+          autoAlpha: 1,
+          clearProps: "transform,visibility",
+        });
+      }
+      if (copyWrap.current) {
+        gsap.set(copyWrap.current.querySelectorAll("[data-copy]"), {
+          autoAlpha: 1,
+          y: 0,
+          clearProps: "transform,visibility",
+        });
+      }
+      return;
+    }
+
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    if (cardWrap.current) {
+      tl.fromTo(
+        cardWrap.current,
+        { y: 26, autoAlpha: 0, scale: 0.975 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.62,
+          clearProps: "transform,visibility",
+        },
+        0,
+      );
+    }
+
+    if (copyWrap.current) {
+      tl.fromTo(
+        copyWrap.current.querySelectorAll("[data-copy]"),
+        { y: 14, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.5,
+          stagger: 0.06,
+          clearProps: "transform,visibility",
+        },
+        0.16,
+      );
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, [index]);
 
   function decide(direction: -1 | 1) {
     if (!card || exit !== null) return;
@@ -46,7 +106,7 @@ export default function Swipe() {
         return;
       }
 
-      setIndex((current) => current + 1);
+      setIndex((current) => (current + 1) % EVENTS.length);
       setExit(null);
       setDx(0);
       setDragging(false);
@@ -73,54 +133,62 @@ export default function Swipe() {
       <FlowSteps step={2} />
 
       {card ? (
-        <div
-          aria-label={t("cardAria", { title: card.title, subtitle: card.subtitle })}
-          className="concert-card mx-4 mt-3 flex h-[min(420px,50dvh)] cursor-grab touch-none flex-col justify-end overflow-clip rounded-[24px] bg-cover bg-[50%_40%] select-none active:cursor-grabbing"
-          key={card.id}
-          onKeyDown={(event) => {
-            if (event.key === "ArrowLeft") decide(-1);
-            if (event.key === "ArrowRight") decide(1);
-          }}
-          onPointerCancel={() => {
-            setDragging(false);
-            setDx(0);
-          }}
-          onPointerDown={(event) => {
-            if (exit !== null) return;
-            event.currentTarget.setPointerCapture(event.pointerId);
-            startX.current = event.clientX;
-            setDragging(true);
-          }}
-          onPointerMove={(event) => {
-            if (!dragging || exit !== null) return;
-            setDx(event.clientX - startX.current);
-          }}
-          onPointerUp={release}
-          role="group"
-          style={{
-            backgroundImage: `url(${card.image})`,
-            opacity: exit === null ? 1 : 0,
-            transform: `translate3d(${offset}px, 0, 0) rotate(${offset / 22}deg)`,
-            transition: dragging
-              ? "none"
-              : "transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 280ms ease-out",
-          }}
-          tabIndex={0}
-        >
-          <div className="from-ink/62 flex w-full flex-col justify-end bg-gradient-to-t to-transparent px-[22px] pt-14 pb-5">
-            <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-white/85">
-              {card.date} · {card.room}
-            </p>
+        <>
+          <div className="relative mx-6 mt-3 flex min-h-[220px] flex-1" ref={cardWrap}>
+            <div
+              aria-label={t("cardAria", {
+                title: card.title,
+                subtitle: card.subtitle,
+              })}
+              className="concert-card ring-ink/10 flex-1 cursor-grab touch-none overflow-clip rounded-[24px] bg-cover bg-[50%_40%] ring-1 select-none active:cursor-grabbing"
+              key={card.id}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowLeft") decide(-1);
+                if (event.key === "ArrowRight") decide(1);
+              }}
+              onPointerCancel={() => {
+                setDragging(false);
+                setDx(0);
+              }}
+              onPointerDown={(event) => {
+                if (exit !== null) return;
+                event.currentTarget.setPointerCapture(event.pointerId);
+                startX.current = event.clientX;
+                setDragging(true);
+              }}
+              onPointerMove={(event) => {
+                if (!dragging || exit !== null) return;
+                setDx(event.clientX - startX.current);
+              }}
+              onPointerUp={release}
+              role="group"
+              style={{
+                backgroundImage: `url(${card.image})`,
+                opacity: exit === null ? 1 : 0,
+                transform: `translate3d(${offset}px, 0, 0) rotate(${offset / 22}deg)`,
+                transition: dragging
+                  ? "none"
+                  : "transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 280ms ease-out",
+              }}
+              tabIndex={0}
+            />
           </div>
-        </div>
+
+          <div className="px-6 pt-3">
+            <PreviewPlayer
+              key={card.id}
+              label={t("preview")}
+              pauseLabel={t("pause")}
+              src="/audio/preview.mp3"
+            />
+          </div>
+        </>
       ) : (
-        <div className="bg-surface mx-4 mt-3 flex h-[min(420px,50dvh)] flex-col items-center justify-center gap-3 rounded-[24px] px-8 text-center">
+        <div className="bg-surface ring-ink/10 mx-6 mt-3 flex min-h-[220px] flex-1 flex-col items-center justify-center gap-3 rounded-[24px] px-8 text-center ring-1">
           <p className="text-caption text-muted font-medium tracking-[0.16em] uppercase">
             {t("endEyebrow")}
           </p>
-          <p className="text-title font-bold">
-            {t("endTitle")}
-          </p>
+          <p className="text-title font-bold">{t("endTitle")}</p>
           <Link
             className="text-body mt-1 font-medium underline underline-offset-4"
             href="/"
@@ -130,22 +198,57 @@ export default function Swipe() {
         </div>
       )}
 
-      <div className="rise px-[22px] pt-[22px]" key={`copy-${index}`}>
-        <p className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase">
+      <div className="px-6 pt-5" key={`copy-${index}`} ref={copyWrap}>
+        <p
+          className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase"
+          data-copy
+        >
           {card ? card.kind : t("endKind")}
         </p>
-        <h1 className="mt-2.5 text-[38px] leading-[40px] font-bold tracking-[-0.03em]">
+        <h1
+          className="mt-2.5 text-[34px] leading-9 font-bold tracking-[-0.03em]"
+          data-copy
+        >
           {card ? card.title : t("endBig")}
         </h1>
-        <p className="mt-1 text-[18px] leading-6 font-light">
+        <p className="mt-1 text-[17px] leading-6 font-light" data-copy>
           {card ? card.subtitle : t("endSubtitle")}
         </p>
-        <p className="text-muted mt-3 text-[13px] leading-[19px]">
+
+        {card ? (
+          <p
+            className="text-muted mt-2 line-clamp-3 text-[14px] leading-5"
+            data-copy
+          >
+            {card.description}
+          </p>
+        ) : null}
+
+        {card ? (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+              <CalendarDays aria-hidden="true" size={13} strokeWidth={1.7} />
+              {card.date}
+            </span>
+            <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+              <MapPin aria-hidden="true" size={13} strokeWidth={1.7} />
+              {card.room}
+            </span>
+            {card.duration ? (
+              <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+                <Clock aria-hidden="true" size={13} strokeWidth={1.7} />
+                {card.duration} min
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+
+        <p className="text-muted mt-2 text-[13px] leading-[19px]">
           {card ? card.meta : t("endMeta")}
         </p>
       </div>
 
-      <div className="mt-auto flex gap-2.5 px-4 pt-6">
+      <div className="mt-auto flex gap-2.5 px-6 pt-5 pb-[calc(env(safe-area-inset-bottom)+20px)]">
         <button
           aria-label={t("skip")}
           className="border-ink hover:bg-surface focus-visible:outline-gold flex h-14 flex-1 items-center justify-center gap-2 rounded-full border-[1.5px] text-[14px] font-medium tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 active:scale-[0.98] disabled:opacity-40"
@@ -167,21 +270,6 @@ export default function Swipe() {
           {t("like")}
         </button>
       </div>
-
-      <div className="flex items-center gap-3.5 px-[22px] pt-5">
-        <p className="text-muted text-[12px] leading-4 font-medium tracking-[0.08em] tabular-nums">
-          {String(step).padStart(2, "0")} /{" "}
-          {String(EVENTS.length).padStart(2, "0")}
-        </p>
-        <div className="bg-line h-0.5 flex-1">
-          <div
-            className="bg-gold h-0.5 transition-[width] duration-300"
-            style={{ width: `${(step / EVENTS.length) * 100}%` }}
-          />
-        </div>
-      </div>
-
-      <FlowArrows step={2} />
 
       <p aria-live="polite" className="sr-only">
         {saved ?? ""}
