@@ -108,16 +108,18 @@
     "dinnerPlace": "Fino · für {count}"
   },
   "Checkout": {
-    "eyebrow": "TICKET",
+    "eyebrow": "Ticket",
     "title": "Dein Abend.",
-    "total": "GESAMT",
+    "total": "Gesamt",
     "included": "{count} {people} · Abendplan inklusive",
     "one": "Person",
     "few": "Personen",
     "many": "Personen",
     "buy": "Ticket kaufen",
     "calendar": "Kalender",
-    "share": "Teilen"
+    "share": "Teilen",
+    "date": "Datum",
+    "time": "Uhrzeit"
   },
   "Success": {
     "eyebrow": "BESTÄTIGUNG",
@@ -136,7 +138,9 @@
     "tip2Text": "Absätze für den Abend, Flache fürs Taxi.",
     "tip3Title": "Nichts Sportliches",
     "tip3Text": "Flip-Flops und Shorts bleiben zu Hause.",
-    "cta": "Beispiele ansehen"
+    "cta": "Beispiele ansehen",
+    "title": "Zieh dich an, wie du willst.",
+    "subtitle": "Ein paar Regeln, die immer funktionieren."
   },
   "Directions": {
     "title": "Wie findest du uns?",
@@ -145,7 +149,13 @@
     "mapAria": "Karte: Philharmonie in der Małopolska-Straße 48",
     "legend1": "12 Min. zu Fuß von Wały Chrobrego",
     "legend2": "Tiefgarage · 4 Min.",
-    "legend3": "Straßenbahn · Haltestelle 3 Min."
+    "legend3": "Straßenbahn · Haltestelle 3 Min.",
+    "eyebrow": "ANFAHRT",
+    "subtitle": "Mit dem Auto, der Tram oder zu Fuß.",
+    "mapLabel": "Dein Standort",
+    "mapPlaceholder": "Adresse oder Ort eingeben",
+    "mapOpen": "In Maps öffnen",
+    "mapLocate": "Mich lokalisieren"
   },
   "FlowNav": {
     "stepHome": "Start",
@@ -256,7 +266,18 @@
     "de": "Deutsch"
   },
   "EventInfo": {
-    "eyebrow": "VERANSTALTUNGSINFOS"
+    "eyebrow": "VERANSTALTUNGSINFOS",
+    "about": "ÜBER DAS KONZERT",
+    "aboutP1": "Dieser Abend ist so gedacht, dass du kein Stück und keinen Komponistennamen kennen musst. Komm einfach — den Rest erzählen wir unterwegs.",
+    "aboutP2": "Lehn dich zurück und lass dich von der Musik an die Hand nehmen. Nach dem Konzert kannst du zu einem kurzen Gespräch mit den Künstlern bleiben.",
+    "programme": "DER ABEND",
+    "prog1Title": "Einlass",
+    "prog1Text": "Wir öffnen die Türen 30 Minuten vor Beginn. Die Garderobe ist am Haupteingang.",
+    "prog2Title": "Das Konzert",
+    "prog2Text": "Ohne Pause, etwa eine Stunde. Wenn etwas entgeht — das gehört zum Abenteuer.",
+    "prog3Title": "Danach",
+    "prog3Text": "Bleib noch einen Moment. Wir sprechen darüber, was wir gehört haben.",
+    "home": "Zurück zur Startseite"
   },
   "Parking": {
     "eyebrow": "PARKING",
@@ -276,6 +297,11 @@
     "unavailable": "Keine Tickets",
     "free": "Eintritt frei",
     "duration": "{count} Min.",
-    "age": "ab {age} Jahren"
+    "age": "ab {age} Jahren",
+    "play": "Hörprobe abspielen",
+    "pause": "Pause"
+  },
+  "Matching": {
+    "title": "Wir finden etwas für dich"
   }
 }

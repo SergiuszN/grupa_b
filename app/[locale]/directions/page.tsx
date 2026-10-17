@@ -1,6 +1,8 @@
+import { Car, Clock, MapPin } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { VenueMap } from "@/components/directions/venue-map";
 
 const LEGEND = [
   { color: "bg-gold", key: "legend1" },
@@ -8,19 +10,34 @@ const LEGEND = [
   { color: "bg-[#C8C4BC]", key: "legend3" },
 ] as const;
 
+const PARKING = [
+  { key: "entrance", Icon: Car },
+  { key: "level", Icon: MapPin },
+  { key: "walk", Icon: Clock },
+] as const;
+
 export default async function Directions() {
   const t = await getTranslations("Directions");
+  const p = await getTranslations("Parking");
 
   return (
     <Screen>
       <FlowSteps items={INFO_FLOW} step={1} />
 
-      <h1
-        className="px-6 pt-4 text-[32px] leading-9 font-bold tracking-[-0.03em]"
-        data-flow="title"
-      >
-        {t("title")}
-      </h1>
+      <div className="px-6 pt-4">
+        <h1
+          className="text-[32px] leading-9 font-bold tracking-[-0.03em]"
+          data-flow="title"
+        >
+          {t("title")}
+        </h1>
+        <p
+          className="text-muted mt-2 text-[15px] leading-[22px]"
+          data-flow="copy"
+        >
+          {t("subtitle")}
+        </p>
+      </div>
 
       <div
         className="border-line mx-6 mt-4 flex items-center justify-between rounded-2xl border px-4 py-3.5"
@@ -30,9 +47,7 @@ export default async function Directions() {
           <p className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
             {t("venue")}
           </p>
-          <p className="text-[16px] leading-5 font-medium">
-            {t("address")}
-          </p>
+          <p className="text-[16px] leading-5 font-medium">{t("address")}</p>
         </div>
         <svg
           aria-hidden="true"
@@ -50,38 +65,8 @@ export default async function Directions() {
         </svg>
       </div>
 
-      <div className="mx-6 mt-3.5 h-[280px] overflow-clip rounded-[22px] bg-[#F4F1EA]" data-flow="media">
-        <svg
-          aria-label={t("mapAria")}
-          className="h-full w-full"
-          role="img"
-          viewBox="0 0 350 280"
-        >
-          <rect fill="#F4F1EA" height="280" width="350" />
-          <path
-            d="M0 168 C70 150, 120 190, 180 176 C250 160, 290 188, 350 170 L350 280 L0 280 Z"
-            fill="#E7E2D6"
-          />
-          <path
-            d="M0 40 H350 M0 96 H350 M0 210 H350 M78 0 V280 M168 0 V168 M248 0 V280"
-            fill="#000000"
-            stroke="#FFFFFF"
-            strokeWidth="7"
-          />
-          <path
-            d="M36 228 C78 196, 112 188, 150 156 C186 126, 198 118, 214 104"
-            fill="none"
-            stroke="#AD891C"
-            strokeLinecap="round"
-            strokeWidth="2.5"
-          />
-          <circle cx="36" cy="228" fill="#111111" r="5" />
-          <path
-            d="M214 78c-9 0-15 7-15 15 0 11 15 26 15 26s15-15 15-26c0-8-6-15-15-15z"
-            fill="#111111"
-          />
-          <circle cx="214" cy="93" fill="#AD891C" r="4" />
-        </svg>
+      <div className="mx-6 mt-3.5" data-flow="media">
+        <VenueMap />
       </div>
 
       <div className="flex flex-col gap-3 px-6 pt-4">
@@ -94,6 +79,30 @@ export default async function Directions() {
             <p className="text-[14px] leading-[18px]">{t(item.key)}</p>
           </div>
         ))}
+      </div>
+
+      <div className="px-6 pt-7" data-flow="copy">
+        <p className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          {p("eyebrow")}
+        </p>
+        <h2 className="mt-2 text-[22px] leading-[26px] font-bold tracking-[-0.03em]">
+          {p("title")}
+        </h2>
+        <p className="text-muted mt-1.5 text-[14px] leading-5">{p("body")}</p>
+
+        <div className="mt-3 flex flex-col gap-2.5">
+          {PARKING.map(({ key, Icon }) => (
+            <div className="flex items-center gap-3" data-flow-item key={key}>
+              <Icon
+                aria-hidden="true"
+                className="text-gold shrink-0"
+                size={17}
+                strokeWidth={1.7}
+              />
+              <p className="text-[14px] leading-[18px]">{p(key)}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex-1" />

@@ -18,12 +18,11 @@ export const FLOW: readonly FlowItem[] = [
   { href: "/directions", label: "Dojazd" },
 ];
 
-/** Post-purchase info trail: what to wear, how to get there, the event, parking. */
+/** Post-purchase info trail: what to wear, how to get there, the event. */
 export const INFO_FLOW: readonly FlowItem[] = [
   { href: "/onboarding", label: "Ubiór" },
   { href: "/directions", label: "Dystans" },
   { href: "/event-info", label: "Wydarzenie" },
-  { href: "/parking", label: "Parking" },
 ];
 
 type Tone = "dark" | "light";
@@ -40,14 +39,14 @@ export function FlowSteps({
   return (
     <div
       aria-hidden="true"
-      className="flex items-center justify-center gap-[7px] pt-4"
+      className="flex items-center justify-center gap-2.5 pt-5 pb-2"
     >
       {items.map((item, index) => (
         <span
-          className={`h-1.5 rounded-full transition-all ${
+          className={`h-2 rounded-full transition-all ${
             index === step
-              ? "bg-gold w-[18px]"
-              : `w-1.5 ${tone === "dark" ? "bg-paper/35" : "bg-[#D9D4CB]"}`
+              ? "bg-gold w-[24px]"
+              : `w-2 ${tone === "dark" ? "bg-paper/35" : "bg-[#D9D4CB]"}`
           }`}
           data-flow-dot
           key={item.href}
@@ -104,9 +103,7 @@ export function FlowArrows({
         >
           <ArrowLeft aria-hidden="true" size={18} strokeWidth={1.8} />
         </Link>
-      ) : (
-        <span className="size-11 shrink-0" />
-      )}
+      ) : null}
 
       {href ? (
         <Link

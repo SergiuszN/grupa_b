@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Link } from "@/i18n/routing";
+import { eventSlug } from "@/lib/format";
 import {
   CalendarDays,
   ChevronRight,
@@ -272,7 +273,7 @@ export function CalendarList({
                       return term.eventId ? (
                         <Link
                           className="group hover:bg-surface focus-visible:outline-gold flex items-center gap-3.5 px-1 py-4 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 rounded-xl"
-                          href={`/calendar/${term.eventId}`}
+                          href={`/calendar/${eventSlug(term.eventId, term.title)}`}
                           key={itemKey}
                         >
                           {cardContent}

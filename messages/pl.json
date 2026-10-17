@@ -108,16 +108,18 @@
     "dinnerPlace": "Fino · na {count}"
   },
   "Checkout": {
-    "eyebrow": "BILET",
+    "eyebrow": "Bilet",
     "title": "Twój wieczór.",
-    "total": "RAZEM",
+    "total": "Razem",
     "included": "{count} {people} · plan wieczoru w cenie",
     "one": "osoba",
     "few": "osoby",
     "many": "osób",
     "buy": "Kup bilet",
     "calendar": "Kalendarz",
-    "share": "Udostępnij"
+    "share": "Udostępnij",
+    "date": "Data",
+    "time": "Godzina"
   },
   "Success": {
     "eyebrow": "POTWIERDZENIE",
@@ -136,7 +138,9 @@
     "tip2Text": "Obcas na wieczór, płaskie do taksówki.",
     "tip3Title": "Nic ze sportu",
     "tip3Text": "Klapki i szorty zostają w domu.",
-    "cta": "Zobacz przykłady"
+    "cta": "Zobacz przykłady",
+    "title": "Ubierz się po swojemu.",
+    "subtitle": "Kilka zasad, które zawsze się sprawdzają."
   },
   "Directions": {
     "title": "Jak do nas trafić?",
@@ -145,7 +149,13 @@
     "mapAria": "Mapa: Filharmonia przy ul. Małopolskiej 48",
     "legend1": "12 min pieszo z Wałów Chrobrego",
     "legend2": "Parking podziemny · 4 min",
-    "legend3": "Tramwaj · przystanek 3 min"
+    "legend3": "Tramwaj · przystanek 3 min",
+    "eyebrow": "DOJAZD",
+    "subtitle": "Samochodem, tramwajem albo pieszo.",
+    "mapLabel": "Twoja lokalizacja",
+    "mapPlaceholder": "Wpisz adres lub miejsce",
+    "mapOpen": "Otwórz w Maps",
+    "mapLocate": "Zlokalizuj mnie"
   },
   "FlowNav": {
     "stepHome": "Start",
@@ -256,7 +266,18 @@
     "de": "Deutsch"
   },
   "EventInfo": {
-    "eyebrow": "INFORMACJE O WYDARZENIU"
+    "eyebrow": "INFORMACJE O WYDARZENIU",
+    "about": "O KONCERCIE",
+    "aboutP1": "To wieczór pomyślany tak, żebyś nie musiał znać żadnego utworu ani nazwiska kompozytora. Wystarczy, że przyjdziesz — resztę opowiemy po drodze.",
+    "aboutP2": "Usiądź wygodnie i pozwól muzyce poprowadzić się za rękę. Po koncercie możesz zostać na krótkiej rozmowie z artystami.",
+    "programme": "PRZEBIEG WIECZORU",
+    "prog1Title": "Wejście do sali",
+    "prog1Text": "Otwieramy drzwi 30 minut przed startem. Szatnia jest przy wejściu głównym.",
+    "prog2Title": "Koncert",
+    "prog2Text": "Bez przerwy, około godziny. Jeśli coś umknie — to część przygody.",
+    "prog3Title": "Po koncercie",
+    "prog3Text": "Zostań chwilę. Porozmawiamy o tym, co usłyszeliśmy.",
+    "home": "Wróć na stronę główną"
   },
   "Parking": {
     "eyebrow": "PARKING",
@@ -276,6 +297,11 @@
     "unavailable": "Bilety niedostępne",
     "free": "Wstęp wolny",
     "duration": "{count} min",
-    "age": "od {age} lat"
+    "age": "od {age} lat",
+    "play": "Odtwórz fragment",
+    "pause": "Zatrzymaj"
+  },
+  "Matching": {
+    "title": "Znajdujemy dla Ciebie"
   }
 }

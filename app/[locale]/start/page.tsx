@@ -49,6 +49,7 @@ export default function Start() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [picked, setPicked] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const fadeRef = useRef<HTMLDivElement>(null);
 
   const question = QUESTIONS[step];
 
@@ -69,19 +70,19 @@ export default function Start() {
     tl.fromTo(
       q("[data-q-eyebrow]"),
       { y: 8, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.4 },
+      { y: 0, autoAlpha: 1, duration: 0.18 },
     )
       .fromTo(
         q("[data-q-title]"),
         { y: 26, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.62 },
-        "-=0.26",
+        { y: 0, autoAlpha: 1, duration: 0.28 },
+        "-=0.12",
       )
       .fromTo(
         q("[data-q-option]"),
         { y: 18, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.07 },
-        "-=0.34",
+        { y: 0, autoAlpha: 1, duration: 0.24, stagger: 0.03 },
+        "-=0.14",
       );
 
     return () => {
@@ -100,40 +101,57 @@ export default function Start() {
     if (!still) {
       gsap
         .timeline()
-        .to(element, { scale: 0.96, duration: 0.12, ease: "power2.out" })
-        .to(element, { scale: 1, duration: 0.42, ease: "back.out(2.4)" });
+        .to(element, { scale: 0.96, duration: 0.07, ease: "power2.out" })
+        .to(element, { scale: 1, duration: 0.22, ease: "back.out(2.4)" });
     }
 
     window.setTimeout(() => {
       if (!still && stageRef.current) {
         gsap.to(stageRef.current, {
-          y: -22,
+          y: -18,
           autoAlpha: 0,
-          duration: 0.26,
+          duration: 0.14,
           ease: "power2.in",
         });
       }
-    }, 210);
+    }, 70);
 
     window.setTimeout(() => {
-      setPicked(null);
-
       if (step === QUESTIONS.length - 1) {
         localStorage.setItem(TASTE_KEY, JSON.stringify(next));
-        router.push("/swipe");
+        const fade = fadeRef.current;
+
+        if (!still && fade) {
+          gsap.to(fade, {
+            autoAlpha: 1,
+            duration: 0.34,
+            ease: "power2.inOut",
+            delay: 0.04,
+            onComplete: () => router.push("/matching"),
+          });
+        } else {
+          router.push("/matching");
+        }
+
         return;
       }
 
+      setPicked(null);
       setStep(step + 1);
-    }, still ? 140 : 540);
+    }, still ? 60 : 200);
   }
 
   return (
     <Screen>
+      <div
+        aria-hidden="true"
+        className="bg-paper pointer-events-none fixed inset-0 z-50 opacity-0"
+        ref={fadeRef}
+      />
       <FlowSteps step={1} />
 
       <div
-        className="flex flex-1 flex-col justify-center px-6"
+        className="flex flex-1 flex-col justify-center overflow-hidden px-6"
         key={step}
         ref={stageRef}
       >

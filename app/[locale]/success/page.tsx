@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { Check, Info } from "lucide-react";
+import { CalendarDays, Check, Clock, Info, Music, Users } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
@@ -9,6 +9,7 @@ import { Screen } from "@/components/flow/screen";
 import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 import { prefersStillMotion } from "@/lib/motion";
+import { sentenceCase } from "@/lib/format";
 
 const CONFETTI = [
   { left: 6, delay: 0, duration: 2600, size: 8, color: "#AD891C", round: false },
@@ -38,6 +39,7 @@ export default function Success() {
   const badgeRef = useRef<HTMLDivElement>(null);
   const label =
     people === 1 ? tCheckout("one") : people < 5 ? tCheckout("few") : tCheckout("many");
+  const [weekday, time] = event.date.split("·").map((part) => part.trim());
 
   useEffect(() => {
     const badge = badgeRef.current;
@@ -127,17 +129,30 @@ export default function Success() {
           {t("body")}
         </p>
 
-        <p
-          className="bg-surface mt-7 rounded-full px-4 py-2 text-[13px] leading-5 font-medium"
-          data-flow-item
+        <div
+          className="mt-7 flex flex-wrap items-center justify-center gap-2"
+          data-flow="media"
         >
-          {t("summary", {
-            title: event.title,
-            date: event.date,
-            count: people,
-            people: label,
-          })}
-        </p>
+          {[
+            { Icon: Music, label: event.title },
+            { Icon: CalendarDays, label: sentenceCase(weekday) },
+            { Icon: Clock, label: time },
+            { Icon: Users, label: `${people} ${label}` },
+          ].map(({ Icon, label: text }) => (
+            <p
+              className="bg-surface flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] leading-5 font-medium"
+              key={text}
+            >
+              <Icon
+                aria-hidden="true"
+                className="text-gold"
+                size={15}
+                strokeWidth={1.8}
+              />
+              {text}
+            </p>
+          ))}
+        </div>
       </div>
 
       <div className="px-6 pb-2" data-flow="actions">

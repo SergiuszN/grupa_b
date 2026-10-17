@@ -17,6 +17,7 @@ export type EventInfo = {
   meta: string;
   description: string;
   duration?: number;
+  audio?: boolean;
   image: string;
   i18n?: Record<"en" | "de", Localized>;
 };
@@ -33,6 +34,7 @@ export const EVENTS: EventInfo[] = [
     description:
       "Dlaczego jedna melodia zostaje w głowie na całe życie? W cyklu Pomniki symfoniki razem z orkiestrą szukamy odpowiedzi — od pierwszego taktu Symfonii nr 40. Usłyszymy, jak z prostego motywu powstaje utwór, który zna cały świat.",
     duration: 65,
+    audio: true,
     image: "/images/events/mozart.jpg",
     i18n: {
       en: {
@@ -66,6 +68,7 @@ export const EVENTS: EventInfo[] = [
     description:
       "Płyta nominowana do Grammy 2026 w kategorii muzyki kameralnej. Dwie gitary, Chopin i Pasieczny — wieczór, który brzmi jak odkrycie. Kowalski i Grgić zagrają program, który przyniósł im nominację.",
     duration: 65,
+    audio: true,
     image: "/images/events/slavic.jpg",
     i18n: {
       en: {
@@ -98,6 +101,7 @@ export const EVENTS: EventInfo[] = [
     meta: "Wokalistka i zespół sześcioosobowy",
     description:
       "Jedna z najbardziej charyzmatycznych polskich wokalistek wraca do jazzu i soulu, które ukształtowały jej dom. Usłyszymy Insides w całości, w składzie, w którym powstał.",
+    audio: true,
     image: "/images/events/przybysz.jpg",
     i18n: {
       en: {
@@ -164,6 +168,7 @@ export const EVENTS: EventInfo[] = [
     description:
       "Vivaldi dla najmłodszych: godzina muzyki, ruchu i opowieści o tym, co słychać wiosną, latem, jesienią i zimą. Koncert prowadzony tak, żeby pięciolatek nie usiedział w miejscu.",
     duration: 60,
+    audio: true,
     image: "/images/hall-symphonic.jpg",
     i18n: {
       en: {

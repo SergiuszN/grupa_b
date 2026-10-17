@@ -4,12 +4,17 @@ import {
   CalendarDays,
   Clock,
   MapPin,
+  Music,
+  Music2,
   Ticket,
+  UserRound,
   Users,
 } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Screen } from "@/components/flow/screen";
+import { PlayButton } from "@/components/calendar/play-button";
 import { Link } from "@/i18n/routing";
+import { eventIdFromSlug } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +64,24 @@ function categoryKey(category: string | null) {
   return "others" as const;
 }
 
+/** Long descriptions read better in pairs of sentences. */
+function paragraphsOf(text: string) {
+  const sentences = text
+    .split(
+      /(?<!\bnp\.)(?<!\bm\.in\.)(?<!\bitp\.)(?<!\bitd\.)(?<!\btzn\.)(?<!\bprof\.)(?<!\bdr\.)(?<!\bśw\.)(?<!\bul\.)(?<=[.!?])\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ„"«])/,
+    )
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+
+  if (sentences.length <= 2) return [text.trim()];
+
+  const paragraphs: string[] = [];
+  for (let i = 0; i < sentences.length; i += 2) {
+    paragraphs.push(sentences.slice(i, i + 2).join(" "));
+  }
+  return paragraphs;
+}
+
 export default async function EventPage({
   params,
 }: {
@@ -67,10 +90,13 @@ export default async function EventPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
 
+  const eventId = eventIdFromSlug(id);
+  if (eventId === null) notFound();
+
   const [t, tc, event] = await Promise.all([
     getTranslations("EventDetail"),
     getTranslations("Calendar"),
-    getEvent(id, locale),
+    getEvent(String(eventId), locale),
   ]);
 
   if (!event) notFound();
@@ -106,9 +132,20 @@ export default async function EventPage({
         <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.14em]">
           {tc(categoryKey(event.calendar_category))}
         </p>
-        <h1 className="mt-1.5 text-[32px] leading-9 font-bold tracking-[-0.03em]">
-          {event.title}
-        </h1>
+        <div className="mt-1.5 flex items-start justify-between gap-3">
+          <h1 className="min-w-0 flex-1 text-[32px] leading-9 font-bold tracking-[-0.03em]">
+            {event.title}
+          </h1>
+          {event.calendar_category === "concerts" ? (
+            <div className="mt-1">
+              <PlayButton
+                label={t("play")}
+                pauseLabel={t("pause")}
+                src="/audio/preview.mp3"
+              />
+            </div>
+          ) : null}
+        </div>
         {event.subtitle ? (
           <p className="text-muted mt-2 text-[16px] leading-6">
             {event.subtitle}
@@ -144,25 +181,38 @@ export default async function EventPage({
       </div>
 
       {event.description ? (
-        <section className="px-6 pt-6">
-          <p className="text-[15px] leading-[23px]">{event.description}</p>
+        <section className="flex flex-col gap-3 px-6 pt-6">
+          {paragraphsOf(event.description).map((paragraph, index) => (
+            <p className="text-[15px] leading-[23px]" key={index}>
+              {paragraph}
+            </p>
+          ))}
         </section>
       ) : null}
 
       {event.works && event.works.length > 0 ? (
         <section className="px-6 pt-7">
-          <h2 className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          <h2 className="text-muted flex items-center gap-1.5 text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+            <Music aria-hidden="true" size={13} strokeWidth={1.7} />
             {t("programme")}
           </h2>
           <ul className="mt-3 flex flex-col gap-3">
             {event.works.map((work) => (
-              <li key={work.id}>
-                <p className="text-[15px] leading-5 font-medium">{work.title}</p>
-                {work.composer?.name ? (
-                  <p className="text-muted text-[13px] leading-4">
-                    {work.composer.name}
-                  </p>
-                ) : null}
+              <li className="flex items-start gap-2.5" key={work.id}>
+                <Music2
+                  aria-hidden="true"
+                  className="text-gold mt-0.5 shrink-0"
+                  size={15}
+                  strokeWidth={1.7}
+                />
+                <div>
+                  <p className="text-[15px] leading-5 font-medium">{work.title}</p>
+                  {work.composer?.name ? (
+                    <p className="text-muted text-[13px] leading-4">
+                      {work.composer.name}
+                    </p>
+                  ) : null}
+                </div>
               </li>
             ))}
           </ul>
@@ -171,19 +221,33 @@ export default async function EventPage({
 
       {event.artists && event.artists.length > 0 ? (
         <section className="px-6 pt-7">
-          <h2 className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
-            {t("performers")}
-          </h2>
-          <ul className="mt-3 flex flex-col gap-2">
-            {event.artists.map((artist) => (
-              <li className="text-[15px] leading-5" key={artist.id}>
-                {artist.name}
-                {artist.role ? (
-                  <span className="text-muted"> — {artist.role}</span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
+          <div className="bg-surface rounded-[20px] px-[18px] py-4">
+            <h2 className="text-muted flex items-center gap-1.5 text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+              <UserRound aria-hidden="true" size={13} strokeWidth={1.7} />
+              {t("performers")}
+            </h2>
+            <ul className="mt-3 flex flex-col gap-2">
+              {event.artists.map((artist) => (
+                <li
+                  className="flex items-start gap-2.5 text-[15px] leading-5"
+                  key={artist.id}
+                >
+                  <UserRound
+                    aria-hidden="true"
+                    className="text-gold mt-0.5 shrink-0"
+                    size={15}
+                    strokeWidth={1.7}
+                  />
+                  <span>
+                    {artist.name}
+                    {artist.role ? (
+                      <span className="text-muted"> — {artist.role}</span>
+                    ) : null}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
       ) : null}
 

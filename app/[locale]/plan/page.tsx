@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { gsap } from "gsap";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
@@ -103,12 +103,26 @@ export default function Plan() {
             </button>
 
             <div aria-live="polite" className="flex flex-col items-center">
-              <p
-                className="text-[96px] leading-[92px] font-light tracking-[-0.05em]"
-                ref={numberRef}
-              >
-                {people}
-              </p>
+              <div className="flex items-center gap-2.5">
+                <Users
+                  aria-hidden="true"
+                  className="text-gold"
+                  size={44}
+                  strokeWidth={1.4}
+                />
+                <span
+                  aria-hidden="true"
+                  className="text-muted text-[26px] leading-none font-light"
+                >
+                  ×
+                </span>
+                <p
+                  className="text-[96px] leading-[92px] font-light tracking-[-0.05em]"
+                  ref={numberRef}
+                >
+                  {people}
+                </p>
+              </div>
               <p className="mt-1 text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
                 {people === 1 ? t("one") : people < 5 ? t("few") : t("many")}
               </p>

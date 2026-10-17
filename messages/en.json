@@ -108,16 +108,18 @@
     "dinnerPlace": "Fino · for {count}"
   },
   "Checkout": {
-    "eyebrow": "TICKET",
+    "eyebrow": "Ticket",
     "title": "Your evening.",
-    "total": "TOTAL",
+    "total": "Total",
     "included": "{count} {people} · evening plan included",
     "one": "person",
     "few": "people",
     "many": "people",
     "buy": "Buy ticket",
     "calendar": "Calendar",
-    "share": "Share"
+    "share": "Share",
+    "date": "Date",
+    "time": "Time"
   },
   "Success": {
     "eyebrow": "CONFIRMATION",
@@ -136,7 +138,9 @@
     "tip2Text": "Heels for the evening, flats for the taxi.",
     "tip3Title": "Nothing sporty",
     "tip3Text": "Flip-flops and shorts stay at home.",
-    "cta": "See examples"
+    "cta": "See examples",
+    "title": "Dress your own way.",
+    "subtitle": "A few rules that always work."
   },
   "Directions": {
     "title": "How to find us?",
@@ -145,7 +149,13 @@
     "mapAria": "Map: the Philharmonic at 48 Małopolska Street",
     "legend1": "12 min walk from Wały Chrobrego",
     "legend2": "Underground car park · 4 min",
-    "legend3": "Tram · stop 3 min away"
+    "legend3": "Tram · stop 3 min away",
+    "eyebrow": "GETTING HERE",
+    "subtitle": "By car, tram or on foot.",
+    "mapLabel": "Your location",
+    "mapPlaceholder": "Enter an address or place",
+    "mapOpen": "Open in Maps",
+    "mapLocate": "Locate me"
   },
   "FlowNav": {
     "stepHome": "Home",
@@ -256,7 +266,18 @@
     "de": "Deutsch"
   },
   "EventInfo": {
-    "eyebrow": "EVENT INFORMATION"
+    "eyebrow": "EVENT INFORMATION",
+    "about": "ABOUT THE CONCERT",
+    "aboutP1": "This evening is designed so you don't need to know any piece or composer's name. Just come — we'll tell you the rest along the way.",
+    "aboutP2": "Sit back and let the music take you by the hand. After the concert you can stay for a short talk with the artists.",
+    "programme": "THE EVENING",
+    "prog1Title": "Doors open",
+    "prog1Text": "We open the doors 30 minutes before the start. The cloakroom is by the main entrance.",
+    "prog2Title": "The concert",
+    "prog2Text": "Without an interval, about an hour. If something slips by — that's part of the adventure.",
+    "prog3Title": "Afterwards",
+    "prog3Text": "Stay a moment. We'll talk about what we heard.",
+    "home": "Back to home"
   },
   "Parking": {
     "eyebrow": "PARKING",
@@ -276,6 +297,11 @@
     "unavailable": "Tickets unavailable",
     "free": "Free entry",
     "duration": "{count} min",
-    "age": "from age {age}"
+    "age": "from age {age}",
+    "play": "Play preview",
+    "pause": "Pause"
+  },
+  "Matching": {
+    "title": "Finding something for you"
   }
 }

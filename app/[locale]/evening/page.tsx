@@ -1,25 +1,34 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import {
+  Footprints,
+  Martini,
+  Shirt,
+  UtensilsCrossed,
+  type LucideIcon,
+} from "lucide-react";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { useFlow } from "@/lib/use-flow";
 
-const BEFORE = [
-  { time: "18:30", title: "drinks", place: "barName" },
-  { time: "19:15", title: "walk", place: "walkPlace" },
-  { time: "19:45", title: "cloakroom", place: "cloakroomPlace" },
-] as const;
+const BEFORE: { time: string; title: string; place: string; Icon: LucideIcon }[] = [
+  { time: "18:30", title: "drinks", place: "barName", Icon: Martini },
+  { time: "19:15", title: "walk", place: "walkPlace", Icon: Footprints },
+  { time: "19:45", title: "cloakroom", place: "cloakroomPlace", Icon: Shirt },
+];
 
 function Row({
   time,
   title,
   place,
+  Icon,
   last = false,
 }: {
   time: string;
   title: string;
   place: string;
+  Icon?: LucideIcon;
   last?: boolean;
 }) {
   return (
@@ -32,7 +41,15 @@ function Row({
       <span className="text-muted w-[52px] shrink-0 text-[14px] leading-[18px] font-medium">
         {time}
       </span>
-      <span className="text-ink flex-1 text-[16px] leading-5 font-medium">
+      <span className="text-ink flex flex-1 items-center gap-2 text-[16px] leading-5 font-medium">
+        {Icon ? (
+          <Icon
+            aria-hidden="true"
+            className="text-gold shrink-0 self-center"
+            size={16}
+            strokeWidth={1.7}
+          />
+        ) : null}
         {title}
       </span>
       <span className="text-muted w-[118px] shrink-0 text-right text-[13px] leading-4">
@@ -58,13 +75,7 @@ export default function Evening() {
     <Screen>
       <FlowSteps step={4} />
 
-      <div className="flex flex-col gap-1.5 px-6 pt-3 pb-2.5">
-        <p
-          className="text-gold text-[12px] leading-4 font-medium tracking-[0.14em] uppercase"
-          data-flow="eyebrow"
-        >
-          {t("eyebrow")}
-        </p>
+      <div className="px-6 pt-4 pb-2.5">
         <h1
           className="text-[30px] leading-[34px] font-bold tracking-[-0.03em]"
           data-flow="title"
@@ -77,6 +88,7 @@ export default function Evening() {
         <Label>{t("before")}</Label>
         {BEFORE.map((item) => (
           <Row
+            Icon={item.Icon}
             key={item.title}
             place={t(item.place)}
             time={item.time}
@@ -107,6 +119,7 @@ export default function Evening() {
       <div className="px-6 pt-4">
         <Label>{t("after")}</Label>
         <Row
+          Icon={UtensilsCrossed}
           last
           place={t("dinnerPlace", { count: people })}
           time="22:15"

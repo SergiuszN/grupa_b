@@ -28,29 +28,89 @@ export function FlowMotion() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.from(q("header"), { yPercent: -15, autoAlpha: 0, duration: 0.65 }, 0)
-        .from(
+      tl.fromTo(
+        q("header"),
+        { yPercent: -15, autoAlpha: 0 },
+        { yPercent: 0, autoAlpha: 1, duration: 0.65, clearProps: "transform,visibility" },
+        0,
+      )
+        .fromTo(
           q("[data-flow-dot]"),
-          { scale: 0, autoAlpha: 0, duration: 0.45, stagger: 0.05, ease: "back.out(2.4)" },
+          { scale: 0, autoAlpha: 0 },
+          {
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.45,
+            stagger: 0.05,
+            ease: "back.out(2.4)",
+            clearProps: "transform,visibility",
+          },
           0.08,
         )
-        .from(q('[data-flow="eyebrow"]'), { y: 8, autoAlpha: 0, duration: 0.45 }, 0.12)
-        .from(q('[data-flow="title"]'), { y: 26, autoAlpha: 0, duration: 0.75 }, 0.2)
-        .from(
+        .fromTo(
+          q('[data-flow="eyebrow"]'),
+          { y: 8, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.45, clearProps: "transform,visibility" },
+          0.12,
+        )
+        .fromTo(
+          q('[data-flow="title"]'),
+          { y: 26, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.75, clearProps: "transform,visibility" },
+          0.2,
+        )
+        .fromTo(
           q('[data-flow="copy"]'),
-          { y: 14, autoAlpha: 0, duration: 0.55, stagger: 0.07 },
+          { y: 14, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.55,
+            stagger: 0.07,
+            clearProps: "transform,visibility",
+          },
           0.34,
         )
-        .from(q('[data-flow="image"]'), { scale: 1.12, duration: 1.5, ease: "power2.out" }, 0.1)
-        .from(q('[data-flow="media"]'), { y: 28, autoAlpha: 0, duration: 0.75 }, 0.38)
-        .from(
+        .fromTo(
+          q('[data-flow="image"]'),
+          { scale: 1.12, autoAlpha: 0 },
+          {
+            scale: 1,
+            autoAlpha: 1,
+            duration: 1.5,
+            ease: "power2.out",
+            clearProps: "transform,visibility",
+          },
+          0.1,
+        )
+        .fromTo(
+          q('[data-flow="media"]'),
+          { y: 28, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.75, clearProps: "transform,visibility" },
+          0.38,
+        )
+        .fromTo(
           q("[data-flow-item]"),
-          { y: 16, autoAlpha: 0, duration: 0.5, stagger: 0.06 },
+          { y: 16, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.5,
+            stagger: 0.06,
+            clearProps: "transform,visibility",
+          },
           0.44,
         )
-        .from(
+        .fromTo(
           q('[data-flow="actions"]'),
-          { y: 16, autoAlpha: 0, duration: 0.55, stagger: 0.06 },
+          { y: 16, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.55,
+            stagger: 0.06,
+            clearProps: "transform,visibility",
+          },
           0.52,
         );
 

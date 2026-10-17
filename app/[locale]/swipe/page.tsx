@@ -12,6 +12,7 @@ import { EVENTS, localizeEvent } from "@/lib/events";
 import { PreviewPlayer } from "@/components/swipe/preview-player";
 import { SWIPE_KEY } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
+import { sentenceCase } from "@/lib/format";
 
 const THRESHOLD = 96;
 
@@ -19,6 +20,7 @@ export default function Swipe() {
   const locale = useLocale();
   const router = useRouter();
   const t = useTranslations("Swipe");
+  const [deck, setDeck] = useState(EVENTS);
   const [index, setIndex] = useState(0);
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -28,8 +30,20 @@ export default function Swipe() {
   const cardWrap = useRef<HTMLDivElement>(null);
   const copyWrap = useRef<HTMLDivElement>(null);
 
-  const card = EVENTS[index] ? localizeEvent(EVENTS[index], locale) : undefined;
-  const step = Math.min(index + 1, EVENTS.length);
+  const card = deck[index] ? localizeEvent(deck[index], locale) : undefined;
+  const step = Math.min(index + 1, deck.length);
+
+  useEffect(() => {
+    const shuffled = [...EVENTS];
+
+    for (let i = shuffled.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- shuffle the deck once per visit
+    setDeck(shuffled);
+  }, []);
 
   useEffect(() => {
     if (prefersStillMotion()) {
@@ -84,7 +98,7 @@ export default function Swipe() {
     return () => {
       tl.kill();
     };
-  }, [index]);
+  }, [index, deck]);
 
   function decide(direction: -1 | 1) {
     if (!card || exit !== null) return;
@@ -106,7 +120,7 @@ export default function Swipe() {
         return;
       }
 
-      setIndex((current) => (current + 1) % EVENTS.length);
+      setIndex((current) => (current + 1) % deck.length);
       setExit(null);
       setDx(0);
       setDragging(false);
@@ -174,14 +188,16 @@ export default function Swipe() {
             />
           </div>
 
-          <div className="px-6 pt-3">
-            <PreviewPlayer
-              key={card.id}
-              label={t("preview")}
-              pauseLabel={t("pause")}
-              src="/audio/preview.mp3"
-            />
-          </div>
+          {card.audio ? (
+            <div className="px-6 pt-3">
+              <PreviewPlayer
+                key={card.id}
+                label={t("preview")}
+                pauseLabel={t("pause")}
+                src="/audio/preview.mp3"
+              />
+            </div>
+          ) : null}
         </>
       ) : (
         <div className="bg-surface ring-ink/10 mx-6 mt-3 flex min-h-[220px] flex-1 flex-col items-center justify-center gap-3 rounded-[24px] px-8 text-center ring-1">
@@ -228,11 +244,11 @@ export default function Swipe() {
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
             <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
               <CalendarDays aria-hidden="true" size={13} strokeWidth={1.7} />
-              {card.date}
+              {sentenceCase(card.date)}
             </span>
             <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
               <MapPin aria-hidden="true" size={13} strokeWidth={1.7} />
-              {card.room}
+              {sentenceCase(card.room)}
             </span>
             {card.duration ? (
               <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
