@@ -10,11 +10,17 @@ type RecorderOptions = {
   onLevel?: (level: number) => void;
   // Called when the speaker went quiet after talking (or never started).
   onSilence?: (heardSpeech: boolean) => void;
+  // How long to wait for the first word before giving up.
+  noSpeechTimeoutMs?: number;
+  // An already unlocked context for level metering; iOS keeps contexts created
+  // outside a tap suspended, which would make the recorder deaf to speech.
+  context?: AudioContext;
 };
 
 export type Recorder = {
   stop: () => Promise<Blob>;
   cancel: () => void;
+  heardSpeech: () => boolean;
 };
 
 const SPEECH_LEVEL = 0.04;
@@ -25,6 +31,8 @@ const MAX_RECORDING_MS = 30000;
 export async function startRecording({
   onLevel,
   onSilence,
+  noSpeechTimeoutMs = NO_SPEECH_TIMEOUT_MS,
+  context,
 }: RecorderOptions = {}): Promise<Recorder> {
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 },
@@ -36,10 +44,12 @@ export async function startRecording({
   };
   recorder.start(250);
 
-  const ctx = new AudioContext();
+  const shared = context?.state === "running" ? context : undefined;
+  const ctx = shared ?? new AudioContext();
   const analyser = ctx.createAnalyser();
   analyser.fftSize = 1024;
-  ctx.createMediaStreamSource(stream).connect(analyser);
+  const source = ctx.createMediaStreamSource(stream);
+  source.connect(analyser);
   const samples = new Float32Array(analyser.fftSize);
 
   const started = performance.now();
@@ -62,7 +72,7 @@ export async function startRecording({
     const quiet = now - lastSound;
     if (
       (heardSpeech && quiet > SILENCE_AFTER_SPEECH_MS) ||
-      (!heardSpeech && now - started > NO_SPEECH_TIMEOUT_MS) ||
+      (!heardSpeech && now - started > noSpeechTimeoutMs) ||
       now - started > MAX_RECORDING_MS
     ) {
       window.clearInterval(timer);
@@ -74,7 +84,8 @@ export async function startRecording({
     finished = true;
     window.clearInterval(timer);
     stream.getTracks().forEach((t) => t.stop());
-    void ctx.close();
+    source.disconnect();
+    if (!shared) void ctx.close();
     onLevel?.(0);
   };
 
@@ -95,6 +106,7 @@ export async function startRecording({
       if (recorder.state !== "inactive") recorder.stop();
       cleanup();
     },
+    heardSpeech: () => heardSpeech,
   };
 }
 
@@ -165,6 +177,11 @@ export class Player {
   unlock() {
     this.ctx ??= new AudioContext();
     if (this.ctx.state === "suspended") void this.ctx.resume();
+  }
+
+  // The unlocked context, shared with the recorder for level metering.
+  get context() {
+    return this.ctx ?? undefined;
   }
 
   get playing() {

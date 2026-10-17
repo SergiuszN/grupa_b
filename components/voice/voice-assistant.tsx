@@ -49,11 +49,48 @@ export function VoiceAssistant({
     useVoiceAssistant(locale);
   const [draft, setDraft] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  // Follow the conversation unless the user scrolled up to read older messages.
+  const followRef = useRef(true);
   const started = messages.length > 0;
+  const count = messages.length;
+
+  // How far the end of the conversation is below the top of the sticky bar.
+  const overflow = () => {
+    const end = endRef.current;
+    const bar = barRef.current;
+    if (!end || !bar) return 0;
+    return (
+      end.getBoundingClientRect().bottom - bar.getBoundingClientRect().top + 16
+    );
+  };
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, activity]);
+    const onScroll = () => {
+      followRef.current = overflow() < 80;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Streamed text, cards and late images all grow the list.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const observer = new ResizeObserver(() => {
+      const by = overflow();
+      if (followRef.current && by > 0) window.scrollBy({ top: by });
+    });
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    followRef.current = true;
+    const by = overflow();
+    if (by > 0) window.scrollBy({ top: by });
+  }, [count]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,6 +109,7 @@ export function VoiceAssistant({
       {started ? (
         <div
           aria-live="polite"
+          ref={listRef}
           className="flex flex-1 flex-col gap-5 px-6 pt-6 pb-4 md:mx-auto md:w-full md:max-w-[720px]"
         >
           {messages.map((m) => (
@@ -106,7 +144,10 @@ export function VoiceAssistant({
       )}
 
       {/* From md up the accessibility button floats bottom-right; on tablets it would cover the form. */}
-      <div className="bg-paper/95 sticky bottom-0 flex flex-col items-center px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+20px)] backdrop-blur md:pb-[calc(env(safe-area-inset-bottom)+84px)] lg:pb-6">
+      <div
+        ref={barRef}
+        className="bg-paper/95 sticky bottom-0 flex flex-col items-center px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+20px)] backdrop-blur md:pb-[calc(env(safe-area-inset-bottom)+84px)] lg:pb-6"
+      >
         <MicButton
           compact={started}
           label={caption}

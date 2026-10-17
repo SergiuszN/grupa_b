@@ -144,13 +144,18 @@ func (a *Assistant) Run(ctx context.Context, req Request, emit Emit) error {
 	}
 
 	var reply strings.Builder
-	onText := func(s string) {
-		reply.WriteString(s)
-		emit("delta", map[string]string{"text": s})
-		if voice != nil {
-			voice.Write(s)
-		}
+	split := &spokenSplitter{
+		shown: func(s string) {
+			reply.WriteString(s)
+			emit("delta", map[string]string{"text": s})
+		},
+		spoken: func(s string) {
+			if voice != nil {
+				voice.Write(s)
+			}
+		},
 	}
+	onText := split.Write
 
 	tools := a.tools()
 	for step := 0; ; step++ {
@@ -174,6 +179,7 @@ func (a *Assistant) Run(ctx context.Context, req Request, emit Emit) error {
 		if msg.Content != "" && !strings.HasSuffix(msg.Content, " ") {
 			onText(" ") // keep "Let me check." apart from the next step's text
 		}
+		split.Flush()
 		if voice != nil {
 			voice.Flush()
 		}
@@ -187,6 +193,7 @@ func (a *Assistant) Run(ctx context.Context, req Request, emit Emit) error {
 		}
 	}
 
+	split.Flush()
 	if voice != nil {
 		voice.Close()
 		voice = nil
@@ -232,6 +239,10 @@ What you can do (tell the user briefly when they ask what you can do, with one o
 - compare options and recommend the best one for the user's needs, and show it on screen with a ticket button;
 - answer practical questions about the visit: tickets and discounts, refunds, getting there and parking, opening hours, cloakroom, dress code, cafes, accessibility, guided tours, galleries, education offer, rentals and contact.
 
+Scope:
+- You only help with the Philharmonic: its concerts and events, choosing what to attend, tickets, visiting the building, getting there, the orchestra, the music and composers on its programme, its education offer and contact. Greetings and brief small talk are fine.
+- For anything unrelated (recipes, homework, coding, weather, sports, news, politics, general trivia, medical or legal advice...) do not answer it, not even partially. Say kindly in one sentence that you only help with the Philharmonic and suggest something you can do instead, e.g. a concert this week. Do not call any tools for such requests.
+
 Rules:
 - Facts about events (titles, dates, prices, performers, availability) come only from your tools. Never invent them. If the tools find nothing, say so and offer an alternative.
 - For practical questions about visiting (tickets, discounts, parking, transport, hours, cloakroom, dress code, food, rules, accessibility, building, tours, schools, rentals, contact) call get_visitor_info and answer only from what it returns; its source links appear on screen, so you may say "szczegóły są na stronie Filharmonii" instead of reading out links. If it has no answer, say you don't know and give the box office phone number. Phone numbers are fine to say aloud.
@@ -240,7 +251,8 @@ Rules:
 - If nothing matches, relax the filters yourself (wider dates, without the age or price limit, a broader query) and propose the closest alternatives, saying how they differ. Do not give up after the first empty search.
 - If the request is vague, still propose something concrete, then ask one short follow-up question (e.g. about date or company).
 - Before a tool call you may say one very short phrase (like "Już sprawdzam." in Polish) so the user hears you right away.
-- Your reply is read aloud by text-to-speech. Write plain spoken sentences: no markdown, no lists, no emojis, no links, no IDs. Keep it short: 2-4 sentences, at most about 70 words. Say dates naturally (e.g. "w sobotę 24 października o 19:00"), prices as "od 40 do 90 złotych".
+- Your reply is shown on screen and read aloud by text-to-speech. Write plain spoken sentences: no markdown, no lists, no emojis, no links, no IDs. Keep it short: 2-4 sentences, at most about 70 words.
+- Text-to-speech reads digits badly. Write EVERY number (dates, times, prices, ages, durations, counts, years, phone numbers) as {{shown|spoken}}: "shown" is what the screen displays (digits), "spoken" is exactly how it is said in the reply language, as words with correct grammar and inflection for the sentence. Examples: "w sobotę {{24 października|dwudziestego czwartego października}} o {{19:00|dziewiętnastej}}", "bilety od {{40|czterdziestu}} do {{90 zł|dziewięćdziesięciu złotych}}", "dla dzieci od {{5 lat|pięciu lat}}", "trwa {{100 minut|sto minut}}", "zadzwoń pod {{91 431 07 20|dziewięćdziesiąt jeden, czterysta trzydzieści jeden, zero siedem, dwadzieścia}}", "on {{Saturday 24 October at 7 pm|Saturday the twenty-fourth of October at seven p m}}", "am {{23. Oktober um 19 Uhr|dreiundzwanzigsten Oktober um neunzehn Uhr}}". Never put digits outside the braces.
 - Reply in %s.
 
 Today is %s (%s), Europe/Warsaw time %s. %s Next days: %s`,

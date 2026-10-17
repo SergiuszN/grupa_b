@@ -58,6 +58,9 @@ const TOOL_ACTIVITY: Record<string, Activity> = {
 
 let nextId = 1;
 
+const FOLLOW_UP_DELAY_MS = 350;
+const FOLLOW_UP_TIMEOUT_MS = 7000;
+
 export function useVoiceAssistant(lang: string) {
   const [status, setStatus] = useState<Status>("idle");
   const [activity, setActivity] = useState<Activity>(null);
@@ -70,6 +73,9 @@ export function useVoiceAssistant(lang: string) {
   const abortRef = useRef<AbortController | null>(null);
   const playerRef = useRef<Player | null>(null);
   const streamingRef = useRef(false);
+  // Hands-free conversation: after a spoken answer, listen for the follow-up.
+  const handsFreeRef = useRef(false);
+  const followUpRef = useRef<() => void>(() => {});
 
   const update = useCallback((fn: (m: ChatMessage[]) => ChatMessage[]) => {
     messagesRef.current = fn(messagesRef.current);
@@ -80,7 +86,9 @@ export function useVoiceAssistant(lang: string) {
     if (!playerRef.current) {
       playerRef.current = new Player();
       playerRef.current.onIdle = () => {
-        if (!streamingRef.current) setStatus("idle");
+        if (streamingRef.current) return;
+        setStatus("idle");
+        followUpRef.current();
       };
     }
     return playerRef.current;
@@ -198,6 +206,7 @@ export function useVoiceAssistant(lang: string) {
       streamingRef.current = false;
       setActivity(null);
       if (failed) {
+        handsFreeRef.current = false;
         setError(failed);
         // Drop the empty turn; keep a transcript the user may want to see.
         update((all) =>
@@ -210,7 +219,10 @@ export function useVoiceAssistant(lang: string) {
         patch(botId, (m) => ({ ...m, pending: false }));
       }
       await playerRef.current?.flushed();
-      if (!playerRef.current?.playing) setStatus("idle");
+      if (!playerRef.current?.playing) {
+        setStatus("idle");
+        followUpRef.current(); // no audio (e.g. speech failed): still keep listening
+      }
     },
     [lang, update],
   );
@@ -226,6 +238,7 @@ export function useVoiceAssistant(lang: string) {
     }
     setStatus("processing");
     setActivity("transcribing");
+    handsFreeRef.current = true;
     try {
       const wav = await toWav(blob);
       await send({ audio: toBase64(wav) });
@@ -237,6 +250,7 @@ export function useVoiceAssistant(lang: string) {
   }, [send]);
 
   const interrupt = useCallback(() => {
+    handsFreeRef.current = false;
     abortRef.current?.abort();
     abortRef.current = null;
     streamingRef.current = false;
@@ -252,42 +266,79 @@ export function useVoiceAssistant(lang: string) {
     setStatus("idle");
   }, [update]);
 
-  const listen = useCallback(async () => {
-    player().unlock(); // inside the tap: allows audio playback later
-    if (
-      !navigator.mediaDevices?.getUserMedia ||
-      typeof MediaRecorder === "undefined"
-    ) {
-      setError("unsupported");
-      return;
-    }
-    setError(null);
-    try {
-      recorderRef.current = await startRecording({
-        onLevel: setLevel,
-        onSilence: (heard) => {
-          if (heard) {
-            void stopListening();
-          } else {
-            recorderRef.current?.cancel();
-            recorderRef.current = null;
-            setStatus("idle");
-            setError("nothing_heard");
-          }
-        },
-      });
-      setStatus("listening");
-    } catch {
-      setError("mic");
-      setStatus("idle");
-    }
-  }, [stopListening]);
+  // followUp: started automatically after an answer, not by a tap.
+  const listen = useCallback(
+    async (followUp = false) => {
+      if (!followUp) player().unlock(); // inside the tap: allows audio playback later
+      if (
+        !navigator.mediaDevices?.getUserMedia ||
+        typeof MediaRecorder === "undefined"
+      ) {
+        setError("unsupported");
+        return;
+      }
+      setError(null);
+      try {
+        recorderRef.current = await startRecording({
+          onLevel: setLevel,
+          context: playerRef.current?.context,
+          noSpeechTimeoutMs: followUp ? FOLLOW_UP_TIMEOUT_MS : undefined,
+          onSilence: (heard) => {
+            if (heard) {
+              void stopListening();
+            } else {
+              recorderRef.current?.cancel();
+              recorderRef.current = null;
+              handsFreeRef.current = false;
+              setStatus("idle");
+              // Silence after an answer just ends the conversation.
+              if (!followUp) setError("nothing_heard");
+            }
+          },
+        });
+        setStatus("listening");
+      } catch {
+        handsFreeRef.current = false;
+        setError("mic");
+        setStatus("idle");
+      }
+    },
+    [stopListening],
+  );
 
-  // The single big button: talk, finish talking, or interrupt the answer.
+  useEffect(() => {
+    followUpRef.current = () => {
+      if (!handsFreeRef.current) return;
+      // A short pause so the end of the answer does not leak into the microphone.
+      window.setTimeout(() => {
+        if (
+          handsFreeRef.current &&
+          !recorderRef.current &&
+          !streamingRef.current
+        ) {
+          void listen(true);
+        }
+      }, FOLLOW_UP_DELAY_MS);
+    };
+  }, [listen]);
+
+  // The single big button: talk, finish talking, or cut into the answer.
   const toggle = useCallback(() => {
-    if (status === "idle") void listen();
-    else if (status === "listening") void stopListening();
-    else interrupt();
+    if (status === "idle") {
+      void listen();
+    } else if (status === "listening") {
+      if (recorderRef.current?.heardSpeech()) {
+        void stopListening();
+      } else {
+        // Nothing said yet: the tap ends the conversation.
+        interrupt();
+      }
+    } else if (status === "speaking") {
+      interrupt(); // stop talking and let the user speak
+      void listen();
+    } else {
+      interrupt();
+    }
   }, [status, listen, stopListening, interrupt]);
 
   const ask = useCallback(

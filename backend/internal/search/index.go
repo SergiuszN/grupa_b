@@ -151,7 +151,7 @@ func (ix *Index) Search(ctx context.Context, query string, queryVec []float32, l
 	if err != nil {
 		return nil, err
 	}
-	scores := fuse(text, vectorRank(ix.vecs, queryVec, 40))
+	scores := fuse(text, vectorRank(ix.vecs, queryVec, 40, 0))
 	hits := make([]Hit, len(scores))
 	for i, s := range scores {
 		hits[i] = Hit{EventID: s.key, Score: s.score}
@@ -169,7 +169,9 @@ func (ix *Index) SearchInfo(ctx context.Context, query string, queryVec []float3
 	if err != nil {
 		return nil, err
 	}
-	scores := fuse(text, vectorRank(ix.infoVecs, queryVec, 10))
+	// Unlike events, an info entry must actually be relevant: it is shown as the
+	// answer's source. Off-topic questions ("a recipe") score below this.
+	scores := fuse(text, vectorRank(ix.infoVecs, queryVec, 10, minInfoSimilarity))
 	out := make([]Info, 0, limit)
 	for _, s := range scores[:min(len(scores), limit)] {
 		var in Info
@@ -208,8 +210,13 @@ func (ix *Index) ftsRank(ctx context.Context, sqlQuery, text string) ([]int64, e
 	return out, rows.Err()
 }
 
-// vectorRank returns the keys of the n most similar vectors, best first.
-func vectorRank(vecs []vector, query []float32, n int) []int64 {
+// minInfoSimilarity was measured with text-embedding-3-small: questions about
+// the visit score 0.37-0.61 against their entry, unrelated ones 0.22-0.29.
+const minInfoSimilarity = 0.33
+
+// vectorRank returns the keys of the n most similar vectors with a similarity
+// of at least minSim, best first.
+func vectorRank(vecs []vector, query []float32, n int, minSim float64) []int64 {
 	if len(query) == 0 {
 		return nil
 	}
@@ -220,8 +227,10 @@ func vectorRank(vecs []vector, query []float32, n int) []int64 {
 		}
 	}
 	keys := make([]int64, 0, len(best))
-	for k := range best {
-		keys = append(keys, k)
+	for k, sim := range best {
+		if sim >= minSim {
+			keys = append(keys, k)
+		}
 	}
 	sort.Slice(keys, func(i, j int) bool { return best[keys[i]] > best[keys[j]] })
 	return keys[:min(len(keys), n)]
