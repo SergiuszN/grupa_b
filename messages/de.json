@@ -184,7 +184,12 @@
     "details": "Details",
     "footnote": "Musik kannst du hören. Den Rest öffnest du in den Details.",
     "empty": "Keine Veranstaltungen in dieser Kategorie.",
-    "unavailable": "Das Programm ist derzeit nicht verfügbar."
+    "unavailable": "Das Programm ist derzeit nicht verfügbar.",
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "inWeek": "In einer Woche",
+    "loadingMore": "Weitere Tage werden geladen...",
+    "loadMore": "Mehr anzeigen"
   },
   "Landing": {
     "headline1": "Die Philharmonie",

@@ -184,7 +184,12 @@
     "details": "Details",
     "footnote": "You can listen to the music. The rest opens in the details.",
     "empty": "No events in this category.",
-    "unavailable": "The programme is temporarily unavailable."
+    "unavailable": "The programme is temporarily unavailable.",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "inWeek": "In a week",
+    "loadingMore": "Loading more days...",
+    "loadMore": "Show more"
   },
   "Landing": {
     "headline1": "The Philharmonic",
