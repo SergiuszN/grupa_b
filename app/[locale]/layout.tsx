@@ -6,18 +6,31 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
-const geistSans = localFont({
-  src: "../fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-});
-const geistMono = localFont({
-  src: "../fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const helveticaNow = localFont({
+  src: [
+    {
+      path: "../fonts/HelveticaNowDisplay-Regular.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HelveticaNowDisplay-Medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HelveticaNowDisplay-Bold.woff",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-helvetica-now",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "WUD Szczecin",
-  description: "Multilingual Next.js App with next-intl",
+  description: "Multilingual Next.js App with next-intl and Helvetica Now Display",
 };
 
 export function generateStaticParams() {
@@ -42,7 +55,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${helveticaNow.className} ${helveticaNow.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
