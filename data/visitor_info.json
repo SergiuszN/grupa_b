@@ -1,0 +1,278 @@
+{
+  "source": "https://filharmonia.szczecin.pl — zebrane 2026-10-18 z podstron: Zaplanuj swoją wizytę, Przewodnik dla nowych słuchaczy, Bilety i zniżki, Regulamin sprzedaży, Regulamin rezerwacji dla szkół, Godziny otwarcia, Kontakt, Budynek, Nagrody, Deklaracja dostępności, Symfonia Cafe, Wystawy, EduFilharmonia, Najem, Orkiestra, Cykle, Partnerstwo, Do pobrania, Wydawnictwa, Projekty.",
+  "entries": [
+    {
+      "id": "kontakt",
+      "category": "kontakt",
+      "title": "Adres i kontakt",
+      "content": "Filharmonia im. Mieczysława Karłowicza w Szczecinie, ul. Małopolska 48, 70-515 Szczecin. Kasa: tel. +48 91 431 07 20, e-mail kasa@filharmonia.szczecin.pl. Infolinia: tel. +48 539 949 454, czynna od wtorku do czwartku 10:00-16:00. Sekretariat: tel. +48 91 430 95 11, sekretariat@filharmonia.szczecin.pl, poniedziałek-piątek 8:00-16:00. Zwiedzanie: zwiedzanie@filharmonia.szczecin.pl. Wynajem: wynajmy@filharmonia.szczecin.pl, tel. +48 576 050 270. Rzecznik prasowy: rzecznik@filharmonia.szczecin.pl, tel. +48 537 999 308. Wolontariat: wolontariat@filharmonia.szczecin.pl. Partnerstwo biznesowe: Jakub Gibowski, tel. +48 531 300 190.",
+      "url": "https://filharmonia.szczecin.pl/kontakt"
+    },
+    {
+      "id": "godziny-budynku",
+      "category": "godziny",
+      "title": "Godziny otwarcia budynku",
+      "content": "Budynek Filharmonii jest otwarty od wtorku do niedzieli w godzinach 10:00-18:00 oraz na godzinę przed każdym wydarzeniem (z wyjątkiem dni ustawowo wolnych od pracy). W poniedziałki budynek jest zamknięty, chyba że odbywa się wydarzenie.",
+      "url": "https://filharmonia.szczecin.pl/godziny_otwarcia"
+    },
+    {
+      "id": "kasa",
+      "category": "bilety",
+      "title": "Kasa biletowa — godziny i płatności",
+      "content": "Kasa znajduje się na parterze w holu przy ul. Małopolskiej 48. Czynna od wtorku do piątku 12:00-18:00, w soboty 12:00-16:00 oraz na godzinę przed każdym biletowanym wydarzeniem organizowanym przez Filharmonię (wtedy sprzedaje bilety tylko na bieżące wydarzenie). Uwaga: podstrona 'Zaplanuj swoją wizytę' podaje inne godziny (wt-czw 13-18, pt 13-20, sob 12-16) — przy wątpliwościach warto zadzwonić: +48 91 431 07 20. W kasie można płacić gotówką (PLN), kartą lub BLIKIEM; w biletomacie tylko kartą. Fakturę VAT trzeba zgłosić przed zakupem.",
+      "url": "https://filharmonia.szczecin.pl/regulamin_sprzedazy"
+    },
+    {
+      "id": "bilety-online",
+      "category": "bilety",
+      "title": "Kupno biletów przez internet",
+      "content": "Bilety można kupić całodobowo na stronie filharmonia.szczecin.pl (system bilety.filharmonia.szczecin.pl, płatności Przelewy24). Po zapłacie bilet PDF przychodzi e-mailem — można go pokazać na telefonie albo wydrukować. Kod na bilecie jest ważny tylko przy pierwszym skanowaniu. Przy zakupie online można dostać fakturę VAT. Online nie da się kupić biletów na Szczecińską Kartę Rodzinną ani biletów dla uczniów szkół muzycznych — tylko w kasie. Bilety można też kupić w biletomacie i w kasie, a w dniu wydarzenia na godzinę przed jego rozpoczęciem.",
+      "url": "https://filharmonia.szczecin.pl/regulamin_sprzedazy"
+    },
+    {
+      "id": "rezerwacja",
+      "category": "bilety",
+      "title": "Rezerwacja biletów",
+      "content": "Bilety można zarezerwować osobiście w kasie, e-mailem (kasa@filharmonia.szczecin.pl) lub telefonicznie (+48 91 431 07 20), podając rodzaj biletu, imię i nazwisko oraz telefon. Rezerwację trzeba wykupić w ciągu 7 dni, inaczej przepada. Na 2 dni przed wydarzeniem wszystkie niewykupione rezerwacje są anulowane i nie można już rezerwować. Grupy od 15 osób rezerwują wstępnie e-mailem do kasy (termin, liczebność grupy, osoba i telefon); termin płatności ustala się indywidualnie.",
+      "url": "https://filharmonia.szczecin.pl/regulamin_sprzedazy"
+    },
+    {
+      "id": "zwroty",
+      "category": "bilety",
+      "title": "Zwroty i wymiana biletów",
+      "content": "Filharmonia nie wymienia zakupionych biletów, a niewykorzystany bilet traci ważność. Bilety kupione online nie podlegają zwrotowi ani wymianie, z wyjątkiem odwołania wydarzenia — wtedy pieniądze wracają na konto lub kartę, z których zapłacono. Bilety z kasy zwraca się w kasie na podstawie paragonu lub faktury. Informacje o zwrotach i reklamacjach: kasa, tel. +48 91 431 07 20, kasa@filharmonia.szczecin.pl; przy odwołaniu wydarzenia także infolinia +48 539 949 454. Reklamacje są rozpatrywane do 14 dni roboczych.",
+      "url": "https://filharmonia.szczecin.pl/regulamin_sprzedazy"
+    },
+    {
+      "id": "ulgi",
+      "category": "bilety",
+      "title": "Bilety ulgowe i rodzaje biletów",
+      "content": "Bilet ulgowy przysługuje: dzieciom do 6 lat; uczniom szkół podstawowych i ponadpodstawowych; studentom do 26. roku życia; emerytom, rencistom i osobom powyżej 60 lat; osobom z orzeczoną niepełnosprawnością; posiadaczom medalu Gloria Artis, karty Euro26 i Szczecińskiej Karty Turystycznej. Dokument uprawniający do ulgi trzeba pokazać przy wejściu. Bilet grupowy: co najmniej 15 biletów na jeden koncert. Abonament: kto kupi co najmniej 7 biletów normalnych/ulgowych na różne koncerty, dostaje 15% zniżki na każdy bilet (bez koncertów rodzinnych i wybranych dat: 2-3.10.2026, 31.12.2026, 1.01.2027, 8-10.01.2027, 18-19.06.2027) oraz zniżkę w sklepie Filharmonii. Uczniowie szkół muzycznych: bilet za 10 zł (kasa). Inauguracja i zakończenie sezonu, koncerty prezydenckie, sylwestrowe i noworoczne nie są objęte ulgami. Wejściówki (stojące, w cenie najtańszego biletu) sprzedaje się godzinę przed wybranymi wydarzeniami, gdy zabraknie miejsc siedzących.",
+      "url": "https://filharmonia.szczecin.pl/bilety"
+    },
+    {
+      "id": "bilety-niepelnosprawnosc",
+      "category": "bilety",
+      "title": "Bilety dla osób z niepełnosprawnością i opiekunów",
+      "content": "Osoba do 16. roku życia z orzeczeniem o niepełnosprawności: bilet za 10 zł plus bilet ulgowy dla opiekuna. Od 16. roku życia z lekkim lub umiarkowanym stopniem: bilet ulgowy dla siebie i opiekuna. Ze znacznym stopniem niepełnosprawności: bilet za 10 zł plus ulgowy dla opiekuna. Bilety można kupić w kasie i online; dokument trzeba okazać przy wejściu. W sali symfonicznej i kameralnej są wyznaczone miejsca dla osób na wózkach — przed zakupem warto skontaktować się z kasą, która dobierze miejsce i może zapewnić asystenta na koncercie.",
+      "url": "https://filharmonia.szczecin.pl/bilety"
+    },
+    {
+      "id": "karta-seniora",
+      "category": "bilety",
+      "title": "Szczecińska Karta Seniora — bilety po 30 zł",
+      "content": "Posiadacze Szczecińskiej Karty Seniora mogą kupić jeden bilet za 30 zł (dowolne miejsce) na wybrane koncerty, w kasie lub online; kartę pokazuje się przy wejściu. Sezon 2026/2027: 7.10.2026 NIECórki (kameralny), 25.11.2026 Z czterech stron świata (kameralny), 30.01.2027 Pomniki symfoniki | Debussy, 12.02.2027 Quo vadis?, 12.03.2027 Collegium Marianum | Dawno, dawno temu..., 19.03.2027 Zanim nastanie cisza | Beethoven 200, 28.04.2027 Siła kontrastów, 21.05.2027 Poza czasem, 4.06.2027 Już czas. Dla seniorów jest też cykl kameralnych koncertów Konsonanse.",
+      "url": "https://filharmonia.szczecin.pl/bilety"
+    },
+    {
+      "id": "bilet-studencki",
+      "category": "bilety",
+      "title": "Bilet studencki za 30 zł",
+      "content": "Z ważną legitymacją studencką można kupić jeden bilet za 30 zł (dowolne miejsce) na wybrane koncerty, w kasie lub online; legitymację pokazuje się przy wejściu. Sezon 2026/2027: 30.10.2026 Symfoniczny fundament, 31.10.2026 Pomniki symfoniki | Mozart, 6.11.2026 Potęga i blask, 30.01.2027 Pomniki symfoniki | Debussy, 19.02.2027 Bracia Lee | Na dwa fortepiany, 26.02.2027 Niepoprawni romantycy, 19.03.2027 Zanim nastanie cisza | Beethoven 200, 2.04.2027 Na przekór losowi | Beethoven 200, 15.05.2027 Pomniki Symfoniki | Mahler.",
+      "url": "https://filharmonia.szczecin.pl/bilety"
+    },
+    {
+      "id": "karta-rodzinna",
+      "category": "bilety",
+      "title": "Koncerty rodzinne i Szczecińska Karta Rodzinna",
+      "content": "Koncert rodzinny w sali symfonicznej: bilet normalny 50 zł, ulgowy i grupowy 40 zł. Ze Szczecińską Kartą Rodzinną (koncerty Akademii Młodego Melomana i EduWerwy w sali symfonicznej) bilet kosztuje: 2+2 — 25 zł, 2+3 — 20 zł, 2+4 — 15 zł, 2+5 — 10 zł, 2+6 — 5 zł, 2+7 i więcej — 3 zł. Bilety na Kartę Rodzinną są dostępne tylko w kasie, po okazaniu wszystkich ważnych kart.",
+      "url": "https://filharmonia.szczecin.pl/bilety"
+    },
+    {
+      "id": "dojazd",
+      "category": "dojazd",
+      "title": "Dojazd komunikacją miejską",
+      "content": "Autobus 70 (przystanek Filharmonia) i autobus 90 (przystanek Starzyńskiego) zatrzymują się tuż obok. Tramwaje 1 i 4 — przystanek Filharmonia, w bezpośrednim sąsiedztwie. Około 5 minut pieszo: przystanek Plac Rodła — autobusy 107, A, B, C, 59, 68 oraz tramwaje 2, 3, 5, 10, 11. Rozkłady jazdy: zditm.szczecin.pl. Można też dojechać rowerem lub dojść pieszo.",
+      "url": "https://filharmonia.szczecin.pl/zaplanuj_swoja_wizyte"
+    },
+    {
+      "id": "parking",
+      "category": "dojazd",
+      "title": "Parking podziemny",
+      "content": "Filharmonia ma dwupoziomowy parking podziemny na 154 miejsca, z dwoma miejscami dla osób z niepełnosprawnościami na każdym poziomie. Wjazd od ul. Małopolskiej 48. Parking otwiera się godzinę przed koncertem lub innym wydarzeniem i jest bezpłatny dla gości z biletem. Z parkingu winda prowadzi prosto do holu.",
+      "url": "https://filharmonia.szczecin.pl/zaplanuj_swoja_wizyte"
+    },
+    {
+      "id": "kiedy-przyjsc",
+      "category": "wizyta",
+      "title": "Kiedy przyjść i dzwonki przed koncertem",
+      "content": "Zalecamy przyjść najpóźniej 20 minut przed koncertem. Wszystkie przestrzenie są otwarte dla gości godzinę przed koncertem, a sama sala koncertowa — 30 minut przed. Warto przyjść wcześniej, by zajrzeć do galerii (bezpłatne dla osób z biletem) i kawiarni. Dzwonki: jeden 15 minut przed koncertem, dwa 10 minut przed, trzy 5 minut przed — wtedy trzeba iść na salę. Tak samo dzwonki kończą przerwę.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "spoznienie",
+      "category": "wizyta",
+      "title": "Spóźnienie na koncert",
+      "content": "Gdy koncert już się zaczął, drzwi do sali są zamknięte. Bileterzy wprowadzą spóźnionych w dogodnym momencie — czasem w krótkiej przerwie między utworami, czasem dopiero w przerwie koncertu. Regulamin pozwala odmówić wejścia spóźnionym. Warto zostawić zapas czasu na korki.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "dress-code",
+      "category": "wizyta",
+      "title": "Jak się ubrać (dress code)",
+      "content": "Nie ma dress code'u dla publiczności — ubierz się tak, jak lubisz i jak czujesz się komfortowo. Część gości wybiera eleganckie, wieczorowe stroje, inni przychodzą prosto z pracy. Ścisłe zasady ubioru obowiązują tylko muzyków orkiestry.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "szatnia",
+      "category": "wizyta",
+      "title": "Szatnia",
+      "content": "Szatnia jest w holu, na wprost drzwi wejściowych. Można tam zostawić płaszcz, kurtkę, parasol. Otwiera się godzinę przed każdym koncertem lub wydarzeniem i zamyka 30 minut po jego zakończeniu — trzeba zdążyć odebrać rzeczy.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "kawiarnie",
+      "category": "gastronomia",
+      "title": "Kawiarnie: Symfonia Cafe i kawiarnia koncertowa",
+      "content": "W Filharmonii są dwie kawiarnie prowadzone przez Symfonia Cafe: napoje ciepłe i zimne, ciasta, przekąski, desery. Symfonia Cafe w holu: wtorek-piątek 10:00-18:00, sobota-niedziela 12:00-18:00, w dni koncertowe do ostatniego gościa (w poniedziałki nieczynna). Kawiarnia koncertowa na 3. piętrze, przy wejściu na balkon sali symfonicznej, działa tylko podczas koncertów w sali symfonicznej: od godziny przed koncertem, w przerwie, do końca koncertu. Nie wolno wnosić jedzenia i napojów na salę; naczynia prosimy oddać do kawiarni.",
+      "url": "https://filharmonia.szczecin.pl/cafeSymfonia"
+    },
+    {
+      "id": "program-koncertu",
+      "category": "wizyta",
+      "title": "Program koncertu (PDF)",
+      "content": "Do każdego koncertu jest bezpłatny program w PDF z opisem utworów i artystów. Można go pobrać skanując kod QR w budynku, na stronie wydarzenia (link pojawia się dzień przed koncertem) albo z e-maila, który dzień przed koncertem dostają osoby, które kupiły bilety online. Programy są też w zakładce Do pobrania (często w wersjach PL, EN, DE). Z programu dowiesz się, ile części ma utwór i ile trwa koncert.",
+      "url": "https://filharmonia.szczecin.pl/do_pobrania"
+    },
+    {
+      "id": "zasady-na-sali",
+      "category": "wizyta",
+      "title": "Zachowanie na sali: telefony, zdjęcia, oklaski",
+      "content": "Prosimy całkowicie wyłączyć telefon — nawet wibracje są słyszalne przy tej akustyce. Nie wolno fotografować, filmować ani nagrywać koncertu; zdjęcia i filmy publikuje Filharmonia na Facebooku i Instagramie, a pamiątkowe selfie można zrobić po ostatniej nucie. Podczas koncertu nie rozmawiamy i nie jemy (nawet rozwijanie cukierka słychać). Oklaski: symfonie, sonaty i koncerty mają kilka części, a publiczność klaszcze dopiero po ostatniej — liczbę części podaje program; można też po prostu dołączyć do oklasków widowni. W budynku obowiązuje zakaz palenia, alkohol tylko w wyznaczonych miejscach.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "czas-trwania-przerwa",
+      "category": "wizyta",
+      "title": "Ile trwa koncert i przerwa",
+      "content": "Długość koncertu zależy od programu — podaje ją strona wydarzenia i program koncertu. Większość koncertów symfonicznych ma przerwę, zwykle 20-30 minut; koncerty kameralne czy muzyki świata zwykle są bez przerwy. Koniec przerwy oznajmiają dzwonki (15, 10 i 5 minut przed wznowieniem).",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "po-koncercie",
+      "category": "wizyta",
+      "title": "Po koncercie",
+      "content": "Po koncercie można zostać: kawiarnia w holu działa do ostatniego gościa. Obie galerie i kawiarnia koncertowa zamykają się 30 minut po koncercie, szatnia także. Zdjęcia i relacje z koncertów są na Facebooku i Instagramie Filharmonii, nagrania na kanale YouTube. Na stronie można zapisać się do newslettera.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "jak-trafic-na-sale",
+      "category": "budynek",
+      "title": "Jak trafić na salę i swoje miejsce",
+      "content": "Miejsce wydarzenia (sala symfoniczna, sala kameralna, hol) jest podane na bilecie. Sala symfoniczna: wchodzi się kręconymi schodami po prawej, szerokimi schodami po lewej lub windą przy schodach kręconych. Wejścia na parter sali są na 1. piętrze, na balkon — na 2. i 3. piętrze; każde wejście ma opisane numery miejsc, a bilet mówi, czy miejsce jest na parterze czy na balkonie. Sala kameralna: 1. piętro, schodami kręconymi lub windą obok nich. Koncerty w holu nie mają numerowanych miejsc. W razie wątpliwości pomogą bileterzy.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    },
+    {
+      "id": "dostepnosc-ruchowa",
+      "category": "dostępność",
+      "title": "Dostępność dla osób z niepełnosprawnością ruchową",
+      "content": "Główne wejście od ul. Małopolskiej 48 jest na poziomie chodnika, bez barier. Windy prowadzą na wszystkie piętra, do obu sal, galerii i na parking podziemny (2 miejsca dla osób z niepełnosprawnościami na każdym poziomie). Hol, kawiarnia, szatnia i kasy są na parterze bez barier. W sali symfonicznej dojście do rzędów przed sceną i do lóż bocznych jest bez barier — tam są miejsca dla osób na wózkach; miejsca dla wózków są też w sali kameralnej. Toalety dostosowane są na parterze i na 1. piętrze. Przed zakupem biletu najlepiej skontaktować się z kasą (tel. +48 91 431 07 20) — dobierze odpowiednie miejsce i zapewni asystenta podczas koncertu. Wyznaczoną osobą do pomocy jest Katarzyna Hołownia z kasy (tel. +48 91 431 07 20, 8:00-16:00).",
+      "url": "https://filharmonia.szczecin.pl/deklaracja_dostepnosci"
+    },
+    {
+      "id": "dostepnosc-wzrok-sluch",
+      "category": "dostępność",
+      "title": "Dostępność dla osób niewidomych, słabowidzących, głuchych i słabosłyszących",
+      "content": "W budynku jest pętla indukcyjna. Windy mają przyciski z alfabetem Braille'a i komunikaty głosowe. Można wejść z psem asystującym i psem przewodnikiem. Ograniczenia: brak tyfloplan, brak tabliczek brajlowskich przy pomieszczeniach, brak dźwiękowej nawigacji, szklane przegrody przy wejściu i stopnie schodów nie są oznaczone kontrastowo (schody mają poręcze). Na co dzień nie ma tłumacza języka migowego, ale w repertuarze pojawia się zwiedzanie po polsku z tłumaczeniem na PJM. Personel jest przeszkolony w obsłudze osób z niepełnosprawnościami. Koordynatorka dostępności: Aleksandra Bednarska, a.bednarska@filharmonia.szczecin.pl.",
+      "url": "https://filharmonia.szczecin.pl/deklaracja_dostepnosci"
+    },
+    {
+      "id": "sale",
+      "category": "budynek",
+      "title": "Sale koncertowe",
+      "content": "Sala symfoniczna, zwana Salą Słoneczną (złota sala): 953 miejsca (przy koncertach do sprzedaży 829): parter 416, balkon 384, loże 72, chór 81; scena 17,4 x 10,6 m. Akustykę zaprojektowano z dr. Higinim Arau z Barcelony; jej parametry porównuje się z wiedeńskim Musikverein. Sala kameralna: 192 miejsca, scena 11,7 x 6,5 m, nazywana 'akustyczną perełką' — czas pogłosu zgodny z projektem co do setnej sekundy. Koncerty odbywają się też w holu (bez numerowanych miejsc).",
+      "url": "https://filharmonia.szczecin.pl/wynajem"
+    },
+    {
+      "id": "budynek",
+      "category": "budynek",
+      "title": "Budynek Filharmonii — architektura i nagrody",
+      "content": "Siedzibę zaprojektowało studio Barozzi/Veiga z Barcelony (wybrane spośród 44 pracowni w konkursie z 2007 r.). Budynek stoi na miejscu przedwojennego Domu Koncertowego (Konzerthaus), u zbiegu ulic Małopolskiej i Matejki; otwarto go z początkiem sezonu 2014/2015. Ma ponad 12 000 m2 na czterech kondygnacjach. Nazywany 'Lodowym Pałacem'; biała fasada może świecić różnymi kolorami (kalendarium iluminacji na stronie). Najważniejsze nagrody: Mies van der Rohe Award 2015 (nagroda architektoniczna Unii Europejskiej), Designs of the Year 2015 London Design Museum, Grand Prix Nagrody Prezydenta RP w konkursie Życie w Architekturze, Eurobuild Awards 2014, 4. miejsce w plebiscycie 7 cudów Polski National Geographic Traveler. Od 2026 r. w Galerii Poziom 4. stoi historyczny fortepian Bechstein z 1865 r., który grał w przedwojennym Konzerthausie.",
+      "url": "https://filharmonia.szczecin.pl/budynek"
+    },
+    {
+      "id": "zwiedzanie",
+      "category": "zwiedzanie",
+      "title": "Zwiedzanie budynku z przewodnikiem",
+      "content": "Zwiedzanie odbywa się w wybrane piątki (po próbie generalnej): 13:00 po niemiecku, 14:00 po angielsku, 15:00 po polsku; czasem po polsku z tłumaczeniem na polski język migowy (PJM). Trwa około 40-45 minut i obejmuje hol, obie sale (symfoniczną i kameralną), foyer, kręcone schody i Galerię Poziom 4. Cena wg cennika: 30 zł normalny, 20 zł ulgowy i grupowy (podstrona EduFilharmonii podaje 20-10 zł — w razie wątpliwości zapytaj kasę). Bilety: online, w kasie lub biletomacie przed zwiedzaniem. Terminy są w repertuarze. Pytania: zwiedzanie@filharmonia.szczecin.pl. Na stronie Budynek jest też wirtualne zwiedzanie z przewodnikiem.",
+      "url": "https://filharmonia.szczecin.pl/zaplanuj_swoja_wizyte"
+    },
+    {
+      "id": "galerie",
+      "category": "wystawy",
+      "title": "Galerie i wystawy: Galeria Poziom 4. i Art.Room",
+      "content": "Filharmonia ma dwie galerie sztuki: Galerię Poziom 4. (na najwyższym piętrze) i Art.Room. Otwarte dla zwiedzających w soboty i niedziele 12:00-16:00 (ostatnie wejście 15:30). Bilet 10 zł obejmuje obie galerie (kasa, biletomat, strona). Wstęp wolny dla dzieci do 10 lat i osób z niepełnosprawnościami. Goście koncertów wchodzą bezpłatnie godzinę przed koncertem, w przerwie i do 30 minut po koncercie. W sezonie 2026/2027 (hasło 'Prześwit') trwają wystawy 'Obecność' Łukasza Patelczyka oraz 'Mnie się nie spieszy, mi się pali* Dymy nad Bieszczadami' (otwarte 1.10.2026).",
+      "url": "https://filharmonia.szczecin.pl/wystawy"
+    },
+    {
+      "id": "edu-rodziny",
+      "category": "edukacja",
+      "title": "Dla rodzin z dziećmi: Raniutto, Akademia Młodego Melomana, EduWerwa",
+      "content": "Raniutto — muzyczne warsztaty w soboty i niedziele dla dzieci od 1 do 6 lat z opiekunami, w trzech grupach: 9:00 (1-2 lata), 10:30 (3-4 lata), 12:00 (5-6 lat); w sobotę i niedzielę ten sam temat. Bilety dla dzieci trafiają do sprzedaży z miesięcznym wyprzedzeniem; opiekunowie dokupują swoje bilety w kasie tuż przed warsztatami. Akademia Młodego Melomana — koncerty dla dzieci (sugerowany wiek 5+) z opiekunami w sali symfonicznej, poznawanie instrumentów orkiestry. EduWerwa — rodzinne spektakle muzyczne z orkiestrą i aktorami szczecińskich teatrów. Na koncerty rodzinne działa Szczecińska Karta Rodzinna. Na YouTube EduFilharmonii są darmowe serie: 90 sekund dookoła muzyki, Donuta w drodze, Raniutto Online i inne.",
+      "url": "https://filharmonia.szczecin.pl/edu_filharmonia"
+    },
+    {
+      "id": "edu-szkoly",
+      "category": "edukacja",
+      "title": "Dla szkół i przedszkoli: Donuta, koncerty szkolne, rezerwacja grup",
+      "content": "Donuta — poniedziałkowe poranne koncerty kameralne dla przedszkolaków i młodszych uczniów w sali kameralnej. Koncerty szkolne — przedpołudniowe koncerty orkiestry w sali symfonicznej dla starszych uczniów. Grupy szkolne i przedszkola rezerwują wyłącznie przez formularz zgłoszeniowy (link na stronie Bilety i EduFilharmonia); jedna rezerwacja = jedna klasa. Ceny: dziecko 30 zł, dziecko z orzeczeniem 10 zł, opiekun 1 zł; miejsca nienumerowane. Filharmonia potwierdza rezerwację w ciągu 14 dni; ostateczną liczbę osób i płatność trzeba załatwić najpóźniej 7 dni przed koncertem, inaczej rezerwacja przepada. Zwrotów nie ma (poza odwołaniem koncertu). Grupa przychodzi 30 minut wcześniej i zgłasza się w kasie. Rezerwacje na luty-czerwiec 2027 ruszają 1 grudnia 2026. Dla nauczycieli są darmowe scenariusze lekcji do pobrania.",
+      "url": "https://filharmonia.szczecin.pl/regulamin_rezerwacji_dla_szkol"
+    },
+    {
+      "id": "seniorzy",
+      "category": "edukacja",
+      "title": "Dla seniorów: Konsonanse",
+      "content": "Konsonanse to cykl kameralnych koncertów dla seniorów, przygotowywanych z młodymi muzykami ze szkół muzycznych — spotkanie pokoleń. Seniorzy powyżej 60 lat mają bilety ulgowe, a posiadacze Szczecińskiej Karty Seniora mogą kupić bilet za 30 zł na wybrane koncerty.",
+      "url": "https://filharmonia.szczecin.pl/edu_filharmonia"
+    },
+    {
+      "id": "wolontariat",
+      "category": "inne",
+      "title": "Wolontariat",
+      "content": "Na początku każdego sezonu Filharmonia ogłasza nabór wolontariuszy: młodzież od 13 lat i dorośli oraz seniorki ze Szczecińskiego Humanistycznego Uniwersytetu Seniora. Wolontariusze pomagają głównie w obsłudze widowni na koncertach symfonicznych, a także przy wystawach, warsztatach i promocji. Kontakt: wolontariat@filharmonia.szczecin.pl.",
+      "url": "https://filharmonia.szczecin.pl/edu_filharmonia"
+    },
+    {
+      "id": "orkiestra",
+      "category": "orkiestra",
+      "title": "Orkiestra Symfoniczna i zespoły kameralne",
+      "content": "Orkiestra Symfoniczna Filharmonii w Szczecinie powstała w 1948 r. i liczy ponad 90 muzyków. Dyrektor naczelny i artystyczny: Przemysław Neumann. Orkiestra grała m.in. w Filharmonii Berlińskiej, Filharmonii Narodowej i (w 2026 r. po raz pierwszy) w Elbphilharmonie w Hamburgu; współpracowała z solistami jak Krystian Zimerman, Mischa Maisky, Christian Tetzlaff, i z Krzysztofem Pendereckim. Nagrała niemal wszystkie utwory patrona, Mieczysława Karłowicza. Złoty Medal Gloria Artis (2023). Zespoły kameralne Filharmonii: Karłowicz Quartet, ÉxQuartet, Szczecin International String Quartet, FeelHarmony Quintet, High Five Brass, Szczecin Philharmonic Big Band, Duo Con Fuoco. Historia i archiwum: historia.filharmonia.szczecin.pl.",
+      "url": "https://filharmonia.szczecin.pl/grupy/1-Orkiestra_Symfoniczna_Filharmonii_w_Szczecinie"
+    },
+    {
+      "id": "cykle",
+      "category": "repertuar",
+      "title": "Cykle koncertowe",
+      "content": "Główne cykle sezonu 2026/2027: Koncerty symfoniczne, Koncerty kameralne, Pomniki symfoniki (z wprowadzeniem dyrygenckim), Goście w Filharmonii, Filharmonia Light,Muzyka świata, Koncerty jazzowe, Akademia Młodego Melomana, Akademia słuchania (wykład-przewodnik po koncertach), Karłowicz Fest (festiwal, karlowiczfest.pl). Odbywają się też koncerty zewnętrzne organizowane przez inne podmioty — Filharmonia nie odpowiada za nie, nawet gdy bilety sprzedaje jej kasa.",
+      "url": "https://filharmonia.szczecin.pl/cykl"
+    },
+    {
+      "id": "wynajem",
+      "category": "wynajem",
+      "title": "Wynajem przestrzeni i wspólne wydarzenia",
+      "content": "Filharmonia wynajmuje przestrzenie na wydarzenia artystyczne, konferencje i uroczystości firmowe (najem komercyjny lub współpraca). Orientacyjne ceny netto za 6 godzin (sezon 2025/2026): sala symfoniczna 16 000 zł (pn-pt) / 20 000 zł (weekend), każda kolejna godzina 1 800 zł; sala kameralna 6 500 zł (+1 000 zł/h); hol główny 586 m2 — 8 000 zł (+1 200 zł/h); przestrzeń wystawiennicza Poziom 4. 357 m2 — 5 000 zł (+800 zł/h). Ceny ustalane indywidualnie; przy współpracy z Filharmonią jest rabat. Kontakt: Magdalena Sawicka-Błądek, wynajmy@filharmonia.szczecin.pl, tel. +48 576 050 270. Sesje zdjęciowe: Joanna Błachowska-Kurbiel, tel. +48 537 999 310.",
+      "url": "https://filharmonia.szczecin.pl/wynajem"
+    },
+    {
+      "id": "sklep-wydawnictwa",
+      "category": "inne",
+      "title": "Sklep i wydawnictwa",
+      "content": "Sklep Filharmonii (na poziomie 1 oraz online) sprzedaje płyty i publikacje Filharmonii, m.in. Mieczysław Karłowicz 'Dzieła prawie wszystkie', 'I żyli długo i w Szczecinie' 1 i 2 z śpiewnikiem, 'Karłowicz Recomposed' Atom String Quartet, 'Coincidence' Pawła Tomaszewskiego, płyty winylowe i książki ('7 lekcji dookoła muzyki', 'Poradnik melomana'). Abonenci mają zniżkę w sklepie.",
+      "url": "https://filharmonia.szczecin.pl/wydawnictwa"
+    },
+    {
+      "id": "partnerzy",
+      "category": "inne",
+      "title": "Partnerzy i mecenasi",
+      "content": "Mecenas Filharmonii: Enea. Patron sezonu 2026/2027: STRABAG. Partner motoryzacyjny: Dealer BMW Bońkowscy. Partner zdrowia: Sanprobi. Partnerzy wspierający: Ibis Styles Szczecin Stare Miasto, Novotel Szczecin Centrum, Home.pl. Filharmonia to miejska instytucja kultury współprowadzona przez Ministerstwo Kultury. Firmy zainteresowane partnerstwem: Jakub Gibowski, j.gibowski@filharmonia.szczecin.pl, tel. +48 531 300 190.",
+      "url": "https://filharmonia.szczecin.pl/partnerstwo_kultury_i_biznesu"
+    },
+    {
+      "id": "media-spolecznosciowe",
+      "category": "inne",
+      "title": "Media społecznościowe, newsletter i archiwum",
+      "content": "Filharmonia jest na Facebooku (facebook.com/filharmoniaszczecin), Instagramie (instagram.com/filharmoniaszczecin), X (@FilharmoniaSZN) i YouTube (osobny kanał EduFilharmonii z filmami dla dzieci). Na stronie można zapisać się do newslettera. Cyfrowe archiwum historii Filharmonii i orkiestry (od 1948 r.): historia.filharmonia.szczecin.pl. Oferty pracy i przesłuchania do orkiestry: zakładka Praca w Filharmonii.",
+      "url": "https://filharmonia.szczecin.pl/przewodnik_dla_nowych_sluchaczy"
+    }
+  ]
+}

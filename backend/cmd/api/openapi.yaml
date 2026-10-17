@@ -314,7 +314,7 @@ paths:
         Wymaga `OPENROUTER_API_KEY` (bez klucza 503). Historia rozmowy jest po stronie klienta.
 
         Zdarzenia (`event:` + JSON w `data:`):
-        `transcript` {text, language} · `tool` {name} · `events` {events: [karty]} · `delta` {text} ·
+        `transcript` {text, language} · `tool` {name} · `events` {events: [karty]} · `sources` {sources: [{title, url}]} · `delta` {text} ·
         `audio` {seq, text, data: MP3 w base64} · `done` {text, language} · `error` {code, message}.
       requestBody:
         required: true

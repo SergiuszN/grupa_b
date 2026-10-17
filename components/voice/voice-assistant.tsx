@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Mic, RotateCcw, Square, Ticket } from "lucide-react";
+import {
+  ArrowUp,
+  ExternalLink,
+  Mic,
+  RotateCcw,
+  Square,
+  Ticket,
+} from "lucide-react";
 import {
   type Activity,
   type ChatMessage,
@@ -24,6 +31,7 @@ export type VoiceLabels = {
   reset: string;
   tickets: string;
   details: string;
+  source: string;
   free: string;
   soldOut: string;
   you: string;
@@ -55,7 +63,9 @@ export function VoiceAssistant({
 
   const busy = status === "processing" || status === "speaking";
   const caption =
-    status === "processing" && activity ? labels.activity[activity] : labels.status[status];
+    status === "processing" && activity
+      ? labels.activity[activity]
+      : labels.status[status];
 
   return (
     <div className="flex flex-1 flex-col">
@@ -95,8 +105,8 @@ export function VoiceAssistant({
         </div>
       )}
 
-      {/* On phones the bar clears the floating accessibility button (fixed bottom-right). */}
-      <div className="bg-paper/95 sticky bottom-0 flex flex-col items-center px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+84px)] backdrop-blur md:pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      {/* From md up the accessibility button floats bottom-right; on tablets it would cover the form. */}
+      <div className="bg-paper/95 sticky bottom-0 flex flex-col items-center px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+20px)] backdrop-blur md:pb-[calc(env(safe-area-inset-bottom)+84px)] lg:pb-6">
         <MicButton
           compact={started}
           label={caption}
@@ -113,7 +123,10 @@ export function VoiceAssistant({
           {caption}
         </p>
         {error ? (
-          <p className="mt-2 max-w-[300px] text-center text-[13px] leading-5 text-[#9B2C1F]" role="alert">
+          <p
+            className="mt-2 max-w-[300px] text-center text-[13px] leading-5 text-[#9B2C1F]"
+            role="alert"
+          >
             {labels.errors[error]}
           </p>
         ) : null}
@@ -199,7 +212,12 @@ function MicButton({
         }`}
       >
         {status === "idle" ? (
-          <Mic aria-hidden="true" className="text-white" size={compact ? 24 : 32} strokeWidth={1.8} />
+          <Mic
+            aria-hidden="true"
+            className="text-white"
+            size={compact ? 24 : 32}
+            strokeWidth={1.8}
+          />
         ) : listening ? (
           <span className="flex h-7 items-center gap-[3px]" aria-hidden="true">
             {[0.6, 1, 0.75, 0.9, 0.55].map((f, i) => (
@@ -211,7 +229,13 @@ function MicButton({
             ))}
           </span>
         ) : (
-          <Square aria-hidden="true" className="text-white" fill="currentColor" size={compact ? 16 : 22} strokeWidth={0} />
+          <Square
+            aria-hidden="true"
+            className="text-white"
+            fill="currentColor"
+            size={compact ? 16 : 22}
+            strokeWidth={0}
+          />
         )}
       </span>
     </button>
@@ -242,14 +266,41 @@ function Message({
     <div className="flex flex-col gap-3">
       <span className="sr-only">{labels.guide}:</span>
       {message.text ? (
-        <p className="max-w-[92%] text-[17px] leading-[26px] tracking-[-0.01em]">{message.text}</p>
+        <p className="max-w-[92%] text-[17px] leading-[26px] tracking-[-0.01em]">
+          {message.text}
+        </p>
       ) : message.pending ? (
         <Dots />
+      ) : null}
+      {message.sources?.length ? (
+        <ul className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <li className="text-muted text-[12px] leading-4 font-medium tracking-[0.12em] uppercase">
+            {labels.source}
+          </li>
+          {message.sources.map((s) => (
+            <li key={s.url}>
+              <a
+                className="text-ink decoration-line hover:decoration-ink focus-visible:outline-gold inline-flex items-center gap-1 rounded-sm text-[13px] leading-4 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                href={s.url}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {s.title}
+                <ExternalLink aria-hidden="true" size={12} strokeWidth={1.8} />
+              </a>
+            </li>
+          ))}
+        </ul>
       ) : null}
       {message.events?.length ? (
         <div className="flex flex-col gap-2.5">
           {message.events.map((e) => (
-            <Card event={e} key={`${e.event_id}-${e.performance_id}`} labels={labels} locale={locale} />
+            <Card
+              event={e}
+              key={`${e.event_id}-${e.performance_id}`}
+              labels={labels}
+              locale={locale}
+            />
           ))}
         </div>
       ) : null}
@@ -280,13 +331,19 @@ function Card({
     <article className="border-line flex gap-3.5 rounded-2xl border p-3">
       <div
         className="size-[76px] shrink-0 rounded-xl bg-[#E7E2D8] bg-cover bg-center"
-        style={event.image_url ? { backgroundImage: `url(${event.image_url})` } : undefined}
+        style={
+          event.image_url
+            ? { backgroundImage: `url(${event.image_url})` }
+            : undefined
+        }
       />
       <div className="flex min-w-0 flex-1 flex-col gap-[3px]">
         <p className="text-gold truncate text-[11px] leading-[14px] font-medium tracking-[0.12em] uppercase">
           {event.subtitle ?? event.kind}
         </p>
-        <h3 className="text-[16px] leading-5 font-bold tracking-[-0.02em]">{event.title}</h3>
+        <h3 className="text-[16px] leading-5 font-bold tracking-[-0.02em]">
+          {event.title}
+        </h3>
         <p className="text-muted text-[13px] leading-4">
           {when}
           {event.venue ? ` · ${event.venue}` : ""}
@@ -314,13 +371,17 @@ function formatPrice(e: EventCard, free: string) {
   if (e.ticket_status === "free") return free;
   if (e.price_min == null) return "";
   const cur = e.currency === "PLN" ? "zł" : e.currency;
-  if (e.price_max == null || e.price_max === e.price_min) return `${e.price_min} ${cur}`;
+  if (e.price_max == null || e.price_max === e.price_min)
+    return `${e.price_min} ${cur}`;
   return `${e.price_min}–${e.price_max} ${cur}`;
 }
 
 function Dots() {
   return (
-    <span aria-hidden="true" className="inline-flex h-[22px] items-center gap-1">
+    <span
+      aria-hidden="true"
+      className="inline-flex h-[22px] items-center gap-1"
+    >
       {[0, 150, 300].map((d) => (
         <span
           className="bg-muted size-1.5 animate-bounce rounded-full"

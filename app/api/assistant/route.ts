@@ -26,7 +26,8 @@ export async function POST(request: Request) {
   return new Response(upstream.body, {
     status: upstream.status,
     headers: {
-      "Content-Type": upstream.headers.get("Content-Type") ?? "application/json",
+      "Content-Type":
+        upstream.headers.get("Content-Type") ?? "application/json",
       "Cache-Control": "no-cache, no-transform",
       "X-Accel-Buffering": "no",
     },

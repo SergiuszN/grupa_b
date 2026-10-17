@@ -81,14 +81,19 @@ Ceny i statusy biletów to stan z chwili pobrania danych, nie dane na żywo z sy
 2. **Agent**: `openai/gpt-6-luna` (`reasoning: none` — szybsze, a w testach bez straty jakości) w pętli z narzędziami, maks. 6 kroków:
    - `search_events` — wyszukiwanie hybrydowe + filtry kalendarza (daty, rodzaj, wiek, cena, sala, dostępność),
    - `get_event_details` — pełna karta wydarzenia,
+   - `get_visitor_info` — praktyczne informacje o wizycie z bazy wiedzy (niżej); źródło trafia na ekran (zdarzenie `sources`),
    - `show_events` — wysyła 1–3 karty z biletami na ekran (zdarzenie `events`).
 3. **Tekst → mowa**: `microsoft/mai-voice-2.1` (głos Harper pl/en/de). Odpowiedź modelu jest strumieniowana i cięta na zdania; zdania są syntezowane równolegle i wysyłane po kolei jako klipy MP3, więc pierwsze zdanie gra, zanim model skończy pisać.
 
-Zdarzenia SSE: `transcript`, `tool`, `events`, `delta`, `audio`, `done`, `error` — szczegóły w OpenAPI. Historię rozmowy trzyma klient i odsyła ją w `history`.
+Zdarzenia SSE: `transcript`, `tool`, `events`, `sources`, `delta`, `audio`, `done`, `error` — szczegóły w OpenAPI. Historię rozmowy trzyma klient i odsyła ją w `history`.
+
+### Baza wiedzy dla asystenta
+
+`data/visitor_info.json` — kilkadziesiąt haseł spisanych ze strony filharmonia.szczecin.pl (bilety i ulgi, zwroty, rezerwacje, kasa, dojazd, parking, szatnia, dress code, kawiarnie, zasady na sali, dostępność, sale, budynek i nagrody, zwiedzanie, galerie, oferta EDU, wynajem, kontakt). Każde hasło ma `id`, `category`, `title`, `content` i `url` strony źródłowej. Asystent odpowiada na pytania praktyczne tylko z tych haseł i pokazuje źródło; gdy czegoś nie ma, mówi, że nie wie, i podaje numer kasy. Tam, gdzie strona FS sama sobie przeczy (godziny kasy, cena zwiedzania), hasło to zaznacza. Po edycji pliku trzeba przebudować indeks.
 
 ### Indeks wyszukiwania (FTS5 + embeddingi)
 
-`data/search.sqlite` — osobny plik obok bazy katalogu (ta zostaje tylko do odczytu): jeden dokument na wydarzenie i język (tytuł, opisy, wykonawcy, program, cykle, sale, grupy odbiorców), tabela FTS5 na tekście bez polskich znaków oraz embeddingi `openai/text-embedding-3-small` jako BLOB float32. Zapytanie łączy ranking BM25 z podobieństwem cosinusowym (wektory w pamięci API) przez reciprocal rank fusion, a potem przechodzi przez zwykłe filtry kalendarza. Bez indeksu asystent działa dalej, na samym wyszukiwaniu tekstowym `q`.
+`data/search.sqlite` — osobny plik obok bazy katalogu (ta zostaje tylko do odczytu): hasła z bazy wiedzy oraz jeden dokument na wydarzenie i język (tytuł, opisy, wykonawcy, program, cykle, sale, grupy odbiorców), tabela FTS5 na tekście bez polskich znaków oraz embeddingi `openai/text-embedding-3-small` jako BLOB float32. Zapytanie łączy ranking BM25 z podobieństwem cosinusowym (wektory w pamięci API) przez reciprocal rank fusion, a potem przechodzi przez zwykłe filtry kalendarza. Bez indeksu asystent działa dalej, na samym wyszukiwaniu tekstowym `q`.
 
 ```bash
 make index         # w Dockerze; lokalnie: make local-index

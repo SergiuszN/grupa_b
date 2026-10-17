@@ -78,7 +78,7 @@ func newAssistant(store *catalog.Store) *assistant.Assistant {
 		slog.Warn("search index not loaded, run `make index`", "path", indexPath, "err", err)
 		index = nil
 	} else {
-		slog.Info("search index loaded", "path", indexPath, "documents", index.Size(), "model", index.Model())
+		slog.Info("search index loaded", "path", indexPath, "documents", index.Size(), "visitor_info", index.InfoSize(), "model", index.Model())
 	}
 	cfg := assistant.DefaultConfig
 	cfg.ChatModel = getenv("ASSISTANT_MODEL", cfg.ChatModel)

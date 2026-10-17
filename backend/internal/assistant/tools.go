@@ -65,6 +65,16 @@ func (a *Assistant) tools() []openrouter.Tool {
 			"Full card of one event: description, why attend, performers with roles, programme, series, target audience, "+
 				"accessibility, duration and all dates with prices. Use it before recommending or answering detailed questions.",
 			obj(map[string]any{"event_id": map[string]any{"type": "integer"}}, "event_id")),
+		fn("get_visitor_info",
+			"Practical information about visiting the Philharmonic, from its official website: tickets and box office, "+
+				"discounts (students, seniors, families, disabled), online purchase, reservations, refunds, getting there, "+
+				"parking, opening hours, cloakroom, dress code, cafes, concert etiquette, accessibility, halls, the building "+
+				"and its awards, guided tours, galleries, education for families and schools, rentals, contact. "+
+				"Returns matching entries with their source page; the source links are shown to the user.",
+			obj(map[string]any{
+				"query": map[string]any{"type": "string", "description": "What the user wants to know, e.g. 'parking', " +
+					"'student discount', 'wheelchair access', 'can I return a ticket bought online'."},
+			}, "query")),
 		fn("show_events",
 			"Show event cards (with date, place, price and a ticket button) on the user's screen. Call it with the 1-3 best "+
 				"options whenever you recommend or point to specific events, before your final spoken answer.",
@@ -100,6 +110,8 @@ func (a *Assistant) runTool(ctx context.Context, call openrouter.ToolCall, lang 
 		result, err = a.searchEvents(ctx, args, lang)
 	case "get_event_details":
 		result, err = a.eventDetails(ctx, args, lang)
+	case "get_visitor_info":
+		result, err = a.visitorInfo(ctx, args, emit)
 	case "show_events":
 		result, err = a.showEvents(ctx, args, lang, emit)
 	default:
@@ -349,6 +361,42 @@ func (a *Assistant) eventDetails(ctx context.Context, raw json.RawMessage, lang 
 		"has_intermission": d.HasIntermission,
 		"upcoming_dates":   dates,
 	}, nil
+}
+
+// Source is a page of the Philharmonic website an answer is based on.
+type Source struct {
+	Title string `json:"title"`
+	URL   string `json:"url"`
+}
+
+func (a *Assistant) visitorInfo(ctx context.Context, raw json.RawMessage, emit Emit) (any, error) {
+	var p struct {
+		Query string `json:"query"`
+	}
+	if err := json.Unmarshal(raw, &p); err != nil {
+		return nil, fmt.Errorf("invalid arguments: %w", err)
+	}
+	noInfo := map[string]any{"entries": []any{}, "hint": "No information found. Say you don't know and refer the user " +
+		"to the box office: +48 91 431 07 20, kasa@filharmonia.szczecin.pl (Tue-Fri 12-18, Sat 12-16)."}
+	if a.index == nil || a.index.InfoSize() == 0 || strings.TrimSpace(p.Query) == "" {
+		return noInfo, nil
+	}
+	var vec []float32
+	if vecs, err := a.client.Embed(ctx, a.index.Model(), []string{p.Query}); err != nil {
+		slog.Warn("query embedding failed, using full-text only", "err", err)
+	} else {
+		vec = vecs[0]
+	}
+	entries, err := a.index.SearchInfo(ctx, p.Query, vec, 4)
+	if err != nil {
+		return nil, err
+	}
+	if len(entries) == 0 {
+		return noInfo, nil
+	}
+	// The best entry is the likely source; lower ones are often just related.
+	emit("sources", map[string]any{"sources": []Source{{Title: entries[0].Title, URL: entries[0].URL}}})
+	return map[string]any{"entries": entries}, nil
 }
 
 // Card is an event shown on the user's screen.

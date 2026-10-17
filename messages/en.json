@@ -328,6 +328,8 @@
     "details": "Details",
     "free": "Free entry",
     "soldOut": "Sold out",
+    "checking": "Checking the details…",
+    "source": "Source",
     "you": "You",
     "guide": "Guide"
   }

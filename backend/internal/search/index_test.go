@@ -64,7 +64,40 @@ func TestSearchIndex(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(hits) == 0 || hits[0].EventID != own.eventID {
-		t.Fatalf("vector search hits = %v, want event %d first", hits, own.eventID)
+	if len(hits) == 0 || hits[0].EventID != own.key {
+		t.Fatalf("vector search hits = %v, want event %d first", hits, own.key)
+	}
+}
+
+func TestSearchInfo(t *testing.T) {
+	path := "../../../data/search.sqlite"
+	if _, err := os.Stat(path); err != nil {
+		t.Skipf("search index not built: %v", err)
+	}
+	ix, err := Open(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer ix.Close()
+	if ix.InfoSize() == 0 {
+		t.Skip("index has no visitor information")
+	}
+	for query, want := range map[string]string{
+		"parking samochodowy":           "parking",
+		"Czy jest dress code?":          "dress-code",
+		"szatnia":                       "szatnia",
+		"zwrot biletu kupionego online": "zwroty",
+	} {
+		got, err := ix.SearchInfo(context.Background(), query, nil, 3)
+		if err != nil {
+			t.Fatal(err)
+		}
+		found := false
+		for _, in := range got {
+			found = found || in.Slug == want
+		}
+		if !found {
+			t.Errorf("SearchInfo(%q) = %v, want %q among the results", query, got, want)
+		}
 	}
 }

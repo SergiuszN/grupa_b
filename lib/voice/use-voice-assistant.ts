@@ -1,7 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Player, type Recorder, startRecording, toBase64, toWav } from "./audio";
+import {
+  Player,
+  type Recorder,
+  startRecording,
+  toBase64,
+  toWav,
+} from "./audio";
 
 export type EventCard = {
   event_id: number;
@@ -20,21 +26,33 @@ export type EventCard = {
   source_url: string;
 };
 
+export type Source = { title: string; url: string };
+
 export type ChatMessage = {
   id: number;
   role: "user" | "assistant";
   text: string;
   events?: EventCard[];
+  sources?: Source[];
   pending?: boolean;
 };
 
 export type Status = "idle" | "listening" | "processing" | "speaking";
-export type Activity = "transcribing" | "searching" | "reading" | "showing" | "answering" | null;
-export type ErrorCode = "mic" | "unsupported" | "nothing_heard" | "unavailable" | "failed";
+export type Activity =
+  | "transcribing"
+  | "searching"
+  | "reading"
+  | "checking"
+  | "showing"
+  | "answering"
+  | null;
+export type ErrorCode =
+  "mic" | "unsupported" | "nothing_heard" | "unavailable" | "failed";
 
 const TOOL_ACTIVITY: Record<string, Activity> = {
   search_events: "searching",
   get_event_details: "reading",
+  get_visitor_info: "checking",
   show_events: "showing",
 };
 
@@ -86,7 +104,12 @@ export function useVoiceAssistant(lang: string) {
       const botId = nextId++;
       update((m) => [
         ...m,
-        { id: userId, role: "user", text: input.text ?? "", pending: !input.text },
+        {
+          id: userId,
+          role: "user",
+          text: input.text ?? "",
+          pending: !input.text,
+        },
         { id: botId, role: "assistant", text: "", pending: true },
       ]);
       const patch = (id: number, fn: (m: ChatMessage) => ChatMessage) =>
@@ -104,16 +127,28 @@ export function useVoiceAssistant(lang: string) {
         const response = await fetch("/api/assistant", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lang, history, audio_format: "wav", ...input }),
+          body: JSON.stringify({
+            lang,
+            history,
+            audio_format: "wav",
+            ...input,
+          }),
           signal: controller.signal,
         });
         if (!response.ok || !response.body) {
-          failed = response.status === 503 || response.status === 502 ? "unavailable" : "failed";
+          failed =
+            response.status === 503 || response.status === 502
+              ? "unavailable"
+              : "failed";
         } else {
           await readEvents(response.body, (event, data) => {
             switch (event) {
               case "transcript":
-                patch(userId, (m) => ({ ...m, text: data.text, pending: false }));
+                patch(userId, (m) => ({
+                  ...m,
+                  text: data.text,
+                  pending: false,
+                }));
                 setActivity("answering");
                 break;
               case "tool":
@@ -121,6 +156,17 @@ export function useVoiceAssistant(lang: string) {
                 break;
               case "events":
                 patch(botId, (m) => ({ ...m, events: data.events }));
+                break;
+              case "sources":
+                patch(botId, (m) => ({
+                  ...m,
+                  sources: [
+                    ...(m.sources ?? []),
+                    ...(data.sources as Source[]).filter(
+                      (s) => !m.sources?.some((x) => x.url === s.url),
+                    ),
+                  ],
+                }));
                 break;
               case "delta":
                 patch(botId, (m) => ({ ...m, text: m.text + data.text }));
@@ -130,10 +176,15 @@ export function useVoiceAssistant(lang: string) {
                 setStatus("speaking");
                 break;
               case "done":
-                patch(botId, (m) => ({ ...m, text: data.text, pending: false }));
+                patch(botId, (m) => ({
+                  ...m,
+                  text: data.text,
+                  pending: false,
+                }));
                 break;
               case "error":
-                failed = data.code === "nothing_heard" ? "nothing_heard" : "failed";
+                failed =
+                  data.code === "nothing_heard" ? "nothing_heard" : "failed";
                 break;
             }
           });
@@ -151,7 +202,8 @@ export function useVoiceAssistant(lang: string) {
         // Drop the empty turn; keep a transcript the user may want to see.
         update((all) =>
           all.filter(
-            (m) => !(m.id === botId && !m.text) && !(m.id === userId && !m.text),
+            (m) =>
+              !(m.id === botId && !m.text) && !(m.id === userId && !m.text),
           ),
         );
       } else {
@@ -191,14 +243,21 @@ export function useVoiceAssistant(lang: string) {
     playerRef.current?.stop();
     recorderRef.current?.cancel();
     recorderRef.current = null;
-    update((all) => all.filter((m) => !(m.pending && !m.text)).map((m) => ({ ...m, pending: false })));
+    update((all) =>
+      all
+        .filter((m) => !(m.pending && !m.text))
+        .map((m) => ({ ...m, pending: false })),
+    );
     setActivity(null);
     setStatus("idle");
   }, [update]);
 
   const listen = useCallback(async () => {
     player().unlock(); // inside the tap: allows audio playback later
-    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+    if (
+      !navigator.mediaDevices?.getUserMedia ||
+      typeof MediaRecorder === "undefined"
+    ) {
       setError("unsupported");
       return;
     }

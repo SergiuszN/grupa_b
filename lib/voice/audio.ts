@@ -120,7 +120,8 @@ export async function toWav(blob: Blob): Promise<ArrayBuffer> {
   const buffer = new ArrayBuffer(44 + pcm.length * 2);
   const view = new DataView(buffer);
   const text = (offset: number, s: string) => {
-    for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i));
+    for (let i = 0; i < s.length; i++)
+      view.setUint8(offset + i, s.charCodeAt(i));
   };
   text(0, "RIFF");
   view.setUint32(4, 36 + pcm.length * 2, true);

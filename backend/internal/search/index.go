@@ -1,7 +1,8 @@
-// Package search keeps a side index of the catalog for the voice assistant:
-// one document per event and language, searchable with SQLite FTS5 (BM25) and
-// with embedding vectors stored as float32 BLOBs. Queries combine both rankings
-// with reciprocal rank fusion.
+// Package search keeps a side index for the voice assistant: one document
+// per event and language, plus practical visitor information (tickets,
+// parking, accessibility...). Both are searchable with SQLite FTS5 (BM25) and
+// with embedding vectors stored as float32 BLOBs; queries combine the two
+// rankings with reciprocal rank fusion.
 package search
 
 import (
@@ -32,6 +33,17 @@ CREATE TABLE IF NOT EXISTS docs (
 );
 -- Text is folded (lowercase, no diacritics) before indexing, like catalog.Fold.
 CREATE VIRTUAL TABLE IF NOT EXISTS docs_fts USING fts5(title, body, tokenize = 'unicode61');
+CREATE TABLE IF NOT EXISTS info (
+	id INTEGER PRIMARY KEY,
+	slug TEXT NOT NULL UNIQUE,
+	category TEXT NOT NULL,
+	title TEXT NOT NULL,
+	body TEXT NOT NULL,
+	url TEXT NOT NULL,
+	hash TEXT NOT NULL,
+	embedding BLOB
+);
+CREATE VIRTUAL TABLE IF NOT EXISTS info_fts USING fts5(title, body, tokenize = 'unicode61');
 `
 
 // Hit is an event found by a query; a higher Score is better.
@@ -40,16 +52,28 @@ type Hit struct {
 	Score   float64
 }
 
-type docVec struct {
-	eventID int64
-	vec     []float32
+// Info is one entry of practical visitor information, with its source page.
+type Info struct {
+	Slug     string `json:"id"`
+	Category string `json:"category"`
+	Title    string `json:"title"`
+	Content  string `json:"content"`
+	URL      string `json:"url"`
+}
+
+// vector is an embedded document; key is the event id (docs) or the info row id.
+type vector struct {
+	key int64
+	vec []float32
 }
 
 // Index is the read-only search index loaded by the API.
 type Index struct {
-	db    *sql.DB
-	model string
-	vecs  []docVec
+	db        *sql.DB
+	model     string
+	vecs      []vector // events
+	infoVecs  []vector
+	infoCount int
 }
 
 // Open opens the index read-only and loads all embeddings into memory.
@@ -60,31 +84,51 @@ func Open(path string) (*Index, error) {
 		return nil, err
 	}
 	ix := &Index{db: db}
-	if err := db.QueryRow("SELECT value FROM meta WHERE key = 'embedding_model'").Scan(&ix.model); err != nil {
+	if err := ix.load(); err != nil {
 		db.Close()
 		return nil, fmt.Errorf("open search index %s: %w", path, err)
 	}
-	rows, err := db.Query("SELECT event_id, embedding FROM docs WHERE embedding IS NOT NULL")
+	return ix, nil
+}
+
+func (ix *Index) load() error {
+	if err := ix.db.QueryRow("SELECT value FROM meta WHERE key = 'embedding_model'").Scan(&ix.model); err != nil {
+		return err
+	}
+	var err error
+	if ix.vecs, err = loadVectors(ix.db, "SELECT event_id, embedding FROM docs WHERE embedding IS NOT NULL"); err != nil {
+		return err
+	}
+	// Indexes built before visitor information existed have no info table.
+	var hasInfo int
+	_ = ix.db.QueryRow("SELECT COUNT(*) FROM sqlite_master WHERE name = 'info'").Scan(&hasInfo)
+	if hasInfo == 0 {
+		return nil
+	}
+	if err := ix.db.QueryRow("SELECT COUNT(*) FROM info").Scan(&ix.infoCount); err != nil {
+		return err
+	}
+	ix.infoVecs, err = loadVectors(ix.db, "SELECT id, embedding FROM info WHERE embedding IS NOT NULL")
+	return err
+}
+
+func loadVectors(db *sql.DB, query string) ([]vector, error) {
+	rows, err := db.Query(query)
 	if err != nil {
-		db.Close()
 		return nil, err
 	}
 	defer rows.Close()
+	var out []vector
 	for rows.Next() {
-		var d docVec
+		var v vector
 		var blob []byte
-		if err := rows.Scan(&d.eventID, &blob); err != nil {
-			db.Close()
+		if err := rows.Scan(&v.key, &blob); err != nil {
 			return nil, err
 		}
-		d.vec = decodeVector(blob)
-		ix.vecs = append(ix.vecs, d)
+		v.vec = decodeVector(blob)
+		out = append(out, v)
 	}
-	if err := rows.Err(); err != nil {
-		db.Close()
-		return nil, err
-	}
-	return ix, nil
+	return out, rows.Err()
 }
 
 // Close closes the index database.
@@ -93,76 +137,121 @@ func (ix *Index) Close() error { return ix.db.Close() }
 // Model is the embedding model the vectors were built with; query vectors must use the same one.
 func (ix *Index) Model() string { return ix.model }
 
-// Size is the number of embedded documents.
+// Size is the number of embedded event documents.
 func (ix *Index) Size() int { return len(ix.vecs) }
+
+// InfoSize is the number of visitor information entries.
+func (ix *Index) InfoSize() int { return ix.infoCount }
 
 // Search ranks events by the text query (FTS5) and the query vector (cosine
 // similarity), fused with reciprocal rank fusion. queryVec may be nil.
 func (ix *Index) Search(ctx context.Context, query string, queryVec []float32, limit int) ([]Hit, error) {
-	const k = 60.0 // RRF constant
+	text, err := ix.ftsRank(ctx, `SELECT d.event_id FROM docs_fts f JOIN docs d ON d.id = f.rowid
+		WHERE docs_fts MATCH ? ORDER BY bm25(docs_fts, 5.0, 1.0) LIMIT 60`, query)
+	if err != nil {
+		return nil, err
+	}
+	scores := fuse(text, vectorRank(ix.vecs, queryVec, 40))
+	hits := make([]Hit, len(scores))
+	for i, s := range scores {
+		hits[i] = Hit{EventID: s.key, Score: s.score}
+	}
+	return hits[:min(len(hits), max(limit, 0))], nil
+}
+
+// SearchInfo returns the visitor information entries best matching the query.
+func (ix *Index) SearchInfo(ctx context.Context, query string, queryVec []float32, limit int) ([]Info, error) {
+	if ix.infoCount == 0 {
+		return nil, nil
+	}
+	text, err := ix.ftsRank(ctx, `SELECT rowid FROM info_fts WHERE info_fts MATCH ?
+		ORDER BY bm25(info_fts, 3.0, 1.0) LIMIT 20`, query)
+	if err != nil {
+		return nil, err
+	}
+	scores := fuse(text, vectorRank(ix.infoVecs, queryVec, 10))
+	out := make([]Info, 0, limit)
+	for _, s := range scores[:min(len(scores), limit)] {
+		var in Info
+		if err := ix.db.QueryRowContext(ctx, "SELECT slug, category, title, body, url FROM info WHERE id = ?", s.key).
+			Scan(&in.Slug, &in.Category, &in.Title, &in.Content, &in.URL); err != nil {
+			return nil, err
+		}
+		out = append(out, in)
+	}
+	return out, nil
+}
+
+// ftsRank runs a full-text query returning keys best first, each key once.
+func (ix *Index) ftsRank(ctx context.Context, sqlQuery, text string) ([]int64, error) {
+	match := ftsQuery(text)
+	if match == "" {
+		return nil, nil
+	}
+	rows, err := ix.db.QueryContext(ctx, sqlQuery, match)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []int64
+	seen := map[int64]bool{}
+	for rows.Next() {
+		var key int64
+		if err := rows.Scan(&key); err != nil {
+			return nil, err
+		}
+		if !seen[key] { // best document per event (another language may match too)
+			seen[key] = true
+			out = append(out, key)
+		}
+	}
+	return out, rows.Err()
+}
+
+// vectorRank returns the keys of the n most similar vectors, best first.
+func vectorRank(vecs []vector, query []float32, n int) []int64 {
+	if len(query) == 0 {
+		return nil
+	}
+	best := map[int64]float64{}
+	for _, v := range vecs {
+		if s := cosine(query, v.vec); s > best[v.key] {
+			best[v.key] = s
+		}
+	}
+	keys := make([]int64, 0, len(best))
+	for k := range best {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool { return best[keys[i]] > best[keys[j]] })
+	return keys[:min(len(keys), n)]
+}
+
+type scored struct {
+	key   int64
+	score float64
+}
+
+// fuse combines rankings with reciprocal rank fusion, best first.
+func fuse(rankings ...[]int64) []scored {
+	const k = 60.0
 	scores := map[int64]float64{}
-
-	if match := ftsQuery(query); match != "" {
-		rows, err := ix.db.QueryContext(ctx, `SELECT d.event_id FROM docs_fts f JOIN docs d ON d.id = f.rowid
-			WHERE docs_fts MATCH ? ORDER BY bm25(docs_fts, 5.0, 1.0) LIMIT 60`, match)
-		if err != nil {
-			return nil, err
-		}
-		rank := 0
-		seen := map[int64]bool{}
-		for rows.Next() {
-			var id int64
-			if err := rows.Scan(&id); err != nil {
-				rows.Close()
-				return nil, err
-			}
-			if !seen[id] { // best document per event (another language may match too)
-				seen[id] = true
-				rank++
-				scores[id] += 1 / (k + float64(rank))
-			}
-		}
-		rows.Close()
-		if err := rows.Err(); err != nil {
-			return nil, err
+	for _, ranking := range rankings {
+		for i, key := range ranking {
+			scores[key] += 1 / (k + float64(i+1))
 		}
 	}
-
-	if len(queryVec) > 0 {
-		best := map[int64]float64{}
-		for _, d := range ix.vecs {
-			if s := cosine(queryVec, d.vec); s > best[d.eventID] {
-				best[d.eventID] = s
-			}
-		}
-		type scored struct {
-			id  int64
-			sim float64
-		}
-		ranked := make([]scored, 0, len(best))
-		for id, s := range best {
-			ranked = append(ranked, scored{id, s})
-		}
-		sort.Slice(ranked, func(i, j int) bool { return ranked[i].sim > ranked[j].sim })
-		for i, r := range ranked[:min(len(ranked), 40)] {
-			scores[r.id] += 1 / (k + float64(i+1))
-		}
+	out := make([]scored, 0, len(scores))
+	for key, s := range scores {
+		out = append(out, scored{key, s})
 	}
-
-	hits := make([]Hit, 0, len(scores))
-	for id, s := range scores {
-		hits = append(hits, Hit{EventID: id, Score: s})
-	}
-	sort.Slice(hits, func(i, j int) bool {
-		if hits[i].Score != hits[j].Score {
-			return hits[i].Score > hits[j].Score
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].score != out[j].score {
+			return out[i].score > out[j].score
 		}
-		return hits[i].EventID < hits[j].EventID
+		return out[i].key < out[j].key
 	})
-	if limit > 0 && len(hits) > limit {
-		hits = hits[:limit]
-	}
-	return hits, nil
+	return out
 }
 
 // ftsQuery turns free text into an FTS5 query: every word as a prefix, any may match.
