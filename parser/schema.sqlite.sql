@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS venues (
     postal_code TEXT,
     country_code TEXT NOT NULL DEFAULT 'PL' CHECK (length(country_code) = 2),
     accessibility_notes TEXT,
+    seatplan_url TEXT,
     source_url TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -23,7 +24,9 @@ CREATE TABLE IF NOT EXISTS events (
         CHECK (kind IN ('symphonic', 'chamber', 'jazz', 'concert', 'education', 'exhibition', 'tour', 'festival', 'external', 'other')),
     source_category TEXT,
     season TEXT,
+    calendar_category TEXT,
     image_url TEXT,
+    playlist_url TEXT,
     duration_minutes INTEGER CHECK (duration_minutes IS NULL OR duration_minutes > 0),
     has_intermission INTEGER CHECK (has_intermission IS NULL OR has_intermission IN (0, 1)),
     min_age INTEGER CHECK (min_age IS NULL OR min_age >= 0),
@@ -45,6 +48,10 @@ CREATE TABLE IF NOT EXISTS event_translations (
     summary TEXT,
     description TEXT,
     why_attend TEXT,
+    audience_note TEXT,
+    programme_notes TEXT,
+    partners_note TEXT,
+    source_url TEXT,
     seo_title TEXT,
     seo_description TEXT,
     PRIMARY KEY (event_id, language_code)
@@ -59,11 +66,13 @@ CREATE TABLE IF NOT EXISTS performances (
     starts_at TEXT NOT NULL,
     ends_at TEXT,
     ticket_status TEXT NOT NULL DEFAULT 'unknown'
-        CHECK (ticket_status IN ('available', 'last_seats', 'sold_out', 'free', 'registration_required', 'unknown')),
+        CHECK (ticket_status IN ('available', 'last_seats', 'sold_out', 'free', 'registration_required', 'not_yet_on_sale', 'box_office', 'cancelled', 'unknown')),
     price_min REAL CHECK (price_min IS NULL OR price_min >= 0),
     price_max REAL CHECK (price_max IS NULL OR price_max >= price_min),
+    price_details TEXT NOT NULL DEFAULT '[]',
     currency TEXT NOT NULL DEFAULT 'PLN' CHECK (length(currency) = 3),
     ticket_url TEXT,
+    ticket_notes TEXT,
     source_payload TEXT NOT NULL DEFAULT '{}',
     scraped_at TEXT,
     UNIQUE (event_id, starts_at)
@@ -72,10 +81,11 @@ CREATE TABLE IF NOT EXISTS performances (
 CREATE TABLE IF NOT EXISTS artists (
     id INTEGER PRIMARY KEY,
     source_key TEXT UNIQUE,
-    display_name TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL,
     artist_type TEXT NOT NULL DEFAULT 'person'
         CHECK (artist_type IN ('person', 'ensemble', 'orchestra', 'organization')),
     image_url TEXT,
+    image_credit TEXT,
     source_url TEXT
 );
 
@@ -123,6 +133,7 @@ CREATE TABLE IF NOT EXISTS series (
     source_key TEXT UNIQUE,
     slug TEXT UNIQUE,
     season TEXT,
+    image_url TEXT,
     source_url TEXT
 );
 
@@ -167,7 +178,7 @@ CREATE TABLE IF NOT EXISTS event_moods (
 CREATE TABLE IF NOT EXISTS event_accessibility (
     event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
     accessibility_type TEXT NOT NULL CHECK (accessibility_type IN ('mobility', 'visual', 'hearing', 'sensory')),
-    status TEXT NOT NULL DEFAULT 'unknown' CHECK (status IN ('available', 'not_available', 'unknown')),
+    status TEXT NOT NULL DEFAULT 'unknown' CHECK (status IN ('available', 'partial', 'not_available', 'unknown')),
     notes TEXT,
     source_url TEXT,
     verified_at TEXT,
@@ -191,7 +202,7 @@ CREATE INDEX IF NOT EXISTS events_source_system_idx ON events (source_system);
 CREATE INDEX IF NOT EXISTS event_accessibility_type_status_idx ON event_accessibility (accessibility_type, status);
 
 INSERT OR IGNORE INTO audience_groups (slug) VALUES
-    ('children'), ('families'), ('preschool'), ('schools'), ('youth'), ('teachers'), ('young-musicians'), ('adults'), ('beginners');
+    ('children'), ('families'), ('preschool'), ('schools'), ('youth'), ('teachers'), ('young-musicians'), ('adults'), ('seniors'), ('beginners');
 
 INSERT OR IGNORE INTO moods (slug) VALUES
     ('classical-super-hits'), ('emotional'), ('energy'), ('relax'), ('something-extraordinary');

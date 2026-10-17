@@ -20,26 +20,27 @@ events 1 ─── N performances N ─── 1 venues
 
 ## Tabele
 
-- `events`, `event_translations` — opis, typ wydarzenia, kategoria źródłowa, obraz i treści PL/EN/DE.
-- `performances`, `venues` — daty, miejsce, status biletów, ceny i link do zakupu.
-- `artists`, `artist_translations`, `event_artists` — osoby i zespoły wraz z rolami.
-- `works`, `work_translations`, `event_works` — program i kompozytorzy.
-- `series`, `series_translations`, `event_series` — cykle i festiwale.
-- `audience_groups`, `event_audiences`, `moods`, `event_moods` — filtry „dla kogo” i „jaki klimat”.
-- `event_accessibility` — osobne potwierdzone informacje o dostępności ruchowej, wzrokowej, słuchowej i sensorycznej.
-- `source_snapshots` — kopia źródłowych danych strukturalnych do kontroli i ponownego importu.
+- `events`, `event_translations` — typ wydarzenia (`kind`), kategoria z kalendarza (`calendar_category`: concerts/edu/exhibitions/others), obraz, playlista Spotify, czas trwania i przerwa, wiek; w tłumaczeniach PL/EN/DE: tytuł, podtytuł (np. „Koncert symfoniczny”), opis jako czysty tekst z akapitami, `programme_notes` (np. Akademia słuchania, czas trwania), `audience_note` („dla dzieci od 3. do 4. roku życia z opiekunami”), `partners_note`.
+- `performances`, `venues` — daty, sala (Sala symfoniczna / kameralna / galerie) z adresem i planem sali, status biletów, `price_min`/`price_max` oraz pełny cennik w `price_details` (JSON: strefa → normalne/ulgowe/grupowe), link do kasy lub formularza, `ticket_notes` (np. „Sprzedaż od…”, zasady dla opiekunów).
+- `artists`, `artist_translations`, `event_artists` — osoby i zespoły ze zdjęciem (`image_url`, `image_credit`) i biogramem PL/EN/DE; rola w wydarzeniu (dyrygent, trąbka, prowadzenie…) jest w `event_artists.role`, a nie w nazwisku.
+- `works`, `work_translations`, `event_works` — program (kompozytor jest artystą), tytuły w PL/EN/DE.
+- `series`, `series_translations`, `event_series` — cykle z opisem i obrazkiem.
+- `audience_groups`, `event_audiences` — filtr „dla kogo” wyciągany z pola odbiorców w kalendarzu i podtytułu (dzieci, rodziny, przedszkola, szkoły, seniorzy…) z zakresem wieku. To główne źródło dla persony „Rodzic” i EDUfilharmonii.
+- `moods`, `event_moods` — słownik „jaki klimat”; strona go nie publikuje, więc tabela jest pusta (do ręcznego/AI tagowania).
+- `event_accessibility` — dostępność ruchowa/słuchowa/wzrokowa/sensoryczna: cytaty z [deklaracji dostępności](https://filharmonia.szczecin.pl/deklaracja_dostepnosci) dla wydarzeń w budynku przy Małopolskiej 48 (`source_url` wskazuje źródło) oraz znaczniki z opisu wydarzenia (PJM, audiodeskrypcja, koncert sensoryczny). Status `partial` = część udogodnień jest, części brak.
+- `source_snapshots` — kopia rekordu źródłowego do kontroli i ponownego importu.
 
 ## Zawartość aktualnej bazy demo
 
-Ostatni zrzut z publicznych stron Filharmonii zawiera 21 rekordów wydarzeń i 85 wystąpień (stan na 17.10.2026), wraz z dostępnymi tłumaczeniami EN/DE, wykonawcami, utworami, cyklami oraz kategoriami odczytanymi z kalendarza. Oferta obejmuje terminy od 18.10.2026 do 14.06.2027; liczby zmienią się po kolejnym uruchomieniu scrapera. Dokładna liczba zmieni się po kolejnym uruchomieniu scrapera.
+Zrzut z 17.10.2026: **100 wydarzeń** (w tym 6 koncertów zewnętrznych) i **222 terminy** od 18.10.2026 do 19.06.2027, 94 wydarzenia z tłumaczeniami EN/DE, 188 artystów (97 z biogramem PL/EN/DE, 90 ze zdjęciem — pozostali nie mają na stronie własnej podstrony), 107 utworów w programach 39 wydarzeń, 15 cykli z opisami. Ceny ma 185 terminów; statusy: 160 `available`, 24 `registration_required`, 20 `free`, 1 `sold_out`, 17 `unknown` (głównie koncerty zewnętrzne). Czas trwania znany dla 44 wydarzeń.
 
-**Świadomie nie uzupełniamy zgadywanych danych:** publiczne JSON-LD nie ujawnia wiarygodnych cen ani bieżącego stanu sprzedaży, więc `price_min`/`price_max` pozostają puste, a `ticket_status` ma wartość `unknown`. Miejsce w pobranych danych może być ogólne („Filharmonia Szczecin”), a nie konkretną salą. Znaczniki dostępności również wymagają weryfikacji u organizatora. Do prezentacji można dodać ręcznie zweryfikowane lub wyraźnie oznaczone mockowe wartości.
+**Świadomie nie zgadujemy danych:** ceny i statusy sprzedaży to stan z chwili pobrania (popup biletów na stronie), nie dane na żywo z systemu sprzedaży. Dostępność dla wydarzeń zewnętrznych pozostaje `unknown`. Nastroje (`moods`) nie są wypełniane automatycznie.
 
 ## Źródło i ponowne pobranie
 
-Źródło: [filharmonia.szczecin.pl](https://filharmonia.szczecin.pl/). Scraper bierze publiczne linki do wydarzeń z repertuaru, odczytuje dane JSON-LD oraz dostępne warianty językowe, a typ i cykl odczytuje z kalendarza. Zrzut zapisuje czas pobrania i URL źródłowy. Przed użyciem danych jako bieżącej oferty należy ponownie uruchomić skrypt i sprawdzić status sprzedaży w oficjalnym systemie.
+Źródło: [filharmonia.szczecin.pl](https://filharmonia.szczecin.pl/). Scraper czyta miesięczny kalendarz (ten sam endpoint, którego używa strona), a następnie strony wydarzeń PL/EN/DE, popup biletów, strony artystów i cykli. Przed użyciem danych jako bieżącej oferty należy ponownie uruchomić skrypt.
 
 ```bash
-python3 scripts/scrape_filharmonia.py --limit 30 --output data/filharmonia_events.json
-python3 scripts/load_sqlite.py --reset
+python3 parser/scrape_filharmonia.py --output data/filharmonia_events.json
+python3 parser/load_sqlite.py --reset
 ```

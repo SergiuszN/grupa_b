@@ -17,11 +17,19 @@ Model danych i demonstracyjna baza SQLite przygotowane na podstawie briefu oraz 
 Wymagany jest Python 3, bez dodatkowych bibliotek:
 
 ```bash
-python3 parser/scrape_filharmonia.py --limit 30 --output data/filharmonia_events.json
+python3 parser/scrape_filharmonia.py --output data/filharmonia_events.json
 python3 parser/load_sqlite.py --reset
 ```
 
-Domyślnie scraper pobiera wydarzenia od bieżącej chwili, w tym dostępne wersje EN/DE. Opcja `--from-date ''` uwzględnia też archiwalne wystąpienia. Scraper sprawdza `robots.txt`, ogranicza tempo zapytań i korzysta z publicznych stron wydarzeń.
+Scraper czyta kalendarz miesiąc po miesiącu (domyślnie 12 miesięcy od dziś, `--months`), a dla każdego wydarzenia pobiera stronę PL/EN/DE, popup biletów (ceny, link do kasy, uwagi o sprzedaży), strony artystów (zdjęcie, biogram) i cykli oraz deklarację dostępności budynku. Pełny przebieg to kilkaset zapytań (~5–10 min przy `--delay 0.5`).
+
+Przydatne opcje:
+
+- `--cache-dir /tmp/fs-cache` — zapisuje surowe odpowiedzi i używa ich przy kolejnym uruchomieniu (szybkie iterowanie nad parserem),
+- `--limit 5` — tylko pierwsze N wydarzeń (test),
+- `--no-translations`, `--no-artists` — pomija strony EN/DE i strony artystów.
+
+`load_sqlite.py --reset` usuwa plik bazy i tworzy go od nowa z aktualnego schematu.
 
 ## Szybki test
 
@@ -39,4 +47,4 @@ print(conn.execute('''
 PY
 ```
 
-Dane są demonstracyjne, nie są synchronizowane z systemem sprzedaży biletów. Ceny, dostępność miejsc i szczegóły dostępności pozostają `NULL`/`unknown`, jeśli nie występują w publicznych danych strukturalnych — nie są zgadywane.
+Dane są demonstracyjne, nie są synchronizowane z systemem sprzedaży biletów. Ceny i status sprzedaży pochodzą z publicznego popupu biletów w chwili pobrania. Informacje o dostępności to cytaty z deklaracji dostępności budynku (plus znaczniki PJM/audiodeskrypcji z opisu wydarzenia) — dla wydarzeń poza budynkiem przy Małopolskiej 48 pozostają `unknown`.
