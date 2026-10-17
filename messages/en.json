@@ -207,8 +207,9 @@
     "empty": "No events in this category.",
     "unavailable": "The programme is temporarily unavailable.",
     "today": "Today",
-    "tomorrow": "Tomorrow",
-    "inWeek": "In a week"
+    "inWeek": "In a week",
+    "loadingMore": "Loading more days...",
+    "loadMore": "Show more"
   },
   "Landing": {
     "headline1": "The Philharmonic",

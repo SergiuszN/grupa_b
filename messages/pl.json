@@ -207,8 +207,9 @@
     "empty": "Brak wydarzeń w tej kategorii.",
     "unavailable": "Repertuar jest chwilowo niedostępny.",
     "today": "Dzisiaj",
-    "tomorrow": "Jutro",
-    "inWeek": "Za tydzień"
+    "inWeek": "Za tydzień",
+    "loadingMore": "Wczytywanie kolejnych dni...",
+    "loadMore": "Pokaż więcej"
   },
   "Landing": {
     "headline1": "Filharmonia",

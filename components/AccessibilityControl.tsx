@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { X } from "lucide-react";
+import { Accessibility, X } from "lucide-react";
 import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
 import { Logo } from "@/components/brand/logo";
 
@@ -126,6 +126,8 @@ export function AccessibilityControl() {
   const [mouseY, setMouseY] = useState<number>(100);
 
   const closeRef = useRef<HTMLButtonElement>(null);
+  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
+  const desktopTriggerRef = useRef<HTMLButtonElement>(null);
 
   function closePanel() {
     setIsOpen(false);
@@ -396,6 +398,78 @@ export function AccessibilityControl() {
           </div>
         </div>
       ) : null}
+
+      {/* Floating Accessibility Triggers (when modal is closed) */}
+      {!isOpen && (
+        <div className="font-sans" data-a11y-panel="true">
+          {/* MOBILE SLIDE-OUT TAB: docked to right edge */}
+          <button
+            ref={mobileTriggerRef}
+            data-a11y-trigger="true"
+            type="button"
+            onClick={() => setIsOpen(true)}
+            aria-expanded={false}
+            aria-label={t("openPanel")}
+            className="md:hidden fixed right-0 top-1/2 -translate-y-1/2 z-50 flex h-fit min-h-[140px] w-8 flex-col items-center justify-between gap-3 rounded-l-2xl border-l border-y border-r-0 border-white/20 bg-black/60 py-3.5 text-paper backdrop-blur-xl transition-all duration-300 hover:border-gold/60 hover:bg-black/85 hover:translate-x-0 translate-x-1 active:translate-x-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+          >
+            {activeCount > 0 && (
+              <span className="absolute inset-0 rounded-l-2xl bg-gold/10 animate-pulse" />
+            )}
+
+            <Accessibility
+              aria-hidden="true"
+              size={16}
+              strokeWidth={1.8}
+              className="text-gold shrink-0 relative"
+            />
+
+            <span
+              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+              className="text-[9px] font-bold tracking-[0.18em] uppercase text-paper/90 select-none py-1 relative"
+            >
+              {t("buttonLabel")}
+            </span>
+
+            {activeCount > 0 ? (
+              <span className="flex size-4 items-center justify-center rounded-full bg-gold text-[9px] font-bold text-white shrink-0 relative">
+                {activeCount}
+              </span>
+            ) : (
+              <span className="h-1 shrink-0" />
+            )}
+          </button>
+
+          {/* DESKTOP CIRCLE: floating bottom-6 right-6 aspect-square rounded-full circle */}
+          <div className="hidden md:block fixed bottom-6 right-6 z-50">
+            <button
+              ref={desktopTriggerRef}
+              data-a11y-trigger="true"
+              type="button"
+              onClick={() => setIsOpen(true)}
+              aria-expanded={false}
+              aria-label={t("openPanel")}
+              className="group relative flex size-12 aspect-square items-center justify-center rounded-full border border-white/20 bg-white/10 text-paper backdrop-blur-xl transition-all duration-300 hover:border-gold/60 hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold cursor-pointer"
+            >
+              {activeCount > 0 && (
+                <span className="absolute inset-0 rounded-full bg-gold/10 animate-pulse" />
+              )}
+
+              <Accessibility
+                aria-hidden="true"
+                size={22}
+                strokeWidth={1.8}
+                className="text-gold relative transition-transform duration-300 group-hover:scale-110"
+              />
+
+              {activeCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-white">
+                  {activeCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
