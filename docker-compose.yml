@@ -1,0 +1,39 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    image: wud_szczecin_web:latest
+    container_name: wud_szczecin_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+
+  web-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    image: wud_szczecin_web:dev
+    container_name: wud_szczecin_web_dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/web/.next
+      - /app/apps/web/node_modules
+      - /app/apps/docs/.next
+      - /app/apps/docs/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - WATCHPACK_POLLING=true
+    profiles:
+      - dev
