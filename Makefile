@@ -21,75 +21,77 @@ help: ## Wyświetla listę dostępnych komend
 		/^##@/ { printf "\n$(BOLD)%s$(RESET)\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 	@echo ""
 
-##@ Rozwój lokalny (Local Development)
+# Wszystkie komendy wykonywane są w kontenerze web-dev (node_modules i .next
+# trzymane w wolumenach Dockera), więc na hoście potrzebny jest tylko Docker.
+DC       := docker compose
+RUN      := $(DC) run --rm web-dev
+RUN_PROD := $(DC) run --rm -e NODE_ENV=production web-dev
+
+##@ Rozwój (w Dockerze)
 .PHONY: install
-install: ## Instaluje wszystkie zależności projektu (pnpm)
-	pnpm install
+install: ## Instaluje zależności (pnpm) w wolumenie node_modules
+	$(RUN) pnpm install
 
 .PHONY: dev
-dev: ## Uruchamia aplikację Next.js w trybie dev (port 3000)
-	pnpm dev
+dev: ## Uruchamia Next.js w trybie dev z hot-reloadem (port 3000)
+	$(DC) up --build web-dev
 
 .PHONY: build
 build: ## Buduje produkcyjną wersję aplikacji
-	pnpm build
+	$(RUN_PROD) pnpm build
 
 .PHONY: start
-start: ## Uruchamia produkcyjny serwer Next.js
-	pnpm start
+start: ## Uruchamia produkcyjny serwer Next.js (wymaga make build, port 3000)
+	$(RUN_PROD) --service-ports pnpm start
 
 .PHONY: lint
 lint: ## Uruchamia linter ESLint
-	pnpm lint
+	$(RUN) pnpm lint
 
 .PHONY: check-types
 check-types: ## Sprawdza typy TypeScript
-	pnpm check-types
+	$(RUN) pnpm check-types
 
 .PHONY: format
 format: ## Formatuje kod za pomocą Prettier
-	pnpm format
+	$(RUN) pnpm format
 
 .PHONY: check
 check: lint check-types build ## Pełny test jakości: lint + types + build
 
+.PHONY: shell
+shell: ## Otwiera powłokę w kontenerze deweloperskim
+	$(RUN) sh
+
 .PHONY: clean
 clean: ## Czyści cache i katalogi buildów (.next, out, dist)
 	@echo "$(YELLOW)Czyszczenie buildów i cache...$(RESET)"
-	rm -rf .next out dist
+	$(RUN) sh -c 'rm -rf .next/* out dist'
 	@echo "$(GREEN)Wyczyszczono!$(RESET)"
 
 .PHONY: clean-all
-clean-all: clean ## Czyści wszystko włącznie z node_modules
-	@echo "$(RED)Usuwanie node_modules...$(RESET)"
-	rm -rf node_modules
+clean-all: ## Usuwa kontenery, wolumeny (node_modules, .next) i obrazy projektu
+	@echo "$(RED)Usuwanie kontenerów, wolumenów i obrazów...$(RESET)"
+	$(DC) --profile dev down -v --rmi local
 	@echo "$(GREEN)Wyczyszczono wszystko!$(RESET)"
 
-##@ Docker
-.PHONY: docker-build
-docker-build: ## Buduje produkcyjny obraz Dockera
-	docker compose build web
+##@ Kontenery
+.PHONY: image
+image: ## Buduje produkcyjny obraz Dockera
+	$(DC) build web
 
-.PHONY: docker-up
-docker-up: ## Uruchamia aplikację w Dockerze w tle (port 3000)
-	docker compose up -d web
+.PHONY: up
+up: ## Uruchamia produkcyjną aplikację w tle (port 3000)
+	$(DC) up -d web
 
-.PHONY: docker-down
-docker-down: ## Zatrzymuje kontenery Dockera
-	docker compose --profile dev down
+.PHONY: down
+down: ## Zatrzymuje kontenery
+	$(DC) --profile dev down
 
-.PHONY: docker-logs
-docker-logs: ## Wyświetla logi kontenera na żywo
-	docker compose logs -f
+.PHONY: logs
+logs: ## Wyświetla logi kontenerów na żywo
+	$(DC) --profile dev logs -f
 
-.PHONY: docker-restart
-docker-restart: ## Restartuje kontenery Dockera
-	docker compose restart
-
-.PHONY: docker-dev
-docker-dev: ## Uruchamia kontener w trybie dev z hot-reloadem
-	docker compose --profile dev up --build web-dev
-
-.PHONY: docker-clean
-docker-clean: docker-down ## Usuwa kontenery, wolumeny i obrazy projektu
-	docker compose --profile dev down -v --rmi local
+.PHONY: restart
+restart: ## Restartuje kontenery
+	$(DC) --profile dev restart
