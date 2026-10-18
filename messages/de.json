@@ -166,10 +166,7 @@
     "legend3": "Straßenbahn · Haltestelle 3 Min.",
     "eyebrow": "ANFAHRT",
     "subtitle": "Mit dem Auto, der Tram oder zu Fuß.",
-    "mapLabel": "Dein Standort",
-    "mapPlaceholder": "Adresse oder Ort eingeben",
-    "mapOpen": "In Maps öffnen",
-    "mapLocate": "Mich lokalisieren"
+    "mapOpen": "In Maps öffnen"
   },
   "FlowNav": {
     "stepHome": "Start",
@@ -367,6 +364,7 @@
     "entrance": "Einfahrt von der Małopolska-Straße",
     "level": "Ebene -2",
     "walk": "4 Min. zum Haupteingang",
+    "free": "Mit Konzertkarte parken Sie kostenlos",
     "home": "Zur Startseite"
   },
   "EventDetail": {

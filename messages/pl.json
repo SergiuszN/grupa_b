@@ -166,10 +166,7 @@
     "legend3": "Tramwaj · przystanek 3 min",
     "eyebrow": "DOJAZD",
     "subtitle": "Samochodem, tramwajem albo pieszo.",
-    "mapLabel": "Twoja lokalizacja",
-    "mapPlaceholder": "Wpisz adres lub miejsce",
-    "mapOpen": "Otwórz w Maps",
-    "mapLocate": "Zlokalizuj mnie"
+    "mapOpen": "Otwórz w Maps"
   },
   "FlowNav": {
     "stepHome": "Start",
@@ -367,6 +364,7 @@
     "entrance": "Wjazd od ul. Małopolskiej",
     "level": "Poziom -2",
     "walk": "4 min do wejścia głównego",
+    "free": "Z biletem na koncert parking jest bezpłatny",
     "home": "Wróć na stronę główną"
   },
   "EventDetail": {

@@ -166,10 +166,7 @@
     "legend3": "Tram · stop 3 min away",
     "eyebrow": "GETTING HERE",
     "subtitle": "By car, tram or on foot.",
-    "mapLabel": "Your location",
-    "mapPlaceholder": "Enter an address or place",
-    "mapOpen": "Open in Maps",
-    "mapLocate": "Locate me"
+    "mapOpen": "Open in Maps"
   },
   "FlowNav": {
     "stepHome": "Home",
@@ -367,6 +364,7 @@
     "entrance": "Entrance from Małopolska Street",
     "level": "Level -2",
     "walk": "4 min to the main entrance",
+    "free": "Free parking with a concert ticket",
     "home": "Back to home"
   },
   "EventDetail": {

@@ -1,4 +1,4 @@
-import { Car, Clock, MapPin } from "lucide-react";
+import { Car, Clock, MapPin, Ticket } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
@@ -14,6 +14,7 @@ const PARKING = [
   { key: "entrance", Icon: Car },
   { key: "level", Icon: MapPin },
   { key: "walk", Icon: Clock },
+  { key: "free", Icon: Ticket },
 ] as const;
 
 export default async function Directions() {
