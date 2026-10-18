@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
+    "test:landing-audio": "node --test tests/landing-audio.test.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
   },
   "dependencies": {

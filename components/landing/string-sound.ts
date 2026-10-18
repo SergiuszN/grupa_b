@@ -1,32 +1,30 @@
 "use client";
 
-// Shared on/off state for the violin on the home page, so the switch can live in the
-// menu sheet while the pointer handling stays on the hero. On by default; turning it
-// off in the menu is remembered per browser.
-
+// Enabled by default, but audio/network work starts only on the first gesture.
+// The menu can still disable it before anything has been downloaded.
 import { useSyncExternalStore } from "react";
-import { ViolinSampler } from "@/components/landing/violin-sampler";
+import type { ViolinSampler } from "@/components/landing/violin-sampler";
 
-type Status = "off" | "loading" | "on";
+type Status = "off" | "armed" | "loading" | "on";
 type State = { status: Status; available: boolean };
 
 const SERVER_STATE: State = { status: "off", available: false };
 const PREFERENCE_KEY = "string-sound";
-// Events that count as a user gesture, letting the browser start audio.
-const UNLOCK_EVENTS = [
-  "pointerdown",
-  "pointerup",
-  "touchstart",
-  "touchend",
-  "keydown",
-  "click",
-];
+const UNLOCK_EVENTS = ["pointerdown", "touchend", "keydown"];
 
 let state: State = SERVER_STATE;
 let sampler: ViolinSampler | null = null;
+let pendingContext: AudioContext | null = null;
+let generation = 0;
 const listeners = new Set<() => void>();
 
 function set(patch: Partial<State>) {
+  if (
+    Object.entries(patch).every(
+      ([key, value]) => state[key as keyof State] === value,
+    )
+  )
+    return;
   state = { ...state, ...patch };
   listeners.forEach((listener) => listener());
 }
@@ -64,9 +62,9 @@ function wantsSound() {
   }
 }
 
-function unlock() {
-  sampler?.resume();
-  if (!sampler || sampler.unlocked) removeUnlockListeners();
+function addUnlockListeners() {
+  for (const type of UNLOCK_EVENTS)
+    window.addEventListener(type, unlock, { capture: true, passive: true });
 }
 
 function removeUnlockListeners() {
@@ -74,31 +72,82 @@ function removeUnlockListeners() {
     window.removeEventListener(type, unlock, true);
 }
 
+function unlock(event?: Event) {
+  if (!state.available || document.hidden) return;
+  if (state.status === "armed") {
+    // Opening the menu or following a CTA is not an attempt to play the photo.
+    // In particular, allow switching sound off without downloading its samples.
+    if (
+      event?.target instanceof Element &&
+      event.target.closest(
+        "a, button, input, select, textarea, [role='dialog']",
+      )
+    )
+      return;
+    void start();
+  } else if (sampler) {
+    void sampler
+      .resume()
+      .then(() => {
+        if (sampler?.unlocked) removeUnlockListeners();
+      })
+      .catch(() => {});
+  }
+}
+
+function syncVisibility() {
+  if (document.hidden) {
+    void sampler?.suspend().catch(() => {});
+    void pendingContext?.suspend().catch(() => {});
+  } else if (sampler) {
+    // Some browsers require another gesture after an interruption.
+    addUnlockListeners();
+    unlock();
+  }
+}
+
 async function start() {
-  const next = new ViolinSampler();
-  sampler = next;
+  if (!state.available || sampler || state.status === "loading") return;
+  const ticket = ++generation;
   set({ status: "loading" });
-  // Started without a gesture the audio is suspended; the first click or key unlocks it.
-  next.resume();
-  for (const type of UNLOCK_EVENTS) window.addEventListener(type, unlock, true);
+
   try {
+    // Create/resume synchronously in the gesture, BEFORE the dynamic import;
+    // otherwise Safari may reject the unlock after the asynchronous boundary.
+    const session = (navigator as { audioSession?: { type: string } })
+      .audioSession;
+    if (session) session.type = "playback";
+    const context = new AudioContext();
+    pendingContext = context;
+    void context.resume().catch(() => {});
+
+    const { ViolinSampler } =
+      await import("@/components/landing/violin-sampler");
+    if (ticket !== generation) return;
+    const next = new ViolinSampler(context);
+    sampler = next;
+    pendingContext = null;
+    syncVisibility();
     await next.load();
-    if (sampler === next) set({ status: "on" });
+    if (ticket === generation) set({ status: "on" });
   } catch {
-    if (sampler === next) stop();
+    if (ticket === generation) stop();
   }
 }
 
 function stop() {
+  generation++;
   removeUnlockListeners();
-  sampler?.close();
+  void sampler?.close().catch(() => {});
+  void pendingContext?.close().catch(() => {});
   sampler = null;
+  pendingContext = null;
   set({ status: "off" });
 }
 
 /** Called from the menu switch, so turning on happens inside a user gesture. */
 export async function toggleStringSound() {
-  if (sampler) {
+  if (state.status !== "off") {
     savePreference(false);
     stop();
     return;
@@ -111,9 +160,14 @@ export async function toggleStringSound() {
 export function setStringSoundAvailable(available: boolean) {
   if (available) {
     set({ available });
-    if (!sampler && wantsSound()) start();
+    document.addEventListener("visibilitychange", syncVisibility);
+    if (state.status === "off" && wantsSound()) {
+      set({ status: "armed" });
+      addUnlockListeners();
+    }
     return;
   }
+  document.removeEventListener("visibilitychange", syncVisibility);
   stop();
   set({ available });
 }

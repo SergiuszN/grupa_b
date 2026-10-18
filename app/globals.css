@@ -86,7 +86,6 @@ body {
 @keyframes hero-in {
   from {
     opacity: 0;
-    filter: blur(14px);
   }
 }
 
@@ -110,7 +109,6 @@ body {
 
 .hero-slide {
   animation: hero-in 1.8s ease-out both;
-  will-change: opacity, filter, transform;
 }
 
 .hero-slide[data-zoom="in"] {
@@ -169,25 +167,79 @@ body {
   height: 100%;
 }
 
-/* Initial states for the GSAP entrance, so nothing flashes before it runs.
-   Only applied when scripting is on and motion is not reduced; <noscript>
-   and reduced-motion visitors get the final state directly. */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  [data-hero-root] [data-anim="gallery"] {
+@keyframes hero-gallery-in {
+  from {
     opacity: 0;
     transform: scale(1.14);
   }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 
-  [data-hero-root] [data-anim="scrim"],
-  [data-hero-root] header,
-  [data-hero-root] [data-anim="copy"] {
+@keyframes hero-header-in {
+  from {
     opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes hero-line-in {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Keep the entrance choreography without shipping GSAP on the landing or
+   running an additional, infinite zoom over the slide's own animation. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero-root] [data-anim="gallery"] {
+    animation: hero-gallery-in 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  }
+
+  [data-hero-root] [data-anim="scrim"] {
+    animation: hero-in 0.9s ease-out 0.1s backwards;
+  }
+
+  [data-hero-root] header {
+    /* Do not retain a transformed containing block around the fixed menu. */
+    animation: hero-header-in 0.9s ease-out 0.25s backwards;
   }
 
   [data-hero-root] [data-anim="line"] {
-    transform: translateY(110%);
+    animation: hero-line-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
   }
 
+  [data-hero-root] h1 > span + span [data-anim="line"] {
+    animation-delay: 0.45s;
+  }
+
+  [data-hero-root] [data-anim="copy"] {
+    animation: rise 0.9s ease-out 0.85s backwards;
+  }
+
+  [data-hero-root] [data-anim="copy"] + [data-anim="copy"] {
+    animation-delay: 0.94s;
+  }
+}
+
+/* A menu opened during the entrance must still be fixed to the viewport. */
+[data-hero-root] header:has([role="dialog"]) {
+  animation: none;
+}
+
+[data-hero-root][data-hero-paused="true"] [data-anim],
+[data-hero-root][data-hero-paused="true"] header,
+[data-hero-root][data-hero-paused="true"] .hero-slide {
+  animation-play-state: paused;
+}
+
+/* Initial states for the other screens' GSAP entrances. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   [data-flow-screen] header,
   [data-flow-screen] [data-flow],
   [data-flow-screen] [data-flow-item],

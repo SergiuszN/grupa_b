@@ -1,6 +1,8 @@
 "use client";
 
+import Image, { getImageProps } from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { observeHeroActivity } from "@/components/landing/hero-activity";
 
 const IMAGES = [
   "/photos/1-main.jpg",
@@ -18,87 +20,127 @@ const IMAGES = [
 ];
 
 const INTERVAL = 6000;
+const IMAGE_PROPS = {
+  alt: "",
+  fill: true,
+  sizes: "100vw",
+  quality: 75,
+} as const;
 
 export function HeroGallery() {
   const [slides, setSlides] = useState([0]);
-  const ready = useRef(new Set<number>());
-  const loading = useRef(new Set<number>());
-  const failed = useRef(new Set<number>());
+  const rootRef = useRef<HTMLDivElement>(null);
   const current = useRef(0);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = rootRef.current;
+    if (!root) return;
 
-    const load = (index: number) => {
-      if (ready.current.has(index) || loading.current.has(index)) return;
-      if (failed.current.has(index)) return;
-
-      loading.current.add(index);
-      const image = new Image();
-      image.src = IMAGES[index];
-
-      const loaded = () => {
-        loading.current.delete(index);
-        ready.current.add(index);
-      };
-      const broken = () => {
-        loading.current.delete(index);
-        failed.current.add(index);
-      };
-
-      if (typeof image.decode === "function") {
-        image.decode().then(
-          loaded,
-          () => (image.naturalWidth > 0 ? loaded() : broken()),
-        );
-      } else {
-        image.onload = loaded;
-        image.onerror = broken;
-      }
-    };
-
-    load(1);
-
+    let disposed = false;
+    let active = false;
+    let initialReady = false;
+    let loading = false;
     let timer = 0;
+    let candidate = (current.current + 1) % IMAGES.length;
+    let prepared: number | null = null;
 
-    const tick = () => {
-      let next: number | null = null;
-
-      for (let step = 1; step < IMAGES.length; step += 1) {
-        const candidate = (current.current + step) % IMAGES.length;
-
-        if (ready.current.has(candidate)) {
-          next = candidate;
-          break;
-        }
-
-        load(candidate);
-      }
-
-      if (next === null) {
-        timer = window.setTimeout(tick, 500);
-        return;
-      }
-
-      setSlides([next, current.current]);
-      current.current = next;
-      load((next + 1) % IMAGES.length);
-      timer = window.setTimeout(tick, INTERVAL);
+    const schedule = () => {
+      if (!disposed && active && initialReady && !loading && !timer)
+        timer = window.setTimeout(advance, INTERVAL);
     };
 
-    timer = window.setTimeout(tick, INTERVAL);
-    return () => window.clearTimeout(timer);
+    const advance = async () => {
+      timer = 0;
+      // Decode exactly one candidate. A slow/broken image must never trigger a
+      // burst of downloads for the rest of the gallery; the old slide stays up.
+      if (prepared === null) {
+        loading = true;
+        const index =
+          candidate === current.current
+            ? (candidate + 1) % IMAGES.length
+            : candidate;
+        candidate = (index + 1) % IMAGES.length;
+        const { props } = getImageProps({ ...IMAGE_PROPS, src: IMAGES[index] });
+        const image = new window.Image();
+        image.decoding = "async";
+        image.fetchPriority = "low";
+        image.sizes = props.sizes!;
+        image.srcset = props.srcSet!;
+        image.src = props.src;
+        try {
+          await image.decode();
+          prepared = index;
+        } catch {
+          // Try the next photo on the next interval, without a tight retry loop.
+        }
+        loading = false;
+      }
+
+      if (disposed) return;
+      if (active && prepared !== null) {
+        const next = prepared;
+        prepared = null;
+        setSlides([current.current, next]);
+        current.current = next;
+      }
+      schedule();
+    };
+
+    const stop = observeHeroActivity(root, (value) => {
+      active = value;
+      if (!active) {
+        window.clearTimeout(timer);
+        timer = 0;
+      } else {
+        schedule();
+      }
+    });
+
+    // Do not compete with the first (LCP) image, even on a slow connection.
+    root
+      .querySelector("img")
+      ?.decode()
+      .catch(() => {})
+      .then(() => {
+        if (disposed) return;
+        initialReady = true;
+        schedule();
+      });
+
+    return () => {
+      disposed = true;
+      window.clearTimeout(timer);
+      stop();
+    };
   }, []);
 
   return (
-    <div aria-hidden="true" className="bg-ink absolute inset-0" data-anim="gallery">
-      {[...slides].reverse().map((index) => (
+    <div
+      aria-hidden="true"
+      className="bg-ink absolute inset-0"
+      data-anim="gallery"
+      ref={rootRef}
+    >
+      {slides.map((index) => (
         <div
-          className="hero-slide absolute inset-0 bg-cover bg-[50%]"
+          className="hero-slide absolute inset-0"
           data-zoom={index % 2 === 0 ? "in" : "out"}
           key={index}
-          style={{ backgroundImage: `url(${IMAGES[index]})` }}
-        />
+          onAnimationEnd={(event) => {
+            if (event.animationName === "hero-in")
+              setSlides((visible) =>
+                visible.length > 1 ? visible.slice(-1) : visible,
+              );
+          }}
+        >
+          <Image
+            {...IMAGE_PROPS}
+            className="object-cover object-center"
+            fetchPriority={index === 0 ? "high" : "low"}
+            loading="eager"
+            src={IMAGES[index]}
+          />
+        </div>
       ))}
     </div>
   );
