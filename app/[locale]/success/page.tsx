@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Check, Clock, Download, Info, Music, Users } from "lucide-react";
+import { CalendarDays, Check, Clock, Download, Music, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
@@ -162,7 +162,6 @@ export default function Success() {
         <CtaButton
           fullWidth
           href="/onboarding"
-          iconLeft={<Info aria-hidden="true" size={18} strokeWidth={1.8} />}
           size="md"
           variant="primary"
         >
