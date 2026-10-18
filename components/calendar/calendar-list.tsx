@@ -193,12 +193,12 @@ export function CalendarList({
                   className="pt-7 first:pt-3"
                   key={day.key ? `day-${day.key}` : `day-${dayIndex}`}
                 >
-                  <header className="flex items-baseline justify-between gap-4 px-1">
+                  <div className="flex items-baseline justify-between gap-4 px-1">
                     <h2 className="text-[30px] leading-8 font-bold tracking-[-0.03em]">
                       {day.label}
                     </h2>
                     <p className="text-muted text-[12px] leading-4">{day.date}</p>
-                  </header>
+                  </div>
 
                   <div className="mt-2 divide-y divide-line">
                     {dayTerms.map((term, termIndex) => {
