@@ -306,6 +306,50 @@ html:has([data-flow-screen])::-webkit-scrollbar-thumb:hover {
   }
 }
 
+/* Gentle, slow breathing on the idle microphone. */
+.mic-breathe {
+  animation: mic-breathe 3.8s ease-in-out infinite;
+}
+
+@keyframes mic-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(173 137 28 / 0%);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 12px rgb(173 137 28 / 8%);
+  }
+}
+
+.mic-ring-breathe {
+  animation: mic-ring-breathe 3.8s ease-in-out infinite;
+}
+
+.mic-ring-breathe-late {
+  animation-delay: 0.9s;
+}
+
+@keyframes mic-ring-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mic-breathe,
+  .mic-ring-breathe {
+    animation: none;
+  }
+}
+
 /* Swipe deck: one proposal dissolves into the next instead of cutting. */
 .swipe-in {
   animation: swipe-in 380ms cubic-bezier(0.2, 0.7, 0.2, 1) both;

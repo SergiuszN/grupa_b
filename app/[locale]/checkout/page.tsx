@@ -66,7 +66,7 @@ export default function Checkout() {
 
       <div className="bg-surface mx-6 overflow-clip rounded-[20px]" data-flow="media">
         <div
-          className="bg-ink h-[248px] bg-cover bg-[50%]"
+          className="bg-ink h-[211px] bg-cover bg-[50%]"
           data-flow="image"
           style={{ backgroundImage: `url(${event.image})` }}
         />
@@ -166,24 +166,6 @@ export default function Checkout() {
           </div>
         </div>
 
-        <div
-          className="flex items-end gap-4 px-[18px] pt-4 pb-[18px]"
-          data-flow-item
-        >
-          <p className="text-muted flex items-center gap-1.5 pb-1.5 text-[0.75rem] leading-4 font-medium tracking-[0.14em]">
-            <Ticket
-              aria-hidden="true"
-              className="text-gold shrink-0"
-              size={13}
-              strokeWidth={1.8}
-            />
-            {t("total")}
-          </p>
-          <span aria-hidden="true" className="border-line mb-[13px] flex-1 border-t" />
-          <p className="text-[2rem] leading-9 font-bold tracking-[-0.03em]">
-            {totalAmount} zł
-          </p>
-        </div>
       </div>
 
       <div
@@ -208,7 +190,7 @@ export default function Checkout() {
             size="md"
             variant="primary"
           >
-            {t("buy")}
+            {t("buy")} · {totalAmount} zł
           </CtaButton>
         </div>
       </div>

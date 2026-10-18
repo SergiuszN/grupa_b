@@ -58,14 +58,6 @@ function Row({
   );
 }
 
-function Label({ children }: { children: string }) {
-  return (
-    <p className="text-muted pb-1 text-[0.75rem] leading-4 font-medium tracking-[0.14em]">
-      {children}
-    </p>
-  );
-}
-
 export default function Evening() {
   const t = useTranslations("Evening");
   const { event, people } = useFlow();
@@ -141,13 +133,12 @@ export default function Evening() {
       </div>
 
       <div className="px-6 pt-1.5">
-        <Label>{t("before")}</Label>
         {plan?.before.map(item)}
       </div>
 
       <div className="px-6 pt-3">
         <div
-          className="bg-ink relative flex h-[296px] flex-col justify-end overflow-clip rounded-[18px] bg-cover bg-[50%]"
+          className="bg-ink relative flex h-[252px] flex-col justify-end overflow-clip rounded-[18px] bg-cover bg-[50%]"
           data-flow="media"
           style={{ backgroundImage: `url(${event.image})` }}
         >
@@ -165,7 +156,6 @@ export default function Evening() {
       </div>
 
       <div className="px-6 pt-4">
-        <Label>{t("after")}</Label>
         {plan?.after.map(item)}
       </div>
 
@@ -173,7 +163,7 @@ export default function Evening() {
 
       <div className="pb-2" />
 
-      <FlowArrows prevHref={seated ? undefined : "/plan"} step={5} />
+      <FlowArrows prevHref={seated ? undefined : "/plan"} step={5} sticky />
     </Screen>
   );
 }

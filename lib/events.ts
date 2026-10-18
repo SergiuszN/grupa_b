@@ -19,7 +19,7 @@ export type EventInfo = {
   meta: string;
   description: string;
   duration?: number;
-  audio?: boolean;
+  audio?: string;
   image: string;
   /** Exact start (ISO) — set for events from the API. */
   startsAt?: string;
@@ -48,7 +48,7 @@ export const EVENTS: EventInfo[] = [
     description:
       "Dlaczego jedna melodia zostaje w głowie na całe życie? W cyklu Pomniki symfoniki razem z orkiestrą szukamy odpowiedzi — od pierwszego taktu Symfonii nr 40. Usłyszymy, jak z prostego motywu powstaje utwór, który zna cały świat.",
     duration: 65,
-    audio: true,
+    audio: "/audio/mozart-40.mp3",
     image: "/images/events/mozart.jpg",
     i18n: {
       en: {
@@ -85,7 +85,7 @@ export const EVENTS: EventInfo[] = [
     description:
       "Płyta nominowana do Grammy 2026 w kategorii muzyki kameralnej. Dwie gitary, Chopin i Pasieczny — wieczór, który brzmi jak odkrycie. Kowalski i Grgić zagrają program, który przyniósł im nominację.",
     duration: 65,
-    audio: true,
+    audio: "/audio/chopin-nocturne.mp3",
     image: "/images/events/slavic.jpg",
     i18n: {
       en: {
@@ -121,7 +121,7 @@ export const EVENTS: EventInfo[] = [
     meta: "Wokalistka i zespół sześcioosobowy",
     description:
       "Jedna z najbardziej charyzmatycznych polskich wokalistek wraca do jazzu i soulu, które ukształtowały jej dom. Usłyszymy Insides w całości, w składzie, w którym powstał.",
-    audio: true,
+    audio: "/audio/debussy-clair-de-lune.mp3",
     image: "/images/events/przybysz.jpg",
     i18n: {
       en: {
@@ -194,7 +194,7 @@ export const EVENTS: EventInfo[] = [
     description:
       "Vivaldi dla najmłodszych: godzina muzyki, ruchu i opowieści o tym, co słychać wiosną, latem, jesienią i zimą. Koncert prowadzony tak, żeby pięciolatek nie usiedział w miejscu.",
     duration: 60,
-    audio: true,
+    audio: "/audio/vivaldi-spring.mp3",
     image: "/images/hall-symphonic.jpg",
     i18n: {
       en: {
@@ -219,6 +219,7 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "noc-w-foyer",
+    audio: "/audio/debussy-clair-de-lune.mp3",
     seated: false,
     weekday: 5,
     priceMin: 0,
@@ -324,6 +325,20 @@ export function eventStart(event: EventInfo, now = new Date()): Date | null {
 }
 
 /** Whether the flow picks seats on the hall map for this event. */
+/** Two 30 s previews per kind, from Creative Commons / public-domain recordings. */
+const PREVIEWS: Record<string, string[]> = {
+  symphonic: ["/audio/mozart-40.mp3", "/audio/beethoven-5.mp3"],
+  chamber: ["/audio/chopin-nocturne.mp3", "/audio/debussy-clair-de-lune.mp3"],
+  jazz: ["/audio/debussy-clair-de-lune.mp3", "/audio/chopin-nocturne.mp3"],
+  concert: ["/audio/vivaldi-spring.mp3", "/audio/beethoven-5.mp3"],
+  festival: ["/audio/vivaldi-spring.mp3", "/audio/mozart-40.mp3"],
+};
+
+export function previewFor(kind: string, id: number) {
+  const pool = PREVIEWS[kind];
+  return pool ? pool[Math.abs(id) % pool.length] : undefined;
+}
+
 export function hasSeats(event: EventInfo): boolean {
   return event.seated ?? true;
 }

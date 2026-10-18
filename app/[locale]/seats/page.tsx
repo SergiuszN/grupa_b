@@ -10,7 +10,7 @@ import { SEATS_KEY, type SelectedSeat } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
 import { hasSeats, seatPrice } from "@/lib/events";
 import { useRouter } from "@/i18n/routing";
-import { ArrowLeft, ArrowRight, Ticket } from "lucide-react";
+import { Armchair, ArrowLeft, ArrowRight, Ticket } from "lucide-react";
 
 export default function SeatsPage() {
   const t = useTranslations("Seats");
@@ -94,7 +94,13 @@ export default function SeatsPage() {
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-ink">
             {t("title")}
           </h1>
-          <span className="text-muted text-sm font-medium tabular-nums sm:text-base">
+          <span className="bg-gold-soft text-ink inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.8125rem] font-semibold tabular-nums">
+            <Armchair
+              aria-hidden="true"
+              className="text-gold-deep"
+              size={14}
+              strokeWidth={1.8}
+            />
             {t("countOf", {
               selected: selectedSeats.length,
               total: partySize,

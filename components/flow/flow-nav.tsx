@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -45,14 +46,44 @@ export function FlowSteps({
   /** Hrefs of steps this path leaves out (e.g. seats for an exhibition). */
   skip?: readonly string[];
 }) {
+  const progressKey = `filharmonia:progress:${items[0]?.href ?? "main"}`;
+  const [maxVisited, setMaxVisited] = useState(step);
+
+  useEffect(() => {
+    const stored = Number(sessionStorage.getItem(progressKey));
+    const reached = Number.isFinite(stored) ? Math.max(stored, step) : step;
+    sessionStorage.setItem(progressKey, String(reached));
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of this session's progress
+    setMaxVisited(reached);
+  }, [progressKey, step]);
+
   return (
     <nav
       aria-label="Paginacja kroków"
-      className="flex items-center justify-center gap-1 pt-5 pb-2"
+      className="flex items-center justify-center gap-1 pt-4 pb-1.5"
     >
       {items.map((item, index) => {
         if (skip.includes(item.href)) return null;
         const isCurrent = index === step;
+        const reachable = index <= maxVisited;
+
+        if (!reachable) {
+          return (
+            <span
+              aria-hidden="true"
+              className="flex min-h-[28px] min-w-[20px] items-center justify-center p-1.5"
+              key={item.href}
+            >
+              <span
+                className={`h-2 w-2 rounded-full opacity-40 ${
+                  tone === "dark" ? "bg-paper/35" : "bg-[#D9D4CB]"
+                }`}
+                data-flow-dot
+              />
+            </span>
+          );
+        }
+
         return (
           <Link
             aria-current={isCurrent ? "step" : undefined}

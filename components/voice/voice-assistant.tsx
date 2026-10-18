@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
+  Baby,
+  CalendarDays,
+  CircleHelp,
   ExternalLink,
   Mic,
   RotateCcw,
@@ -122,23 +125,32 @@ export function VoiceAssistant({
           <p className="text-gold mb-3.5 text-[1.0625rem] leading-[1.375rem] font-medium tracking-[0.02em]">
             {labels.hi}
           </p>
-          <h1 className="max-w-[300px] text-[1.9375rem] leading-[112%] font-bold tracking-[-0.03em] md:max-w-[460px]">
+          <h1 className="max-w-[320px] text-[1.9375rem] leading-[112%] font-bold tracking-[-0.03em] md:max-w-[520px]">
             {labels.title}
           </h1>
-          <p className="text-muted mt-[18px] max-w-[250px] text-[0.875rem] leading-[150%]">
+          <p className="text-muted mt-3 max-w-[290px] text-[0.8125rem] leading-[1.45] md:max-w-[420px]">
             {labels.subtitle}
           </p>
-          <div className="mt-6 flex max-w-[340px] flex-wrap justify-center gap-2">
-            {labels.suggestions.map((s) => (
-              <button
-                className="border-line hover:bg-surface focus-visible:outline-gold rounded-full border px-3.5 py-2 text-[0.8125rem] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-                key={s}
-                onClick={() => ask(s)}
-                type="button"
-              >
-                {s}
-              </button>
-            ))}
+          <div className="mt-6 flex max-w-[380px] flex-wrap justify-center gap-2">
+            {labels.suggestions.map((s, index) => {
+              const Icon = [CircleHelp, CalendarDays, Baby][index] ?? CircleHelp;
+              return (
+                <button
+                  className="border-line hover:bg-surface focus-visible:outline-gold flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-[0.8125rem] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+                  key={s}
+                  onClick={() => ask(s)}
+                  type="button"
+                >
+                  <Icon
+                    aria-hidden="true"
+                    className="text-gold"
+                    size={14}
+                    strokeWidth={1.8}
+                  />
+                  {s}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
@@ -155,14 +167,16 @@ export function VoiceAssistant({
           onClick={toggle}
           status={status}
         />
-        <p
-          aria-live="polite"
-          className={`mt-3 text-[0.75rem] leading-4 font-medium tracking-[0.14em] uppercase ${
-            busy ? "text-muted" : ""
-          }`}
-        >
-          {caption}
-        </p>
+        {status !== "idle" ? (
+          <p
+            aria-live="polite"
+            className={`mt-3 text-[0.75rem] leading-4 font-medium tracking-[0.14em] uppercase ${
+              busy ? "text-muted" : ""
+            }`}
+          >
+            {caption}
+          </p>
+        ) : null}
         {error ? (
           <p
             className="mt-2 max-w-[300px] text-center text-[0.8125rem] leading-5 text-[#9B2C1F]"
@@ -238,19 +252,21 @@ function MicButton({
       <span
         className={`border-gold-soft absolute inset-0 rounded-full border transition-transform duration-100 ${
           working ? "animate-pulse" : ""
-        }`}
+        } ${status === "idle" ? "mic-ring-breathe" : ""}`}
         style={{ transform: `scale(${ring})` }}
       />
       <span
         className={`absolute rounded-full border border-[#E6DDC4] transition-transform duration-100 ${
           compact ? "inset-[8px]" : "inset-[14px]"
-        } ${status === "speaking" ? "animate-ping [animation-duration:2s]" : ""}`}
+        } ${status === "speaking" ? "animate-ping [animation-duration:2s]" : ""} ${
+          status === "idle" ? "mic-ring-breathe mic-ring-breathe-late" : ""
+        }`}
         style={{ transform: `scale(${listening ? 1 + level * 0.2 : 1})` }}
       />
       <span
         className={`bg-gold hover:bg-gold-deep relative flex items-center justify-center rounded-full transition-colors ${
-          compact ? "size-[60px]" : "size-[118px]"
-        }`}
+          status === "idle" ? "mic-breathe" : ""
+        } ${compact ? "size-[60px]" : "size-[118px]"}`}
       >
         {status === "idle" ? (
           <Mic

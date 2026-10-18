@@ -1,4 +1,4 @@
-import type { EventInfo } from "./events";
+import { previewFor, type EventInfo } from "./events";
 
 /** Card returned by GET /api/v1/recommendations. */
 export type Recommendation = {
@@ -20,7 +20,8 @@ export type Recommendation = {
 };
 
 /** Event kinds you mostly listen to — their cards get the audio preview. */
-const LISTEN = new Set(["symphonic", "chamber", "jazz", "concert"]);
+const LISTEN = new Set(["symphonic", "chamber", "jazz", "concert", "festival"]);
+
 
 /** Walk-in kinds — no seat map, the visitor only picks how many tickets. */
 const UNSEATED = new Set(["exhibition", "tour"]);
@@ -70,7 +71,7 @@ export function toEventInfo(
       .join(" · "),
     description: rec.excerpt ?? "",
     duration: rec.duration_minutes ?? undefined,
-    audio: LISTEN.has(rec.kind),
+    audio: LISTEN.has(rec.kind) ? previewFor(rec.kind, rec.id) : undefined,
     seated: !UNSEATED.has(rec.kind),
     image: rec.image_url ?? "/images/concert-hall.jpg",
     startsAt: first?.starts_at,

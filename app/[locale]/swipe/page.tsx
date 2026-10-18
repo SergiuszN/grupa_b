@@ -136,7 +136,7 @@ export default function Swipe() {
                   key={card.id}
                   label={t("preview")}
                   pauseLabel={t("pause")}
-                  src="/audio/preview.mp3"
+                  src={card.audio}
                 />
               </div>
             ) : null}

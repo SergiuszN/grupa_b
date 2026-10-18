@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Theater } from "lucide-react";
 import { type SelectedSeat } from "@/lib/taste";
 
 /* ------------------------------------------------------------------ */
@@ -77,8 +77,8 @@ const COLORS = {
   selectedBorder: "#eab308",
   wheelchairBg: "#1d4ed8",
   wheelchairIcon: "#ffffff",
-  stageFill: "#f4f1ea",
-  stageBorder: "#d9d4cb",
+  stageFill: "#111111",
+  stageBorder: "#111111",
 };
 
 type Seat = {
@@ -228,6 +228,7 @@ export function HallMap({
 }: HallMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const stageLabelRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef({ x: 0, y: 0, scale: 0.5 });
   // 0 = schematic blocks, 1 = seats of the active section
   const detailRef = useRef(0);
@@ -403,9 +404,10 @@ export function HallMap({
     ctx.textBaseline = "middle";
 
     const stageCenter = toScreen(0, STAGE_TOP + STAGE_HEIGHT / 2);
-    ctx.fillStyle = COLORS.muted;
-    ctx.font = "600 12px system-ui, sans-serif";
-    ctx.fillText(labels?.stage ?? "SCENA", stageCenter.x, stageCenter.y);
+    if (stageLabelRef.current) {
+      stageLabelRef.current.style.transform = `translate(${stageCenter.x}px, ${stageCenter.y}px) translate(-50%, -50%)`;
+      stageLabelRef.current.style.opacity = "1";
+    }
 
     for (const sec of SECTIONS) {
       const b = blocks.get(sec.key);
@@ -441,7 +443,7 @@ export function HallMap({
       }
       ctx.restore();
     }
-  }, [labels?.stage]);
+  }, []);
 
   const queueRender = useCallback(() => {
     if (renderQueuedRef.current) return;
@@ -808,6 +810,19 @@ export function HallMap({
         ref={canvasRef}
         className={`block w-full h-full outline-none select-none ${activeMeta ? "touch-none" : "touch-pan-y"}`}
       />
+
+      {/* Stage label rides with the canvas transform. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-0 z-[6] flex items-center gap-2 text-white"
+        ref={stageLabelRef}
+        style={{ opacity: 0 }}
+      >
+        <Theater size={15} strokeWidth={1.8} />
+        <span className="text-[12px] font-semibold tracking-[0.12em] uppercase">
+          {labels?.stage ?? "SCENA"}
+        </span>
+      </div>
     </div>
   );
 }

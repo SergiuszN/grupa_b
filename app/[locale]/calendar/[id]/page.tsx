@@ -20,11 +20,13 @@ import { PlayButton } from "@/components/calendar/play-button";
 import { Link } from "@/i18n/routing";
 import { CtaButton } from "@/components/ui";
 import { eventIdFromSlug, eventSlug } from "@/lib/format";
+import { previewFor } from "@/lib/events";
 
 export const dynamic = "force-dynamic";
 
 type ApiEventDetail = {
   id: number;
+  kind: string;
   calendar_category: string | null;
   title: string;
   subtitle: string | null;
@@ -116,6 +118,7 @@ async function getEvent(id: string, locale: string): Promise<ApiEventDetail | nu
 
   return {
     id: ev.source_id,
+    kind: ev.kind ?? (cat === "exhibitions" ? "exhibition" : cat === "concerts" ? "concert" : "other"),
     calendar_category: cat,
     title: tr.title ?? "Wydarzenie",
     subtitle: tr.subtitle ?? null,
@@ -274,7 +277,7 @@ export default async function EventPage({
               <PlayButton
                 label={t("play")}
                 pauseLabel={t("pause")}
-                src="/audio/preview.mp3"
+                src={previewFor(event.kind, event.id) ?? "/audio/mozart-40.mp3"}
               />
             </div>
           ) : null}
