@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -43,20 +45,98 @@ type ApiEventDetail = {
 
 const API_URL = process.env.API_URL ?? "http://localhost:8080";
 
-async function getEvent(id: string, locale: string) {
+let cachedLocalEvents: any[] | null = null;
+
+async function loadLocalEvents(): Promise<any[]> {
+  if (cachedLocalEvents) return cachedLocalEvents;
+
   try {
+    const filePath = path.join(process.cwd(), "data", "filharmonia_events.json");
+    const raw = await fs.readFile(filePath, "utf-8");
+    const parsed = JSON.parse(raw);
+    cachedLocalEvents = parsed.events ?? [];
+    return cachedLocalEvents ?? [];
+  } catch (err) {
+    console.error("Failed to load local filharmonia_events.json:", err);
+    return [];
+  }
+}
+
+async function getEvent(id: string, locale: string): Promise<ApiEventDetail | null> {
+  // 1. Try remote API with quick timeout
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 1200);
+
     const response = await fetch(
       `${API_URL}/api/v1/events/${id}?lang=${locale}`,
-      { next: { revalidate: 300 } },
+      {
+        next: { revalidate: 300 },
+        signal: controller.signal,
+      },
     );
+    clearTimeout(timeout);
 
-    if (!response.ok) return null;
-
-    const json = (await response.json()) as { data?: ApiEventDetail };
-    return json.data ?? null;
+    if (response.ok) {
+      const json = (await response.json()) as { data?: ApiEventDetail };
+      if (json.data) return json.data;
+    }
   } catch {
-    return null;
+    // API is unreachable; proceed to fallback
   }
+
+  // 2. Seamless fallback to local filharmonia_events.json
+  const events = await loadLocalEvents();
+  const ev = events.find((e: any) => String(e.source_id) === String(id));
+  if (!ev) return null;
+
+  const tr =
+    ev.translations?.[locale] ??
+    ev.translations?.pl ??
+    ev.translations?.en ??
+    {};
+
+  const cat =
+    ev.calendar_filter === "concerts" || ev.calendar_filter === "exhibitions"
+      ? ev.calendar_filter
+      : "others";
+
+  return {
+    id: ev.source_id,
+    calendar_category: cat,
+    title: tr.title ?? "Wydarzenie",
+    subtitle: tr.subtitle ?? null,
+    image_url: ev.image_url ?? null,
+    duration_minutes: ev.duration_minutes ?? null,
+    min_age: ev.min_age ?? null,
+    description: tr.description ?? null,
+    audience_note: tr.audience_note ?? null,
+    performances: (ev.performances || []).map((p: any) => ({
+      starts_at: p.starts_at,
+      venue: tr.hall
+        ? { name: tr.hall }
+        : ev.venue?.hall
+          ? { name: ev.venue.hall }
+          : { name: "Filharmonia Szczecin" },
+      ticket_url: p.ticket_url ?? null,
+      price_min: p.price_min ?? null,
+      price_max: p.price_max ?? null,
+    })),
+    artists: (ev.artists || []).map((a: any, idx: number) => ({
+      id: idx + 1,
+      name: a.name,
+      role: a.roles?.[locale] ?? a.roles?.pl ?? a.role ?? null,
+    })),
+    works: (ev.works || []).map((w: any, idx: number) => ({
+      id: idx + 1,
+      title: w.title,
+      composer: w.composer
+        ? typeof w.composer === "string"
+          ? { name: w.composer }
+          : { name: w.composer.name ?? "" }
+        : null,
+    })),
+  };
 }
 
 function categoryKey(category: string | null) {
