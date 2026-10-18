@@ -15,6 +15,7 @@ import { Screen } from "@/components/flow/screen";
 import { CtaButton } from "@/components/ui";
 import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
+import { ORDERS_KEY, type Order } from "@/lib/taste";
 import { sentenceCase } from "@/lib/format";
 
 const PRICE = 140;
@@ -28,6 +29,22 @@ export default function Checkout() {
   const calendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
     event.title,
   )}&location=${encodeURIComponent("Filharmonia Szczecin")}`;
+
+  function buy() {
+    const orders = JSON.parse(
+      localStorage.getItem(ORDERS_KEY) ?? "[]",
+    ) as Order[];
+
+    orders.push({
+      id: `${event.id}-${Date.now()}`,
+      title: event.title,
+      subtitle: event.subtitle,
+      date: event.date,
+      people,
+      total: people * PRICE,
+    });
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+  }
 
   function share() {
     const text = `${event.title} · ${event.date} · Filharmonia Szczecin`;
@@ -168,6 +185,7 @@ export default function Checkout() {
           fullWidth
           href="/success"
           iconLeft={<Ticket aria-hidden="true" size={18} strokeWidth={1.8} />}
+          onClick={buy}
           size="md"
           variant="primary"
         >

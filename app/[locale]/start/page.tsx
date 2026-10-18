@@ -3,7 +3,23 @@
 import { useRouter } from "@/i18n/routing";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Building2, Ear, Eye, Frame, Music, Waves } from "lucide-react";
+import {
+  Building2,
+  ChevronRight,
+  Ear,
+  Eye,
+  Frame,
+  House,
+  Landmark,
+  Map,
+  Minus,
+  Moon,
+  Music,
+  Sparkles,
+  Sun,
+  Waves,
+  Zap,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { gsap } from "gsap";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
@@ -11,47 +27,73 @@ import { Screen } from "@/components/flow/screen";
 import { TASTE_KEY } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
 
-const QUESTIONS: {
-  key: string;
-  question: string;
-  options: { key: string; icon: LucideIcon }[];
-}[] = [
-  {
-    key: "mode",
+const DEPTH = 3;
+
+type Option = { key: string; icon: LucideIcon; next?: string };
+
+/** Three-level binary tree: every branch asks its own question. */
+const TREE: Record<string, { question: string; options: Option[] }> = {
+  q1: {
     question: "q1",
     options: [
-      { key: "q1a", icon: Ear },
-      { key: "q1b", icon: Eye },
+      { key: "q1a", icon: Ear, next: "q2l" },
+      { key: "q1b", icon: Eye, next: "q2w" },
     ],
   },
-  {
-    key: "era",
-    question: "q2",
+  q2l: {
+    question: "q2l",
     options: [
-      { key: "q2a", icon: Music },
-      { key: "q2b", icon: Waves },
+      { key: "q2la", icon: Music, next: "q3c" },
+      { key: "q2lb", icon: Waves, next: "q3n" },
     ],
   },
-  {
-    key: "space",
-    question: "q3",
+  q2w: {
+    question: "q2w",
     options: [
-      { key: "q3a", icon: Frame },
-      { key: "q3b", icon: Building2 },
+      { key: "q2wa", icon: Frame, next: "q3e" },
+      { key: "q2wb", icon: Building2, next: "q3a" },
     ],
   },
-];
+  q3c: {
+    question: "q3c",
+    options: [
+      { key: "q3ca", icon: Sparkles, next: undefined },
+      { key: "q3cb", icon: Landmark, next: undefined },
+    ],
+  },
+  q3n: {
+    question: "q3n",
+    options: [
+      { key: "q3na", icon: Zap, next: undefined },
+      { key: "q3nb", icon: Moon, next: undefined },
+    ],
+  },
+  q3e: {
+    question: "q3e",
+    options: [
+      { key: "q3ea", icon: Sun, next: undefined },
+      { key: "q3eb", icon: Minus, next: undefined },
+    ],
+  },
+  q3a: {
+    question: "q3a",
+    options: [
+      { key: "q3aa", icon: House, next: undefined },
+      { key: "q3ab", icon: Map, next: undefined },
+    ],
+  },
+};
 
 export default function Start() {
   const t = useTranslations("Quiz");
   const router = useRouter();
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [nodeId, setNodeId] = useState("q1");
+  const [path, setPath] = useState<string[]>([]);
   const [picked, setPicked] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
 
-  const question = QUESTIONS[step];
+  const question = TREE[nodeId];
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -88,15 +130,15 @@ export default function Start() {
     return () => {
       tl.kill();
     };
-  }, [step]);
+  }, [nodeId]);
 
-  function choose(option: string, element: HTMLButtonElement) {
+  function choose(option: Option, element: HTMLButtonElement) {
     if (picked) return;
 
     const still = prefersStillMotion();
-    const next = { ...answers, [question.key]: option };
-    setPicked(option);
-    setAnswers(next);
+    const nextPath = [...path, option.key];
+    setPicked(option.key);
+    setPath(nextPath);
 
     if (!still) {
       gsap
@@ -117,8 +159,8 @@ export default function Start() {
     }, 70);
 
     window.setTimeout(() => {
-      if (step === QUESTIONS.length - 1) {
-        localStorage.setItem(TASTE_KEY, JSON.stringify(next));
+      if (!option.next) {
+        localStorage.setItem(TASTE_KEY, JSON.stringify({ path: nextPath }));
         const fade = fadeRef.current;
 
         if (!still && fade) {
@@ -137,7 +179,7 @@ export default function Start() {
       }
 
       setPicked(null);
-      setStep(step + 1);
+      setNodeId(option.next);
     }, still ? 60 : 200);
   }
 
@@ -152,7 +194,7 @@ export default function Start() {
 
       <div
         className="flex flex-1 flex-col justify-center overflow-hidden px-6"
-        key={step}
+        key={nodeId}
         ref={stageRef}
       >
         <p
@@ -160,7 +202,7 @@ export default function Start() {
           data-q
           data-q-eyebrow
         >
-          {t("eyebrow", { current: step + 1, total: QUESTIONS.length })}
+          {t("eyebrow", { current: Number(nodeId[1]), total: DEPTH })}
         </p>
 
         <h1 className="text-display mt-3 max-w-[320px] font-bold" data-q data-q-title>
@@ -168,8 +210,8 @@ export default function Start() {
         </h1>
 
         <div className="mt-8 flex flex-col gap-3">
-          {question.options.map((option, index) => {
-            const active = picked === t(option.key);
+          {question.options.map((option) => {
+            const active = picked === option.key;
             const Icon = option.icon;
 
             return (
@@ -182,7 +224,7 @@ export default function Start() {
                 data-q
                 data-q-option
                 key={option.key}
-                onClick={(event) => choose(t(option.key), event.currentTarget)}
+                onClick={(event) => choose(option, event.currentTarget)}
                 type="button"
               >
                 <span className="flex items-center gap-4">
@@ -191,13 +233,12 @@ export default function Start() {
                     {t(option.key)}
                   </span>
                 </span>
-                <span
-                  className={`text-caption ${
-                    active ? "text-white/70" : "text-muted"
-                  }`}
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+                <ChevronRight
+                  aria-hidden="true"
+                  className={`shrink-0 ${active ? "text-white/70" : "text-muted"}`}
+                  size={20}
+                  strokeWidth={1.8}
+                />
               </button>
             );
           })}

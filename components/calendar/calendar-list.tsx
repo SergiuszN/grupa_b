@@ -179,7 +179,7 @@ export function CalendarList({
   return (
     <>
       {/* Category filter tabs */}
-      <div className="flex gap-2 overflow-x-auto px-6 pt-4 pb-2 [scrollbar-width:none]">
+      <div className="flex gap-2 overflow-x-auto px-6 pt-2 pb-2 [scrollbar-width:none]">
         {FILTERS.map(({ key, Icon }) => {
           const active = filter === key;
 

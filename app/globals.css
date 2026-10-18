@@ -77,25 +77,58 @@ body {
   background-image: linear-gradient(
     180deg,
     rgb(0 0 0 / 48%) 0%,
-    rgb(0 0 0 / 4%) 30%,
-    rgb(0 0 0 / 18%) 62%,
-    rgb(0 0 0 / 78%) 100%
+    rgb(0 0 0 / 6%) 30%,
+    rgb(0 0 0 / 45%) 62%,
+    rgb(0 0 0 / 88%) 100%
   );
 }
 
-@keyframes hero-fade {
+@keyframes hero-in {
   from {
     opacity: 0;
+    filter: blur(14px);
+  }
+}
+
+@keyframes hero-zoom-in {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.24);
+  }
+}
+
+@keyframes hero-zoom-out {
+  from {
+    transform: scale(1.24);
+  }
+  to {
+    transform: scale(1.02);
   }
 }
 
 .hero-slide {
-  animation: hero-fade 1.7s ease-in-out both;
-  will-change: opacity;
+  animation: hero-in 1.8s ease-out both;
+  will-change: opacity, filter, transform;
+}
+
+.hero-slide[data-zoom="in"] {
+  animation:
+    hero-in 1.8s ease-out both,
+    hero-zoom-in 18s linear both;
+}
+
+.hero-slide[data-zoom="out"] {
+  animation:
+    hero-in 1.8s ease-out both,
+    hero-zoom-out 18s linear both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-slide {
+  .hero-slide,
+  .hero-slide[data-zoom="in"],
+  .hero-slide[data-zoom="out"] {
     animation: none;
   }
 }
@@ -126,6 +159,37 @@ body {
   [data-flow-screen] [data-q],
   [data-flow-screen] [data-copy] {
     opacity: 0;
+  }
+}
+
+/* Soft handoff between pages: the veil blurs the old page, the route changes
+   underneath, then the veil fades away. */
+.page-veil {
+  background-color: rgb(247 245 241 / 38%);
+  opacity: 0;
+  transition: opacity 140ms ease;
+  pointer-events: none;
+}
+
+.page-veil-cover {
+  opacity: 1;
+  pointer-events: auto;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.page-veil-reveal {
+  opacity: 0;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition-duration: 320ms;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .page-veil {
+    display: none;
   }
 }
 
@@ -270,5 +334,22 @@ html[data-a11y-readable-font="true"] body {
 @media (prefers-reduced-motion: reduce) {
   .confetti-piece {
     display: none;
+  }
+}
+
+/* Ticket print: only the confirmation block goes to paper/PDF. */
+@media print {
+  header,
+  .confetti-piece {
+    display: none !important;
+  }
+
+  [data-flow-screen] {
+    min-height: 0;
+    overflow: visible;
+  }
+
+  [data-flow="actions"] {
+    display: none !important;
   }
 }

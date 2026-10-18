@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SkipLink } from "@/components/SkipLink";
 import { AccessibilityControl } from "@/components/AccessibilityControl";
+import { PageTransition } from "@/components/flow/page-transition";
 import "../globals.css";
 
 const helveticaNow = localFont({
@@ -66,6 +67,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <SkipLink />
           {children}
+          <PageTransition />
           <AccessibilityControl />
         </NextIntlClientProvider>
       </body>

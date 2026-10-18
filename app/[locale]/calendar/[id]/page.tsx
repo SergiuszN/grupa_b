@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import {
   ArrowLeft,
   CalendarDays,
+  ChevronRight,
   Clock,
   MapPin,
   Music,
   Music2,
+  Sparkles,
   Ticket,
   UserRound,
   Users,
@@ -17,7 +19,7 @@ import { Screen } from "@/components/flow/screen";
 import { PlayButton } from "@/components/calendar/play-button";
 import { Link } from "@/i18n/routing";
 import { CtaButton } from "@/components/ui";
-import { eventIdFromSlug } from "@/lib/format";
+import { eventIdFromSlug, eventSlug } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +44,16 @@ type ApiEventDetail = {
   works:
     | { id: number; title: string; composer: { name: string } | null }[]
     | null;
+  moods: string[] | null;
+};
+
+type ApiEventSummary = {
+  id: number;
+  calendar_category: string | null;
+  title: string;
+  subtitle: string | null;
+  image_url: string | null;
+  performances: { starts_at: string; venue: { name: string } | null }[];
 };
 
 const API_URL = process.env.API_URL ?? "http://localhost:8080";
@@ -137,7 +149,38 @@ async function getEvent(id: string, locale: string): Promise<ApiEventDetail | nu
           : { name: w.composer.name ?? "" }
         : null,
     })),
+    moods: ev.moods ?? null,
   };
+}
+
+async function fetchSimilar(params: URLSearchParams) {
+  const response = await fetch(`${API_URL}/api/v1/events?${params}`, {
+    next: { revalidate: 300 },
+  });
+
+  if (!response.ok) return [];
+
+  const json = (await response.json()) as { data?: ApiEventSummary[] };
+  return json.data ?? [];
+}
+
+async function getSimilar(event: ApiEventDetail, locale: string) {
+  try {
+    const base = new URLSearchParams({ limit: "6", lang: locale });
+    if (event.calendar_category) base.set("category", event.calendar_category);
+
+    const byMood = new URLSearchParams(base);
+    for (const mood of event.moods?.slice(0, 2) ?? []) {
+      byMood.append("mood", mood);
+    }
+
+    let data = byMood.toString() === base.toString() ? [] : await fetchSimilar(byMood);
+    if (data.length === 0) data = await fetchSimilar(base);
+
+    return data.filter((item) => item.id !== event.id).slice(0, 4);
+  } catch {
+    return [];
+  }
 }
 
 function categoryKey(category: string | null) {
@@ -181,6 +224,15 @@ export default async function EventPage({
   ]);
 
   if (!event) notFound();
+
+  const similar = await getSimilar(event, locale);
+  const dateFormat = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Warsaw",
+  });
 
   const performance = event.performances[0];
   const startsAt = performance
@@ -329,6 +381,59 @@ export default async function EventPage({
               ))}
             </ul>
           </div>
+        </section>
+      ) : null}
+
+      {similar.length > 0 ? (
+        <section className="px-6 pt-7">
+          <h2 className="text-muted flex items-center gap-1.5 text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+            <Sparkles aria-hidden="true" size={13} strokeWidth={1.7} />
+            {t("similar")}
+          </h2>
+          <ul className="mt-3 flex flex-col">
+            {similar.map((item) => {
+              const first = item.performances[0];
+
+              return (
+                <li key={item.id}>
+                  <Link
+                    className="border-line hover:bg-surface focus-visible:outline-gold flex items-center gap-3.5 border-b py-3 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2"
+                    href={`/calendar/${eventSlug(item.id, item.title)}`}
+                  >
+                    <div
+                      className="size-14 shrink-0 overflow-clip rounded-xl bg-[#E7E2D8] bg-cover bg-[50%]"
+                      style={
+                        item.image_url
+                          ? { backgroundImage: `url(${item.image_url})` }
+                          : undefined
+                      }
+                    />
+                    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                      <p className="text-[15px] leading-5 font-bold tracking-[-0.01em]">
+                        {item.title}
+                      </p>
+                      <p className="text-muted text-[12px] leading-4">
+                        {first
+                          ? [
+                              dateFormat.format(new Date(first.starts_at)),
+                              first.venue?.name,
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")
+                          : item.subtitle}
+                      </p>
+                    </div>
+                    <ChevronRight
+                      aria-hidden="true"
+                      className="text-muted shrink-0"
+                      size={16}
+                      strokeWidth={1.8}
+                    />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       ) : null}
 

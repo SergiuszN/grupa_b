@@ -3,25 +3,26 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import { Logo } from "@/components/brand/logo";
+import { MenuSearch } from "@/components/landing/menu-search";
 
-const LINKS = [
+const PRIMARY = [
   { key: "programme", href: "/calendar" },
   { key: "forYou", href: "/start" },
-  {
-    key: "edu",
-    href: "https://filharmonia.szczecin.pl/edu_filharmonia",
-  },
-  {
-    key: "discover",
-    href: "https://filharmonia.szczecin.pl/the_building",
-  },
-  {
-    key: "visit",
-    href: "https://filharmonia.szczecin.pl/zaplanuj_swoja_wizyte",
-  },
-  { key: "account", href: "https://filharmonia.szczecin.pl/tickets" },
+  { key: "visit", href: "/visit" },
+  { key: "edu", href: "/edu" },
+] as const;
+
+const SECONDARY = [
+  { key: "artists", href: "/artists" },
+  { key: "exhibitions", href: "/exhibitions" },
+  { key: "tours", href: "/tours" },
+  { key: "building", href: "/building" },
+  { key: "history", href: "/history" },
+  { key: "partners", href: "/partners" },
+  { key: "media", href: "/media" },
+  { key: "account", href: "/account" },
 ] as const;
 
 const SOCIALS = [
@@ -45,6 +46,7 @@ const SOCIALS = [
 export function MenuSheet({ onClose }: { onClose: () => void }) {
   const t = useTranslations("Menu");
   const tn = useTranslations("Nav");
+  const pathname = usePathname();
   const closeRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -100,7 +102,9 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
           <Link
             className="focus-visible:outline-ink rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
             href="/"
-            onClick={handleClose}
+            onClick={() => {
+              if (pathname === "/") handleClose();
+            }}
           >
             <Logo />
             <span className="sr-only">{tn("home")}</span>
@@ -117,35 +121,43 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <nav aria-label="Menu główne" className="rise mt-6">
-          {LINKS.map((link) => {
-            const external = link.href.startsWith("http");
-            const className =
-              "focus-visible:outline-ink flex items-baseline justify-between border-b border-ink/25 py-4 text-[24px] leading-7 font-bold tracking-[-0.02em] focus-visible:outline-2 focus-visible:outline-offset-2 md:text-[28px]";
+        <MenuSearch onNavigate={onClose} />
 
-            return external ? (
-              <a
-                className={className}
-                href={link.href}
-                key={link.key}
-                rel="noreferrer"
-                target="_blank"
-              >
-                {t(link.key)}
-                <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
-              </a>
-            ) : (
+        <nav aria-label="Menu główne" className="rise mt-6">
+          {PRIMARY.map((link) => (
+            <Link
+              className="focus-visible:outline-ink flex items-baseline justify-between border-b border-ink/25 py-3.5 text-[24px] leading-7 font-bold tracking-[-0.02em] focus-visible:outline-2 focus-visible:outline-offset-2 md:text-[28px]"
+              href={link.href}
+              key={link.key}
+              onClick={() => {
+                if (pathname === link.href) handleClose();
+              }}
+            >
+              {t(link.key)}
+              <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
+            </Link>
+          ))}
+
+          <div className="mt-5 grid grid-cols-2 gap-x-5">
+            {SECONDARY.map((link) => (
               <Link
-                className={className}
+                className="focus-visible:outline-ink border-ink/15 flex items-baseline justify-between gap-2 border-b py-2.5 text-[15px] leading-5 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
                 href={link.href}
                 key={link.key}
-                onClick={handleClose}
+                onClick={() => {
+                  if (pathname === link.href) handleClose();
+                }}
               >
                 {t(link.key)}
-                <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="opacity-60"
+                  size={14}
+                  strokeWidth={1.8}
+                />
               </Link>
-            );
-          })}
+            ))}
+          </div>
         </nav>
 
         <div className="mt-auto pt-10">
