@@ -206,7 +206,6 @@ body {
   }
 
   [data-hero-root] header {
-    /* Do not retain a transformed containing block around the fixed menu. */
     animation: hero-header-in 0.9s ease-out 0.25s backwards;
   }
 
@@ -225,11 +224,6 @@ body {
   [data-hero-root] [data-anim="copy"] + [data-anim="copy"] {
     animation-delay: 0.94s;
   }
-}
-
-/* A menu opened during the entrance must still be fixed to the viewport. */
-[data-hero-root] header:has([role="dialog"]) {
-  animation: none;
 }
 
 [data-hero-root][data-hero-paused="true"] [data-anim],

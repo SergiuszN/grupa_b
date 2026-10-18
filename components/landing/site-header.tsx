@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { Accessibility, CalendarDays, Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { MenuSheet } from "@/components/landing/menu-sheet";
@@ -119,7 +120,10 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
         </button>
       </div>
 
-      {menuOpen ? <MenuSheet onClose={() => setMenuOpen(false)} /> : null}
+      {/* Portal keeps the fixed sheet out of the header's entrance transform. */}
+      {menuOpen
+        ? createPortal(<MenuSheet onClose={() => setMenuOpen(false)} />, document.body)
+        : null}
     </header>
   );
 }
