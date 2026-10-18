@@ -140,64 +140,58 @@ export default function Plan() {
 
           <div className="flex flex-col gap-2 pt-1">
             <div
-              className="relative flex flex-col gap-2 rounded-2xl p-2.5 transition-all focus-within:outline-2 focus-within:outline-gold focus-within:outline-offset-2 focus-within:ring-2 focus-within:ring-gold/20"
+              aria-label={t("count")}
+              className="relative grid grid-cols-8 gap-1 rounded-2xl p-1.5 transition-all focus-within:outline-2 focus-within:outline-gold focus-within:outline-offset-2 focus-within:ring-2 focus-within:ring-gold/20"
               data-guest-slider=""
+              role="radiogroup"
             >
-              <div className="relative flex h-[18px] items-center justify-between px-2">
-                {Array.from({ length: MAX }, (_, index) => {
-                  const val = index + 1;
-                  const isCurrent = val === people;
-                  const isFilled = val <= people;
+              {Array.from({ length: MAX }, (_, index) => {
+                const val = index + 1;
+                const isCurrent = val === people;
+                const isFilled = val <= people;
 
-                  return (
+                return (
+                  <button
+                    aria-checked={isCurrent}
+                    aria-label={`${val} ${val === 1 ? t("one") : val < 5 ? t("few") : t("many")}`}
+                    className={`group relative flex flex-col items-center gap-2 rounded-xl py-2 transition-all select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2 ${
+                      isCurrent ? "scale-105" : "hover:bg-black/5"
+                    }`}
+                    key={val}
+                    onClick={() => change(val)}
+                    role="radio"
+                    type="button"
+                  >
+                    <div className="flex h-5 w-full items-center justify-center">
+                      <span
+                        className={`rounded-[2px] transition-all ${
+                          isCurrent
+                            ? "bg-gold h-5 w-[3.5px] scale-110 shadow-sm"
+                            : isFilled
+                              ? "bg-gold h-[18px] w-[3px]"
+                              : "bg-line h-2.5 w-0.5"
+                        }`}
+                        data-bar
+                      />
+                    </div>
+
                     <span
-                      className={`shrink-0 rounded-[2px] transition-all ${
+                      className={`flex size-7 items-center justify-center rounded-full text-[13px] leading-none transition-all ${
                         isCurrent
-                          ? "bg-gold h-[20px] w-[3.5px] scale-110 shadow-sm"
-                          : isFilled
-                            ? "bg-gold h-[18px] w-[3px]"
-                            : "bg-line h-2.5 w-0.5"
+                          ? "bg-gold text-white font-bold shadow-sm"
+                          : "text-muted font-medium group-hover:text-ink"
                       }`}
-                      data-bar
-                      key={index}
-                    />
-                  );
-                })}
-              </div>
-
-              <div
-                aria-label={t("count")}
-                className="flex items-center justify-between px-0.5"
-                role="radiogroup"
-              >
-                {Array.from({ length: MAX }, (_, index) => {
-                  const val = index + 1;
-                  const isCurrent = val === people;
-
-                  return (
-                    <button
-                      aria-checked={isCurrent}
-                      aria-label={`${val} ${val === 1 ? t("one") : val < 5 ? t("few") : t("many")}`}
-                      className={`relative flex size-7 items-center justify-center rounded-full text-[12px] leading-none font-semibold transition-all select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2 ${
-                        isCurrent
-                          ? "bg-gold text-white font-bold shadow-sm scale-110"
-                          : "text-muted hover:text-ink hover:bg-black/5"
-                      }`}
-                      key={val}
-                      onClick={() => change(val)}
-                      role="radio"
-                      type="button"
                     >
                       {val}
-                    </button>
-                  );
-                })}
-              </div>
+                    </span>
+                  </button>
+                );
+              })}
 
               <input
                 aria-label={t("slider")}
                 aria-valuetext={`${people} ${people === 1 ? t("one") : t("few")}`}
-                className="absolute inset-x-2 top-0 h-[24px] cursor-pointer opacity-0 focus-visible:outline-none"
+                className="absolute inset-x-2 top-0 h-full cursor-pointer opacity-0 pointer-events-none"
                 max={MAX}
                 min={MIN}
                 onChange={(event) => change(Number(event.target.value))}
