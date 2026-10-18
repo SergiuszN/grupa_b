@@ -21,10 +21,15 @@ const PRICE = 140;
 
 export default function Checkout() {
   const t = useTranslations("Checkout");
-  const { event, people } = useFlow();
+  const { event, people, seats } = useFlow();
 
   const label = people === 1 ? t("one") : people < 5 ? t("few") : t("many");
   const [weekday, time] = event.date.split("·").map((part) => part.trim());
+
+  const totalAmount =
+    seats.length > 0
+      ? seats.reduce((acc, s) => acc + (s.price || 50), 0)
+      : people * PRICE;
 
   function buy() {
     const orders = JSON.parse(
@@ -37,14 +42,14 @@ export default function Checkout() {
       subtitle: event.subtitle,
       date: event.date,
       people,
-      total: people * PRICE,
+      total: totalAmount,
     });
     localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
   }
 
   return (
     <Screen>
-      <FlowSteps step={5} />
+      <FlowSteps step={6} />
 
       <div className="flex flex-col gap-1.5 px-6 pt-3.5 pb-4">
         <p
@@ -138,15 +143,30 @@ export default function Checkout() {
             </div>
           </div>
 
-          <p className="text-muted mt-1 flex items-center gap-1.5 text-[0.875rem] leading-[1.125rem]">
-            <Users
-              aria-hidden="true"
-              className="text-gold shrink-0"
-              size={14}
-              strokeWidth={1.8}
-            />
-            {people} {label}
-          </p>
+          <div className="mt-2 flex flex-col gap-1.5">
+            <p className="text-muted flex items-center gap-1.5 text-[0.875rem] leading-[1.125rem]">
+              <Users
+                aria-hidden="true"
+                className="text-gold shrink-0"
+                size={14}
+                strokeWidth={1.8}
+              />
+              {people} {label}
+            </p>
+
+            {seats.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {seats.map((seat) => (
+                  <span
+                    key={seat.id}
+                    className="bg-gold/10 border border-gold/30 text-ink px-2.5 py-0.5 rounded-lg text-xs font-medium"
+                  >
+                    {seat.sector} · Rz. {seat.row}, m. {seat.seatNumber}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div
@@ -164,7 +184,7 @@ export default function Checkout() {
           </p>
           <span aria-hidden="true" className="border-line mb-[13px] flex-1 border-t" />
           <p className="text-[2rem] leading-9 font-bold tracking-[-0.03em]">
-            {people * PRICE} zł
+            {totalAmount} zł
           </p>
         </div>
       </div>
@@ -182,7 +202,7 @@ export default function Checkout() {
         </CtaButton>
       </div>
 
-      <FlowArrows next={false} step={5} />
+      <FlowArrows next={false} step={6} />
     </Screen>
   );
 }

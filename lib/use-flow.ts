@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import { EVENTS, findEvent, localizeEvent } from "./events";
-import { PARTY_KEY, SWIPE_KEY } from "./taste";
+import { PARTY_KEY, SEATS_KEY, SWIPE_KEY, type SelectedSeat } from "./taste";
 
 const EVENT_KEY = "filharmonia:event";
 
@@ -11,6 +11,7 @@ export function useFlow() {
   const locale = useLocale();
   const [event, setEvent] = useState(EVENTS[0]);
   const [people, setPeople] = useState(2);
+  const [seats, setSeats] = useState<SelectedSeat[]>([]);
 
   useEffect(() => {
     const decisions = JSON.parse(
@@ -31,7 +32,16 @@ export function useFlow() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of the flow's saved choices
     setEvent(resolved);
     setPeople(Number(localStorage.getItem(PARTY_KEY)) || 2);
+
+    try {
+      const storedSeats = JSON.parse(
+        localStorage.getItem(SEATS_KEY) ?? "[]",
+      ) as SelectedSeat[];
+      setSeats(storedSeats);
+    } catch {
+      setSeats([]);
+    }
   }, []);
 
-  return { event: localizeEvent(event, locale), people };
+  return { event: localizeEvent(event, locale), people, seats };
 }

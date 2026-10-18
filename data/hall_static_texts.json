@@ -1,0 +1,335 @@
+[
+  {
+    "content": "III",
+    "x": 133.0,
+    "y": 49.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text1"
+  },
+  {
+    "content": "II",
+    "x": 136.1256,
+    "y": 71.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text2"
+  },
+  {
+    "content": "I",
+    "x": 139.2512,
+    "y": 93.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text3"
+  },
+  {
+    "content": "III",
+    "x": 751.0,
+    "y": 49.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text4"
+  },
+  {
+    "content": "II",
+    "x": 751.0,
+    "y": 71.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text5"
+  },
+  {
+    "content": "I",
+    "x": 751.0,
+    "y": 93.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text6"
+  },
+  {
+    "content": "I",
+    "x": 442.0,
+    "y": 487.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text7"
+  },
+  {
+    "content": "II",
+    "x": 440.4372,
+    "y": 511.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text8"
+  },
+  {
+    "content": "III",
+    "x": 438.8744,
+    "y": 535.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text9"
+  },
+  {
+    "content": "IV",
+    "x": 437.7867,
+    "y": 559.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text10"
+  },
+  {
+    "content": "V",
+    "x": 439.8494,
+    "y": 583.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text11"
+  },
+  {
+    "content": "VI",
+    "x": 438.748,
+    "y": 607.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text12"
+  },
+  {
+    "content": "VII",
+    "x": 437.1852,
+    "y": 631.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text13"
+  },
+  {
+    "content": "VIII",
+    "x": 435.6224,
+    "y": 655.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text14"
+  },
+  {
+    "content": "IX",
+    "x": 437.7785,
+    "y": 679.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text15"
+  },
+  {
+    "content": "X",
+    "x": 439.8412,
+    "y": 703.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text16"
+  },
+  {
+    "content": "XI",
+    "x": 438.748,
+    "y": 727.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text17"
+  },
+  {
+    "content": "XII",
+    "x": 437.1852,
+    "y": 750.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text18"
+  },
+  {
+    "content": "XIII",
+    "x": 435.6224,
+    "y": 774.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text19"
+  },
+  {
+    "content": "I",
+    "x": 442.0,
+    "y": 854.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text20"
+  },
+  {
+    "content": "II",
+    "x": 440.4372,
+    "y": 876.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text21"
+  },
+  {
+    "content": "III",
+    "x": 438.8744,
+    "y": 898.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text22"
+  },
+  {
+    "content": "IV",
+    "x": 437.7867,
+    "y": 920.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text23"
+  },
+  {
+    "content": "V",
+    "x": 439.8494,
+    "y": 942.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text24"
+  },
+  {
+    "content": "VI",
+    "x": 438.748,
+    "y": 964.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text25"
+  },
+  {
+    "content": "VII",
+    "x": 437.1852,
+    "y": 986.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text26"
+  },
+  {
+    "content": "VIII",
+    "x": 435.6224,
+    "y": 1008.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text27"
+  },
+  {
+    "content": "IX",
+    "x": 437.7785,
+    "y": 1030.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text28"
+  },
+  {
+    "content": "X",
+    "x": 439.8412,
+    "y": 1052.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text29"
+  },
+  {
+    "content": "XI",
+    "x": 438.748,
+    "y": 1074.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text30"
+  },
+  {
+    "content": "XII",
+    "x": 437.1852,
+    "y": 1096.6,
+    "fontSize": "9pt",
+    "fill": "#000000",
+    "transform": "",
+    "id": "text31"
+  },
+  {
+    "content": "SCENA | STAGE | BÜHNE",
+    "x": 237.0,
+    "y": 296.0,
+    "fontSize": "35pt",
+    "fill": "rgb(0,0,0)",
+    "transform": "",
+    "id": "text32"
+  },
+  {
+    "content": "CHÓR | CHOIR | CHOR",
+    "x": 363.8992,
+    "y": 29.0,
+    "fontSize": "15.2pt",
+    "fill": "rgb(0,0,0)",
+    "transform": "",
+    "id": "text33"
+  },
+  {
+    "content": "BALKON | BALCONY | RANG",
+    "x": 344.6218,
+    "y": 826.0,
+    "fontSize": "15pt",
+    "fill": "rgb(0,0,0)",
+    "transform": "",
+    "id": "text34"
+  },
+  {
+    "content": "PARTER | GROUND FLOOR | PARTERRE",
+    "x": 301.2039,
+    "y": 467.0,
+    "fontSize": "15.2pt",
+    "fill": "rgb(0,0,0)",
+    "transform": "",
+    "id": "text35"
+  },
+  {
+    "content": "LOŻA A | GALLERY A | LOGE A",
+    "x": 88.6218,
+    "y": 803.0,
+    "fontSize": "15pt",
+    "fill": "rgb(0,0,0)",
+    "transform": "matrix(-1.83691E-16,-1,0.9999999,-1.83691E-16,-742.0865,924.7202)",
+    "id": "text36"
+  },
+  {
+    "content": "LOŻA B | GALLERY B | LOGE B",
+    "x": 88.6218,
+    "y": 803.0,
+    "fontSize": "15pt",
+    "fill": "rgb(0,0,0)",
+    "transform": "matrix(-1.83691E-16,-1,0.9999999,-1.83691E-16,41.91351,924.7202)",
+    "id": "text37"
+  }
+]

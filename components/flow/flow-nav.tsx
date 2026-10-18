@@ -11,6 +11,7 @@ export const FLOW: readonly FlowItem[] = [
   { href: "/start", label: "Gust" },
   { href: "/swipe", label: "Propozycje" },
   { href: "/plan", label: "Plan" },
+  { href: "/seats", label: "Miejsca" },
   { href: "/evening", label: "Wieczór" },
   { href: "/checkout", label: "Bilet" },
   { href: "/success", label: "Potwierdzenie" },

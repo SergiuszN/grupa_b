@@ -118,7 +118,7 @@ export default function Success() {
       </div>
 
       <div className="print:hidden">
-        <FlowSteps step={6} />
+        <FlowSteps step={7} />
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">

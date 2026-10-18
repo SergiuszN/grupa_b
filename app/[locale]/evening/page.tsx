@@ -73,7 +73,7 @@ export default function Evening() {
 
   return (
     <Screen>
-      <FlowSteps step={4} />
+      <FlowSteps step={5} />
 
       <div className="px-6 pt-4 pb-2.5">
         <h1
@@ -131,7 +131,7 @@ export default function Evening() {
 
       <div className="pb-2" />
 
-      <FlowArrows step={4} />
+      <FlowArrows step={5} />
     </Screen>
   );
 }
