@@ -26,16 +26,24 @@ export const INFO_FLOW: readonly FlowItem[] = [
   { href: "/event-info", label: "Wydarzenie" },
 ];
 
+/** Concerts pick seats (the count follows from them); walk-in events only pick a count. */
+export function skippedSteps(seated: boolean): string[] {
+  return seated ? ["/plan"] : ["/seats"];
+}
+
 type Tone = "dark" | "light";
 
 export function FlowSteps({
   step,
   items = FLOW,
   tone = "light",
+  skip = [],
 }: {
   step: number;
   items?: readonly FlowItem[];
   tone?: Tone;
+  /** Hrefs of steps this path leaves out (e.g. seats for an exhibition). */
+  skip?: readonly string[];
 }) {
   return (
     <nav
@@ -43,6 +51,7 @@ export function FlowSteps({
       className="flex items-center justify-center gap-1 pt-5 pb-2"
     >
       {items.map((item, index) => {
+        if (skip.includes(item.href)) return null;
         const isCurrent = index === step;
         return (
           <Link
@@ -77,6 +86,7 @@ export function FlowArrows({
   tone = "light",
   next = true,
   nextHref,
+  prevHref,
   nextLabel,
   sticky = false,
 }: {
@@ -85,12 +95,15 @@ export function FlowArrows({
   tone?: Tone;
   next?: boolean;
   nextHref?: string;
+  prevHref?: string;
   nextLabel?: string;
   /** Pin the buttons to the viewport bottom, above the scrolling content. */
   sticky?: boolean;
 }) {
   const t = useTranslations("Nav");
-  const previous = items[step - 1];
+  const previous = prevHref
+    ? (items.find((item) => item.href === prevHref) ?? { href: prevHref, label: "" })
+    : items[step - 1];
   const upcoming = next ? items[step + 1] : undefined;
   const href = nextHref ?? upcoming?.href;
   const label = nextLabel ?? t("nextStep");

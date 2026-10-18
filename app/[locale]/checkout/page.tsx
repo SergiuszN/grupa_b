@@ -9,18 +9,22 @@ import {
   Ticket,
   Users,
 } from "lucide-react";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { CtaButton } from "@/components/ui";
 import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 import { ORDERS_KEY, type Order } from "@/lib/taste";
 import { sentenceCase } from "@/lib/format";
-import { seatPrice } from "@/lib/events";
+import { hasSeats, seatPrice, ticketPrice } from "@/lib/events";
 
 export default function Checkout() {
   const t = useTranslations("Checkout");
-  const { event, people, seats } = useFlow();
+  const flow = useFlow();
+  const { event, people } = flow;
+  // Seats left over from an earlier concert don't apply to a walk-in event.
+  const seated = hasSeats(event);
+  const seats = seated ? flow.seats : [];
 
   const label = people === 1 ? t("one") : people < 5 ? t("few") : t("many");
   const [weekday, time] = event.date.split("·").map((part) => part.trim());
@@ -28,7 +32,7 @@ export default function Checkout() {
   const totalAmount =
     seats.length > 0
       ? seats.reduce((acc, s) => acc + seatPrice(event, s.category), 0)
-      : people * seatPrice(event, 2);
+      : people * (seated ? seatPrice(event, 2) : ticketPrice(event));
 
   function buy() {
     const orders = JSON.parse(
@@ -48,7 +52,7 @@ export default function Checkout() {
 
   return (
     <Screen>
-      <FlowSteps step={6} />
+      <FlowSteps skip={skippedSteps(seated)} step={6} />
 
       <div className="flex flex-col gap-1.5 px-6 pt-3.5 pb-4">
         <p

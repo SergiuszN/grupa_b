@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { LucideIcon } from "lucide-react";
 import { gsap } from "gsap";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import {
   fitPlanToEvent,
@@ -15,7 +15,7 @@ import {
 import { prefersStillMotion } from "@/lib/motion";
 import { TASTE_KEY, type TasteAnswers } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
-import { startMinutes } from "@/lib/events";
+import { hasSeats, startMinutes } from "@/lib/events";
 
 function Row({
   time,
@@ -69,6 +69,7 @@ function Label({ children }: { children: string }) {
 export default function Evening() {
   const t = useTranslations("Evening");
   const { event, people } = useFlow();
+  const seated = hasSeats(event);
   const [picked, setPicked] = useState<EveningPlan | null>(null);
   const start = startMinutes(event);
   const time = event.date.split("·").at(-1)?.trim();
@@ -128,7 +129,7 @@ export default function Evening() {
 
   return (
     <Screen>
-      <FlowSteps step={5} />
+      <FlowSteps skip={skippedSteps(seated)} step={5} />
 
       <div className="px-6 pt-4 pb-2.5">
         <h1
@@ -172,7 +173,7 @@ export default function Evening() {
 
       <div className="pb-2" />
 
-      <FlowArrows step={5} />
+      <FlowArrows prevHref={seated ? undefined : "/plan"} step={5} />
     </Screen>
   );
 }

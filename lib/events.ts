@@ -28,6 +28,8 @@ export type EventInfo = {
   /** Ticket price range in zł; 0 means free entry. */
   priceMin?: number | null;
   priceMax?: number | null;
+  /** False for walk-in events (exhibitions, tours): no seat map, just a ticket count. */
+  seated?: boolean;
   i18n?: Record<"en" | "de", Localized>;
 };
 
@@ -144,6 +146,7 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "bryla",
+    seated: false,
     priceMin: 0,
     priceMax: 0,
     date: "CODZIENNIE · 12:00",
@@ -216,6 +219,7 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "noc-w-foyer",
+    seated: false,
     weekday: 5,
     priceMin: 0,
     priceMax: 0,
@@ -317,6 +321,16 @@ export function eventStart(event: EventInfo, now = new Date()): Date | null {
   }
 
   return start;
+}
+
+/** Whether the flow picks seats on the hall map for this event. */
+export function hasSeats(event: EventInfo): boolean {
+  return event.seated ?? true;
+}
+
+/** Price of one ticket for an event without a seat map. */
+export function ticketPrice(event: EventInfo): number {
+  return seatPrice(event, 3);
 }
 
 /** Seat category prices without an event price range. */

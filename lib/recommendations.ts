@@ -22,6 +22,9 @@ export type Recommendation = {
 /** Event kinds you mostly listen to — their cards get the audio preview. */
 const LISTEN = new Set(["symphonic", "chamber", "jazz", "concert"]);
 
+/** Walk-in kinds — no seat map, the visitor only picks how many tickets. */
+const UNSEATED = new Set(["exhibition", "tour"]);
+
 function formatDate(iso: string, locale: string) {
   const date = new Date(iso);
   const day = new Intl.DateTimeFormat(locale, {
@@ -68,6 +71,7 @@ export function toEventInfo(
     description: rec.excerpt ?? "",
     duration: rec.duration_minutes ?? undefined,
     audio: LISTEN.has(rec.kind),
+    seated: !UNSEATED.has(rec.kind),
     image: rec.image_url ?? "/images/concert-hall.jpg",
     startsAt: first?.starts_at,
     priceMin: first?.price_min ?? null,

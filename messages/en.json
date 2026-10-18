@@ -92,7 +92,7 @@
   },
   "Plan": {
     "title": "How many of you?",
-    "subtitle": "We will seat you together.",
+    "subtitle": "We will get a ticket ready for each of you.",
     "count": "NUMBER OF PEOPLE",
     "one": "PERSON",
     "few": "PEOPLE",
@@ -104,8 +104,8 @@
   "Seats": {
     "eyebrow": "SYMPHONY HALL · SEAT MAP",
     "title": "Select seats",
-    "subtitle": "We've preselected the best seats together for your party. You can change them on the map.",
-    "countSelected": "Selected {current} of {total}",
+    "subtitle": "Pick a seat on the map for everyone who is coming.",
+    "countSelected": "Selected: {count}",
     "allSectors": "Full Hall",
     "parter": "Stalls",
     "balkon": "Balcony",
@@ -136,7 +136,7 @@
     "wheelchairDesc": "Seats adapted for wheelchair users and companions",
     "keyboardNavHint": "Keyboard navigation: Tab between available seats, Enter or Space to select.",
     "removeSeat": "Remove seat: {seat}",
-    "seatSelectedAnnounce": "Selected: {seat}. Total {current} of {total}.",
+    "seatSelectedAnnounce": "Selected: {seat}. Seats in total: {count}.",
     "seatDeselectedAnnounce": "Deselected: {seat}.",
     "available": "Available",
     "occupied": "Occupied"

@@ -9,7 +9,7 @@ import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { CtaButton } from "@/components/ui";
-import { EVENTS, localizeEvent, type EventInfo } from "@/lib/events";
+import { EVENTS, hasSeats, localizeEvent, type EventInfo } from "@/lib/events";
 import { PreviewPlayer } from "@/components/swipe/preview-player";
 import { toEventInfo, type Recommendation } from "@/lib/recommendations";
 import { PICKS_KEY, SWIPE_KEY, TASTE_KEY, type TasteAnswers } from "@/lib/taste";
@@ -153,7 +153,7 @@ export default function Swipe() {
 
     window.setTimeout(() => {
       if (direction === 1) {
-        router.push("/plan");
+        router.push(hasSeats(card) ? "/seats" : "/plan");
         return;
       }
 

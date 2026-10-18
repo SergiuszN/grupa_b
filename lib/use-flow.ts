@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
-import { EVENTS, findEvent, localizeEvent } from "./events";
+import { EVENTS, findEvent, hasSeats, localizeEvent } from "./events";
 import { PARTY_KEY, SEATS_KEY, SWIPE_KEY, type SelectedSeat } from "./taste";
 
 const EVENT_KEY = "filharmonia:event";
@@ -12,6 +12,7 @@ export function useFlow() {
   const [event, setEvent] = useState(EVENTS[0]);
   const [people, setPeople] = useState(2);
   const [seats, setSeats] = useState<SelectedSeat[]>([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const decisions = JSON.parse(
@@ -41,7 +42,11 @@ export function useFlow() {
     } catch {
       setSeats([]);
     }
+    setReady(true);
   }, []);
 
-  return { event: localizeEvent(event, locale), people, seats };
+  // At a concert the party is as big as the number of seats picked on the map.
+  const party = hasSeats(event) && seats.length > 0 ? seats.length : people;
+
+  return { event: localizeEvent(event, locale), people: party, seats, ready };
 }

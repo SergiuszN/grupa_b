@@ -92,7 +92,7 @@
   },
   "Plan": {
     "title": "Wie viele seid ihr?",
-    "subtitle": "Wir reservieren Plätze nebeneinander.",
+    "subtitle": "Wir bereiten für jede Person ein Ticket vor.",
     "count": "ANZAHL DER PERSONEN",
     "one": "PERSON",
     "few": "PERSONEN",
@@ -104,8 +104,8 @@
   "Seats": {
     "eyebrow": "SYMPHONIESAAL · SITZPLAN",
     "title": "Plätze wählen",
-    "subtitle": "Wir haben die besten Plätze nebeneinander für Sie ausgewählt. Sie können sie auf dem Plan anpassen.",
-    "countSelected": "{current} von {total} gewählt",
+    "subtitle": "Wählen Sie auf dem Plan einen Platz für jede Person, die mitkommt.",
+    "countSelected": "Gewählt: {count}",
     "allSectors": "Ganze Saal",
     "parter": "Parkett",
     "balkon": "Rang",
@@ -136,7 +136,7 @@
     "wheelchairDesc": "Plätze für Rollstuhlfahrende und Begleitpersonen",
     "keyboardNavHint": "Tastaturnavigation: Tab zwischen freien Plätzen, Enter oder Leertaste zum Auswählen.",
     "removeSeat": "Platz entfernen: {seat}",
-    "seatSelectedAnnounce": "Ausgewählt: {seat}. Gesamt {current} von {total}.",
+    "seatSelectedAnnounce": "Ausgewählt: {seat}. Plätze insgesamt: {count}.",
     "seatDeselectedAnnounce": "Abgewählt: {seat}.",
     "available": "Verfügbar",
     "occupied": "Besetzt"

@@ -92,7 +92,7 @@
   },
   "Plan": {
     "title": "Ile Was będzie?",
-    "subtitle": "Zarezerwujemy miejsca obok siebie.",
+    "subtitle": "Przygotujemy bilet dla każdej osoby.",
     "count": "LICZBA OSÓB",
     "one": "OSOBA",
     "few": "OSOBY",
@@ -104,8 +104,8 @@
   "Seats": {
     "eyebrow": "SALA SYMFONICZNA · PLAN MIEJSC",
     "title": "Wybierz miejsca",
-    "subtitle": "Zaproponowaliśmy dla Was najlepsze miejsca obok siebie. Możesz je zmienić na planie.",
-    "countSelected": "Wybrano {current} z {total}",
+    "subtitle": "Zaznacz na planie miejsce dla każdej osoby, która przyjdzie.",
+    "countSelected": "Wybrano: {count}",
     "allSectors": "Cała sala",
     "parter": "Parter",
     "balkon": "Balkon",
@@ -136,7 +136,7 @@
     "wheelchairDesc": "Miejsca przystosowane dla osób z niepełnosprawnością ruchową",
     "keyboardNavHint": "Nawigacja klawiaturą: Tab przenosi między wolnymi miejscami, Enter lub Spacja wybiera miejsce.",
     "removeSeat": "Usuń miejsce: {seat}",
-    "seatSelectedAnnounce": "Wybrano: {seat}. Łącznie wybrano {current} z {total}.",
+    "seatSelectedAnnounce": "Wybrano: {seat}. Łącznie miejsc: {count}.",
     "seatDeselectedAnnounce": "Odznaczono: {seat}.",
     "available": "Dostępne",
     "occupied": "Zajęte"

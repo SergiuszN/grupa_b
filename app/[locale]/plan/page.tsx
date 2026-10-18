@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { Minus, Plus, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { gsap } from "gsap";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { CtaButton } from "@/components/ui";
 import { PARTY_KEY } from "@/lib/taste";
+import { hasSeats } from "@/lib/events";
+import { useFlow } from "@/lib/use-flow";
+import { useRouter } from "@/i18n/routing";
 import { prefersStillMotion } from "@/lib/motion";
 
 const MIN = 1;
@@ -21,10 +24,18 @@ function plural(n: number) {
 
 export default function Plan() {
   const t = useTranslations("Plan");
+  const { event, ready } = useFlow();
+  const seated = hasSeats(event);
+  const router = useRouter();
   const [people, setPeople] = useState(2);
   const [draft, setDraft] = useState(String(people));
   const numberRef = useRef<HTMLInputElement>(null);
   const shown = useRef(people);
+
+  // Concerts take the party size from the seats picked on the map.
+  useEffect(() => {
+    if (ready && seated) router.replace("/seats");
+  }, [ready, seated, router]);
 
   useEffect(() => {
     const el = numberRef.current;
@@ -59,7 +70,7 @@ export default function Plan() {
 
   return (
     <Screen>
-      <FlowSteps step={3} />
+      <FlowSteps skip={skippedSteps(seated)} step={3} />
 
       <div className="flex flex-1 flex-col justify-center px-6 py-5">
         <div className="mb-8">
@@ -141,7 +152,7 @@ export default function Plan() {
         </div>
       </div>
 
-      <FlowArrows step={3} />
+      <FlowArrows nextHref="/evening" step={3} />
     </Screen>
   );
 }

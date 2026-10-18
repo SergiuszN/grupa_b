@@ -2,19 +2,26 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows, FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { HallMap } from "@/components/seats/hall-map";
 import { SEATS_KEY, type SelectedSeat } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
-import { seatPrice } from "@/lib/events";
+import { hasSeats, seatPrice } from "@/lib/events";
+import { useRouter } from "@/i18n/routing";
 import { Armchair, Sparkles, X } from "lucide-react";
 
 export default function SeatsPage() {
   const t = useTranslations("Seats");
-  const { event, people } = useFlow();
+  const { event, ready } = useFlow();
   const [selectedSeats, setSelectedSeats] = useState<SelectedSeat[]>([]);
   const [pageAnnouncement, setPageAnnouncement] = useState("");
+  const router = useRouter();
+
+  // Exhibitions and tours have no seat map: their path goes straight on.
+  useEffect(() => {
+    if (ready && !hasSeats(event)) router.replace("/evening");
+  }, [ready, event, router]);
 
   useEffect(() => {
     try {
@@ -31,7 +38,7 @@ export default function SeatsPage() {
     } catch {
       // ignore JSON parse error
     }
-  }, [people]);
+  }, []);
 
   const saveSeats = (seats: SelectedSeat[]) => {
     setSelectedSeats(seats);
@@ -44,19 +51,12 @@ export default function SeatsPage() {
 
   const handleSelectSeat = (picked: SelectedSeat) => {
     const seat = { ...picked, price: seatPrice(event, picked.category) };
-    let next: SelectedSeat[];
-    if (selectedSeats.length >= people) {
-      // FIFO replacement: remove first, add new
-      next = [...selectedSeats.slice(1), seat];
-    } else {
-      next = [...selectedSeats, seat];
-    }
+    const next = [...selectedSeats, seat];
     saveSeats(next);
     setPageAnnouncement(
       t("seatSelectedAnnounce", {
         seat: `${seat.sector}, Rząd ${seat.row}, Miejsce ${seat.seatNumber}`,
-        current: next.length,
-        total: people,
+        count: next.length,
       })
     );
   };
@@ -80,7 +80,7 @@ export default function SeatsPage() {
 
   return (
     <Screen>
-      <FlowSteps step={4} />
+      <FlowSteps skip={skippedSteps(true)} step={4} />
 
       {/* Screen reader live updates */}
       <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
@@ -96,10 +96,9 @@ export default function SeatsPage() {
               {t("eyebrow")}
             </span>
             <span
-              aria-label={`Wybrano ${selectedSeats.length} z ${people} wymaganych miejsc`}
               className="bg-[#AD891C]/15 text-[#AD891C] px-2.5 py-0.5 rounded-full text-xs font-medium"
             >
-              {t("countSelected", { current: selectedSeats.length, total: people })}
+              {t("countSelected", { count: selectedSeats.length })}
             </span>
           </div>
 
@@ -120,7 +119,7 @@ export default function SeatsPage() {
           <div className="flex flex-col gap-1.5 flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-xs font-medium text-muted">
               <Sparkles size={13} className="text-[#AD891C] shrink-0" aria-hidden="true" />
-              <span>{t("autoAssigned", { count: selectedSeats.length })}</span>
+              <span>{t("selected")}</span>
             </div>
 
             <div className="flex flex-wrap gap-1.5 max-h-16 overflow-y-auto">
@@ -192,7 +191,7 @@ export default function SeatsPage() {
         </section>
       </div>
 
-      <FlowArrows step={4} sticky />
+      <FlowArrows next={selectedSeats.length > 0} prevHref="/swipe" step={4} sticky />
     </Screen>
   );
 }
