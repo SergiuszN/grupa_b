@@ -30,14 +30,14 @@ export function InfoHero({
 }) {
   return (
     <header className="px-6 pt-8 pb-4 md:pt-14 md:pb-8">
-      <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.16em] uppercase">
+      <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.16em] uppercase">
         {eyebrow}
       </p>
-      <h1 className="mt-3 max-w-[760px] text-[36px] leading-[40px] font-bold tracking-[-0.035em] md:text-[56px] md:leading-[60px]">
+      <h1 className="mt-3 max-w-[760px] text-[2.25rem] leading-[2.5rem] font-bold tracking-[-0.035em] md:text-[3.5rem] md:leading-[3.75rem]">
         {title}
       </h1>
       {lead ? (
-        <p className="text-muted mt-4 max-w-[620px] text-[16px] leading-[24px] md:text-[17px] md:leading-[26px]">
+        <p className="text-muted mt-4 max-w-[620px] text-[1rem] leading-[1.5rem] md:text-[1.0625rem] md:leading-[1.625rem]">
           {lead}
         </p>
       ) : null}
@@ -68,10 +68,10 @@ export function InfoSection({
     <section className="border-line mx-6 border-t py-8 md:py-11" id={id}>
       <div className="md:grid md:grid-cols-[240px_1fr] md:gap-12">
         <div className="md:sticky md:top-8 md:self-start">
-          <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.16em]">
+          <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.16em]">
             {index}
           </p>
-          <h2 className="mt-1.5 text-[22px] leading-[28px] font-bold tracking-[-0.025em] md:text-[24px] md:leading-[30px]">
+          <h2 className="mt-1.5 text-[1.375rem] leading-[1.75rem] font-bold tracking-[-0.025em] md:text-[1.5rem] md:leading-[1.875rem]">
             {title}
           </h2>
         </div>
@@ -83,7 +83,7 @@ export function InfoSection({
 
 export function Prose({ children }: { children: ReactNode }) {
   return (
-    <div className="flex max-w-[640px] flex-col gap-3 text-[15px] leading-[23px] md:text-[16px] md:leading-[25px]">
+    <div className="flex max-w-[640px] flex-col gap-3 text-[0.9375rem] leading-[1.4375rem] md:text-[1rem] md:leading-[1.5625rem]">
       {children}
     </div>
   );
@@ -98,10 +98,10 @@ export function InfoFacts({
     <dl className="border-line bg-line grid grid-cols-2 gap-px overflow-clip rounded-2xl border md:grid-cols-4">
       {items.map((item) => (
         <div className="bg-paper px-4 py-4" key={item.label}>
-          <dt className="text-muted text-[10px] leading-[13px] font-medium tracking-[0.14em] uppercase">
+          <dt className="text-muted text-[0.625rem] leading-[0.8125rem] font-medium tracking-[0.14em] uppercase">
             {item.label}
           </dt>
-          <dd className="mt-1.5 text-[19px] leading-[24px] font-bold tracking-[-0.02em]">
+          <dd className="mt-1.5 text-[1.1875rem] leading-[1.5rem] font-bold tracking-[-0.02em]">
             {item.value}
           </dd>
         </div>
@@ -141,14 +141,14 @@ export function InfoCard({
         </div>
       ) : null}
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <p className="text-[16px] leading-[21px] font-bold tracking-[-0.015em]">
+        <p className="text-[1rem] leading-[1.3125rem] font-bold tracking-[-0.015em]">
           {title}
         </p>
         {meta ? (
-          <p className="text-muted text-[13px] leading-[18px]">{meta}</p>
+          <p className="text-muted text-[0.8125rem] leading-[1.125rem]">{meta}</p>
         ) : null}
         {note ? (
-          <p className="text-muted mt-0.5 text-[13px] leading-[18px]">{note}</p>
+          <p className="text-muted mt-0.5 text-[0.8125rem] leading-[1.125rem]">{note}</p>
         ) : null}
       </div>
       {external ? (
@@ -193,7 +193,7 @@ export function InfoList({ children }: { children: ReactNode }) {
 
 export function InfoNote({ children }: { children: ReactNode }) {
   return (
-    <p className="border-line text-muted mt-5 border-l-2 pl-4 text-[13px] leading-[19px]">
+    <p className="border-line text-muted mt-5 border-l-2 pl-4 text-[0.8125rem] leading-[1.1875rem]">
       {children}
     </p>
   );
@@ -209,7 +209,7 @@ export function InfoActions({
       {items.map((item, index) =>
         item.external ? (
           <a
-            className={`focus-visible:outline-ink inline-flex h-12 items-center gap-2 rounded-full px-5 text-[14px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${
+            className={`focus-visible:outline-ink inline-flex h-12 items-center gap-2 rounded-full px-5 text-[0.875rem] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${
               index === 0
                 ? "bg-gold hover:bg-gold-deep text-white"
                 : "border-ink text-ink hover:bg-surface border-[1.5px]"
@@ -224,7 +224,7 @@ export function InfoActions({
           </a>
         ) : (
           <Link
-            className={`focus-visible:outline-ink inline-flex h-12 items-center gap-2 rounded-full px-5 text-[14px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${
+            className={`focus-visible:outline-ink inline-flex h-12 items-center gap-2 rounded-full px-5 text-[0.875rem] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${
               index === 0
                 ? "bg-gold hover:bg-gold-deep text-white"
                 : "border-ink text-ink hover:bg-surface border-[1.5px]"
@@ -252,19 +252,19 @@ export function InfoFooter({
 }) {
   return (
     <footer className="bg-ink text-paper mx-6 mt-4 mb-6 rounded-[24px] px-6 py-8 md:px-10 md:py-10">
-      <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.16em]">
+      <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.16em]">
         FILHARMONIA SZCZECIN
       </p>
-      <p className="mt-2 max-w-[520px] text-[22px] leading-[28px] font-bold tracking-[-0.03em] md:text-[28px] md:leading-[34px]">
+      <p className="mt-2 max-w-[520px] text-[1.375rem] leading-[1.75rem] font-bold tracking-[-0.03em] md:text-[1.75rem] md:leading-[2.125rem]">
         {title}
       </p>
-      <p className="text-paper/70 mt-2 max-w-[460px] text-[14px] leading-[21px]">
+      <p className="text-paper/70 mt-2 max-w-[460px] text-[0.875rem] leading-[1.3125rem]">
         {body}
       </p>
       <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
         {links.map((link) => {
           const className =
-            "text-paper/85 hover:text-paper focus-visible:outline-paper text-[14px] font-medium underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4";
+            "text-paper/85 hover:text-paper focus-visible:outline-paper text-[0.875rem] font-medium underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4";
 
           const external =
             link.href.startsWith("http") || link.href.startsWith("mailto:");
@@ -285,7 +285,7 @@ export function InfoFooter({
           );
         })}
       </div>
-      <p className="text-paper/50 mt-6 text-[12px] leading-4">
+      <p className="text-paper/50 mt-6 text-[0.75rem] leading-4">
         ul. Małopolska 48, 70-515 Szczecin · kasa@filharmonia.szczecin.pl · +48
         91 431 07 20
       </p>

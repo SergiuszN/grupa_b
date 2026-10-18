@@ -63,8 +63,8 @@ function ToggleRow({
   return (
     <div className="flex items-center justify-between gap-4 border-b border-ink/25 py-4">
       <div>
-        <div className="text-[17px] leading-6 font-medium">{label}</div>
-        <div className="mt-0.5 text-[12px] leading-4 opacity-60">{hint}</div>
+        <div className="text-[1.0625rem] leading-6 font-medium">{label}</div>
+        <div className="mt-0.5 text-[0.75rem] leading-4 opacity-60">{hint}</div>
       </div>
       <button
         aria-checked={checked}
@@ -100,7 +100,7 @@ function Segmented<T extends string>({
       {options.map((option) => (
         <button
           aria-pressed={value === option.value}
-          className={`rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
+          className={`rounded-full px-4 py-1.5 text-[0.8125rem] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
             value === option.value ? "bg-ink text-gold" : "hover:bg-ink/5"
           }`}
           key={option.value}
@@ -123,6 +123,7 @@ export function AccessibilityControl() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [settings, setSettings] = useState<A11yState>(DEFAULT_STATE);
+  const [loaded, setLoaded] = useState(false);
   const [mouseY, setMouseY] = useState<number>(100);
 
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -144,6 +145,7 @@ export function AccessibilityControl() {
     } catch {
       // ignore
     }
+    setLoaded(true);
   }, []);
 
   // Track mouse position for the Reading Guide / Ruler
@@ -184,8 +186,10 @@ export function AccessibilityControl() {
     };
   }, [currentLocale, pathname, router]);
 
-  // Sync state to DOM and localStorage
+  // Sync state to DOM and localStorage. Waits for the saved preferences so the
+  // defaults never overwrite them (or the attributes set by A11Y_BOOT_SCRIPT).
   useEffect(() => {
+    if (!loaded) return;
     const root = document.documentElement;
 
     if (settings.textSize === "normal") {
@@ -241,7 +245,7 @@ export function AccessibilityControl() {
     } catch {
       // ignore
     }
-  }, [settings]);
+  }, [loaded, settings]);
 
   // Focus close button, lock scroll, close on Escape
   useEffect(() => {
@@ -279,6 +283,7 @@ export function AccessibilityControl() {
       {settings.readingGuide && (
         <div
           aria-hidden="true"
+          data-a11y-guide
           className="pointer-events-none fixed left-0 w-full h-14 bg-[#B48520]/20 border-y-2 border-[#B48520] z-[60] transition-transform duration-75 shadow-[0_0_15px_rgba(180,133,32,0.25)]"
           style={{ top: `${mouseY - 28}px` }}
         />
@@ -304,7 +309,7 @@ export function AccessibilityControl() {
 
               <button
                 aria-label={t("closePanel")}
-                className="focus-visible:outline-ink flex size-11 items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4"
+                className="focus-visible:outline-ink flex size-[44px] items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4"
                 onClick={closePanel}
                 ref={closeRef}
                 type="button"
@@ -315,11 +320,11 @@ export function AccessibilityControl() {
 
             <div className="rise mt-6 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] leading-[14px] font-medium tracking-[0.14em] opacity-70">
+                <p className="text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em] opacity-70">
                   Filharmonia Szczecin • WCAG
                 </p>
                 <h2
-                  className="mt-1 text-[28px] leading-8 font-bold tracking-[-0.02em] md:text-[34px]"
+                  className="mt-1 text-[1.75rem] leading-8 font-bold tracking-[-0.02em] md:text-[2.125rem]"
                   id="a11y-panel-heading"
                 >
                   {t("panelTitle")}
@@ -327,7 +332,7 @@ export function AccessibilityControl() {
               </div>
               {activeCount > 0 && (
                 <button
-                  className="shrink-0 rounded-full border-[1.5px] border-current px-3 py-1.5 text-[12px] font-semibold transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                  className="shrink-0 rounded-full border-[1.5px] border-current px-3 py-1.5 text-[0.75rem] font-semibold transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
                   onClick={handleReset}
                   type="button"
                 >
@@ -338,7 +343,7 @@ export function AccessibilityControl() {
 
             <div className="rise mt-8 space-y-6">
               <div className="space-y-2.5">
-                <span className="text-[11px] font-semibold tracking-[0.14em] uppercase opacity-70">
+                <span className="text-[0.6875rem] font-semibold tracking-[0.14em] uppercase opacity-70">
                   {t("textSize")}
                 </span>
                 <Segmented
@@ -353,7 +358,7 @@ export function AccessibilityControl() {
               </div>
 
               <div className="space-y-2.5">
-                <span className="text-[11px] font-semibold tracking-[0.14em] uppercase opacity-70">
+                <span className="text-[0.6875rem] font-semibold tracking-[0.14em] uppercase opacity-70">
                   {t("contrast")}
                 </span>
                 <Segmented
@@ -380,17 +385,17 @@ export function AccessibilityControl() {
               </div>
             </div>
 
-            <div className="mt-auto space-y-1.5 pt-10 text-[12px] leading-5">
-              <div className="text-[10px] font-semibold tracking-[0.16em] uppercase opacity-70">
+            <div className="mt-auto space-y-1.5 pt-10 text-[0.75rem] leading-5">
+              <div className="text-[0.625rem] font-semibold tracking-[0.16em] uppercase opacity-70">
                 {t("shortcutsTitle")}
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span>{t("shortcutA11y")}</span>
-                <kbd className="rounded-md border border-ink/30 px-2 py-0.5 font-mono text-[10px]">Alt + A</kbd>
+                <kbd className="rounded-md border border-ink/30 px-2 py-0.5 font-mono text-[0.625rem]">Alt + A</kbd>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span>{t("shortcutLang")}</span>
-                <kbd className="rounded-md border border-ink/30 px-2 py-0.5 font-mono text-[10px]">Alt + L</kbd>
+                <kbd className="rounded-md border border-ink/30 px-2 py-0.5 font-mono text-[0.625rem]">Alt + L</kbd>
               </div>
             </div>
           </div>

@@ -185,7 +185,7 @@ export function CalendarList({
 
           return (
             <button
-              className={`focus-visible:outline-gold flex h-[34px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer ${
+              className={`focus-visible:outline-gold flex h-[34px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[0.8125rem] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer ${
                 active
                   ? "bg-ink text-paper"
                   : "border-line text-ink hover:bg-surface border"
@@ -205,7 +205,7 @@ export function CalendarList({
         {hasDayGroups ? (
           // RENDER MODE A: Grouped by day
           activeDays.length === 0 ? (
-            <p className="text-muted px-1 py-8 text-[14px] leading-5">
+            <p className="text-muted px-1 py-8 text-[0.875rem] leading-5">
               {emptyLabel}
             </p>
           ) : (
@@ -219,11 +219,11 @@ export function CalendarList({
                   key={day.key ? `day-${day.key}` : `day-${dayIndex}`}
                 >
                   <div className="flex items-baseline justify-between gap-4 px-1">
-                    <h2 className="text-[30px] leading-8 font-bold tracking-[-0.03em]">
+                    <h2 className="text-[1.875rem] leading-8 font-bold tracking-[-0.03em]">
                       {day.label}
                     </h2>
                     <time
-                      className="text-muted text-[12px] leading-4"
+                      className="text-muted text-[0.75rem] leading-4"
                       dateTime={day.key}
                     >
                       {day.date}
@@ -262,18 +262,18 @@ export function CalendarList({
                           </div>
 
                           <div className="flex min-w-0 flex-1 flex-col gap-[3px]">
-                            <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.12em]">
+                            <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.12em]">
                               {labels[CATEGORY[term.category]]}
                             </p>
-                            <h3 className="text-[17px] leading-5 font-bold tracking-[-0.02em]">
+                            <h3 className="text-[1.0625rem] leading-5 font-bold tracking-[-0.02em]">
                               {term.title}
                             </h3>
                             {term.subtitle ? (
-                              <p className="text-muted text-[13px] leading-4">
+                              <p className="text-muted text-[0.8125rem] leading-4">
                                 {term.subtitle}
                               </p>
                             ) : null}
-                            <p className="text-muted mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] leading-4">
+                            <p className="text-muted mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.75rem] leading-4">
                               <span className="flex items-center gap-1">
                                 <Clock aria-hidden="true" size={12} strokeWidth={1.8} />
                                 <time
@@ -334,7 +334,7 @@ export function CalendarList({
         ) : (
           // RENDER MODE B: Flat list of events
           filteredEvents.length === 0 ? (
-            <p className="text-muted px-1 py-8 text-[14px] leading-5">
+            <p className="text-muted px-1 py-8 text-[0.875rem] leading-5">
               {emptyLabel}
             </p>
           ) : (
@@ -372,18 +372,18 @@ export function CalendarList({
                   </div>
 
                   <div className="flex min-w-0 flex-1 flex-col gap-[3px]">
-                    <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.12em]">
+                    <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.12em]">
                       {labels[CATEGORY[event.category]]}
                     </p>
-                    <h2 className="text-[17px] leading-5 font-bold tracking-[-0.02em]">
+                    <h2 className="text-[1.0625rem] leading-5 font-bold tracking-[-0.02em]">
                       {event.title}
                     </h2>
-                    <p className="text-muted text-[13px] leading-4">{event.meta}</p>
+                    <p className="text-muted text-[0.8125rem] leading-4">{event.meta}</p>
                   </div>
 
                   {event.href ? (
                     <a
-                      className="focus-visible:outline-gold flex shrink-0 items-center gap-0.5 rounded-sm text-[13px] leading-4 font-medium focus-visible:outline-2 focus-visible:outline-offset-4"
+                      className="focus-visible:outline-gold flex shrink-0 items-center gap-0.5 rounded-sm text-[0.8125rem] leading-4 font-medium focus-visible:outline-2 focus-visible:outline-offset-4"
                       href={event.href}
                       rel="noreferrer"
                       target="_blank"
@@ -392,7 +392,7 @@ export function CalendarList({
                       <ChevronRight aria-hidden="true" size={14} strokeWidth={1.4} />
                     </a>
                   ) : (
-                    <span className="text-muted flex shrink-0 items-center text-[13px] leading-4">
+                    <span className="text-muted flex shrink-0 items-center text-[0.8125rem] leading-4">
                       {labels.details}
                       <ChevronRight aria-hidden="true" size={14} strokeWidth={1.4} />
                     </span>
@@ -418,9 +418,9 @@ export function CalendarList({
           )
         )}
 
-        <div className="flex items-center justify-between pt-6 pb-2 text-muted text-[13px] leading-4">
+        <div className="flex items-center justify-between pt-6 pb-2 text-muted text-[0.8125rem] leading-4">
           <p className="max-w-[310px] px-1">{labels.footnote}</p>
-          <span className="shrink-0 text-right text-[12px] tabular-nums font-medium">
+          <span className="shrink-0 text-right text-[0.75rem] tabular-nums font-medium">
             {hasDayGroups
               ? `${loadedDaysCount} / ${totalDaysCount} dni`
               : `${loadedEventsCount} / ${totalEventsCount}`}

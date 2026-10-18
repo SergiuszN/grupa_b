@@ -121,7 +121,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
 
           <button
             aria-label={tn("closeMenu")}
-            className="focus-visible:outline-ink flex size-11 items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4 cursor-pointer"
+            className="focus-visible:outline-ink flex size-[44px] items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4 cursor-pointer"
             onClick={handleClose}
             ref={closeRef}
             type="button"
@@ -135,7 +135,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
         <nav aria-label="Menu główne" className="rise mt-6">
           {PRIMARY.map((link) => (
             <Link
-              className="focus-visible:outline-ink flex items-baseline justify-between border-b border-ink/25 py-3.5 text-[24px] leading-7 font-bold tracking-[-0.02em] focus-visible:outline-2 focus-visible:outline-offset-2 md:text-[28px]"
+              className="focus-visible:outline-ink flex items-baseline justify-between border-b border-ink/25 py-3.5 text-[1.5rem] leading-7 font-bold tracking-[-0.02em] focus-visible:outline-2 focus-visible:outline-offset-2 md:text-[1.75rem]"
               href={link.href}
               key={link.key}
               onClick={() => {
@@ -150,7 +150,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
           <div className="mt-5 grid grid-cols-2 gap-x-5">
             {SECONDARY.map((link) => (
               <Link
-                className="focus-visible:outline-ink border-ink/15 flex items-baseline justify-between gap-2 border-b py-2.5 text-[15px] leading-5 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="focus-visible:outline-ink border-ink/15 flex items-baseline justify-between gap-2 border-b py-2.5 text-[0.9375rem] leading-5 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
                 href={link.href}
                 key={link.key}
                 onClick={() => {
@@ -186,10 +186,10 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
               strokeWidth={1.7}
             />
             <span className="flex-1">
-              <span className="block text-[17px] leading-6 font-bold">
+              <span className="block text-[1.0625rem] leading-6 font-bold">
                 {t("sound")}
               </span>
-              <span className="block text-[13px] leading-[18px] opacity-75">
+              <span className="block text-[0.8125rem] leading-[1.125rem] opacity-75">
                 {t("soundHint")}
               </span>
             </span>
@@ -217,11 +217,11 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
         ) : null}
 
         <div className="mt-auto pt-10">
-          <p className="text-[11px] leading-[14px] font-medium tracking-[0.14em] opacity-70">
+          <p className="text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em] opacity-70">
             {t("contact")}
           </p>
 
-          <div className="mt-3 flex flex-col gap-1.5 text-[15px] leading-[22px]">
+          <div className="mt-3 flex flex-col gap-1.5 text-[0.9375rem] leading-[1.375rem]">
             <a className="w-fit underline underline-offset-4" href="mailto:kasa@filharmonia.szczecin.pl">
               kasa@filharmonia.szczecin.pl
             </a>
@@ -235,7 +235,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
             {SOCIALS.map(({ label, href, path }) => (
               <a
                 aria-label={label}
-                className="focus-visible:outline-ink flex size-11 items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4"
+                className="focus-visible:outline-ink flex size-[44px] items-center justify-center rounded-full border-[1.5px] border-current transition-colors hover:bg-ink/10 focus-visible:outline-2 focus-visible:outline-offset-4"
                 href={href}
                 key={label}
                 rel="noreferrer"

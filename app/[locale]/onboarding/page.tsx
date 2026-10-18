@@ -19,13 +19,13 @@ export default async function Onboarding() {
       <div className="flex flex-1 flex-col gap-4 px-6 pt-3">
         <div>
           <h1
-            className="text-[32px] leading-9 font-bold tracking-[-0.03em]"
+            className="text-[2rem] leading-9 font-bold tracking-[-0.03em]"
             data-flow="title"
           >
             {t("title")}
           </h1>
           <p
-            className="text-muted mt-2 text-[15px] leading-[22px]"
+            className="text-muted mt-2 text-[0.9375rem] leading-[1.375rem]"
             data-flow="copy"
           >
             {t("subtitle")}
@@ -57,10 +57,10 @@ export default async function Onboarding() {
                   strokeWidth={1.7}
                 />
                 <div className="flex flex-col gap-0.5">
-                  <p className="text-[14px] leading-[18px] font-bold text-ink">
+                  <p className="text-[0.875rem] leading-[1.125rem] font-bold text-ink">
                     {t(`tip${key}Title` as never)}
                   </p>
-                  <p className="text-muted text-[13px] leading-[17px]">
+                  <p className="text-muted text-[0.8125rem] leading-[1.0625rem]">
                     {t(`tip${key}Text` as never)}
                   </p>
                 </div>

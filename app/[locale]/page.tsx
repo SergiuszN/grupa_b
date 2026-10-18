@@ -34,7 +34,7 @@ export default async function Home({
 
         <section className="w-full px-6 pb-[calc(env(safe-area-inset-bottom)+36px)] md:pb-16">
           <div className="md:max-w-[760px]">
-            <h1 className="text-hero md:text-[64px] md:leading-[66px] font-bold">
+            <h1 className="text-hero md:text-[4rem] md:leading-[4.125rem] font-bold">
               <span className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
                 <span className="block" data-anim="line">
                   {t("headline1")}
@@ -48,7 +48,7 @@ export default async function Home({
             </h1>
 
             <p
-              className="text-body md:text-[17px] md:leading-[26px] mt-3.5 max-w-[342px] font-medium md:mt-5 md:max-w-[460px]"
+              className="text-body md:text-[1.0625rem] md:leading-[1.625rem] mt-3.5 max-w-[342px] font-medium md:mt-5 md:max-w-[460px]"
               data-anim="copy"
             >
               {t("promise")}

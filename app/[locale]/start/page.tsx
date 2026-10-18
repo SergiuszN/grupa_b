@@ -233,7 +233,7 @@ export default function Start() {
               >
                 <span className="flex items-center gap-4">
                   <Icon aria-hidden="true" size={24} strokeWidth={1.5} />
-                  <span className="text-[22px] leading-7 font-bold">
+                  <span className="text-[1.375rem] leading-7 font-bold">
                     {t(option.key)}
                   </span>
                 </span>

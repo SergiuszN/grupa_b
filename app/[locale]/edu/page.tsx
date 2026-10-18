@@ -364,7 +364,7 @@ export default async function EduPage({
 
       <InfoSection index="05" title={c.sections.upcoming}>
         {events.length === 0 ? (
-          <p className="text-muted text-[15px] leading-[22px]">{c.empty}</p>
+          <p className="text-muted text-[0.9375rem] leading-[1.375rem]">{c.empty}</p>
         ) : (
           <InfoList>
             {events.map((event) => {

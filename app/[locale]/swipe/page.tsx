@@ -262,24 +262,24 @@ export default function Swipe() {
         ref={copyWrap}
       >
         <p
-          className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase"
+          className="text-gold text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] uppercase"
           data-copy
         >
           {card ? card.kind : t("endKind")}
         </p>
         <h1
-          className="mt-2.5 text-[34px] leading-9 font-bold tracking-[-0.03em]"
+          className="mt-2.5 text-[2.125rem] leading-9 font-bold tracking-[-0.03em]"
           data-copy
         >
           {card ? card.title : t("endBig")}
         </h1>
-        <p className="mt-1 text-[17px] leading-6 font-light" data-copy>
+        <p className="mt-1 text-[1.0625rem] leading-6 font-light" data-copy>
           {card ? card.subtitle : t("endSubtitle")}
         </p>
 
         {card ? (
           <p
-            className="text-muted mt-2 line-clamp-3 text-[14px] leading-5"
+            className="text-muted mt-2 line-clamp-3 text-[0.875rem] leading-5"
             data-copy
           >
             {card.description}
@@ -288,16 +288,16 @@ export default function Swipe() {
 
         {card ? (
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+            <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
               <CalendarDays aria-hidden="true" size={13} strokeWidth={1.7} />
               {sentenceCase(card.date)}
             </span>
-            <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+            <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
               <MapPin aria-hidden="true" size={13} strokeWidth={1.7} />
               {sentenceCase(card.room)}
             </span>
             {card.duration ? (
-              <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+              <span className="border-line text-ink flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
                 <Clock aria-hidden="true" size={13} strokeWidth={1.7} />
                 {card.duration} min
               </span>
@@ -305,7 +305,7 @@ export default function Swipe() {
           </div>
         ) : null}
 
-        <p className="text-muted mt-2 text-[13px] leading-[19px]">
+        <p className="text-muted mt-2 text-[0.8125rem] leading-[1.1875rem]">
           {card ? card.meta : t("endMeta")}
         </p>
       </div>

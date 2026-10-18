@@ -121,7 +121,7 @@ export function LanguageSwitcher({ tone = "dark" }: { tone?: "dark" | "light" })
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={t("language", { name: LOCALE_LABELS[locale].name })}
-        className={`focus-visible:outline-gold relative flex size-11 shrink-0 items-center justify-center rounded-full border-[1.5px] p-[2px] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-60 ${trigger[tone]}`}
+        className={`focus-visible:outline-gold relative flex size-[44px] shrink-0 items-center justify-center rounded-full border-[1.5px] p-[2px] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-60 ${trigger[tone]}`}
         disabled={pending}
         onClick={() => (open ? closeMenu() : openMenu(currentIndex))}
         onKeyDown={onButtonKeyDown}
@@ -131,7 +131,7 @@ export function LanguageSwitcher({ tone = "dark" }: { tone?: "dark" | "light" })
         <Flag locale={locale} />
         <span
           aria-hidden="true"
-          className="bg-ink text-paper absolute -right-1 -bottom-1 flex size-4 items-center justify-center rounded-full"
+          className="bg-ink text-paper absolute -right-1 -bottom-1 flex size-[16px] items-center justify-center rounded-full"
         >
           <ChevronDown
             className={`transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
@@ -154,7 +154,7 @@ export function LanguageSwitcher({ tone = "dark" }: { tone?: "dark" | "light" })
             return (
               <button
                 aria-checked={selected}
-                className={`focus-visible:outline-ink flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] font-medium transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 ${
+                className={`focus-visible:outline-ink flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[0.9375rem] font-medium transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 ${
                   selected ? "bg-ink/5" : "hover:bg-ink/5"
                 }`}
                 key={code}

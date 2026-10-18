@@ -240,10 +240,10 @@ export default async function BuildingPage({
         <ul className="flex max-w-[620px] flex-col">
           {c.awards.map((award, index) => (
             <li
-              className="border-line flex items-baseline gap-4 border-b py-3 text-[15px] leading-[21px]"
+              className="border-line flex items-baseline gap-4 border-b py-3 text-[0.9375rem] leading-[1.3125rem]"
               key={award}
             >
-              <span className="text-gold w-6 shrink-0 text-[11px] font-medium tracking-[0.12em]">
+              <span className="text-gold w-6 shrink-0 text-[0.6875rem] font-medium tracking-[0.12em]">
                 {String(index + 1).padStart(2, "0")}
               </span>
               {award}

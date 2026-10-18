@@ -160,7 +160,7 @@ export default async function ArtistPage({
     <InfoScreen>
       <div className="px-6 pt-5">
         <Link
-          className="text-muted hover:text-ink focus-visible:outline-gold inline-flex items-center gap-1.5 text-[13px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="text-muted hover:text-ink focus-visible:outline-gold inline-flex items-center gap-1.5 text-[0.8125rem] font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
           href="/artists"
         >
           <ArrowLeft aria-hidden="true" size={15} strokeWidth={1.8} />
@@ -179,14 +179,14 @@ export default async function ArtistPage({
             />
           ) : null}
           <div className="mt-5 min-w-0 md:mt-0 md:pt-2">
-            <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.16em] uppercase">
+            <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.16em] uppercase">
               {labels[artist.type] ?? artist.type}
             </p>
-            <h1 className="mt-2 max-w-[620px] text-[36px] leading-[40px] font-bold tracking-[-0.035em] md:text-[52px] md:leading-[56px]">
+            <h1 className="mt-2 max-w-[620px] text-[2.25rem] leading-[2.5rem] font-bold tracking-[-0.035em] md:text-[3.25rem] md:leading-[3.5rem]">
               {artist.name}
             </h1>
             {artist.roles && artist.roles.length > 0 ? (
-              <p className="text-muted mt-3 max-w-[520px] text-[15px] leading-[22px]">
+              <p className="text-muted mt-3 max-w-[520px] text-[0.9375rem] leading-[1.375rem]">
                 {artist.roles
                   .map((role) => labels[role] ?? role)
                   .join(" · ")}
@@ -209,7 +209,7 @@ export default async function ArtistPage({
 
       <InfoSection index="02" title={c.events}>
         {artist.events.length === 0 ? (
-          <p className="text-muted text-[15px] leading-[22px]">{c.noEvents}</p>
+          <p className="text-muted text-[0.9375rem] leading-[1.375rem]">{c.noEvents}</p>
         ) : (
           <InfoList>
             {artist.events.slice(0, 8).map((event) => {
@@ -247,7 +247,7 @@ export default async function ArtistPage({
                   size={15}
                   strokeWidth={1.7}
                 />
-                <span className="text-[15px] leading-[21px]">{work.title}</span>
+                <span className="text-[0.9375rem] leading-[1.3125rem]">{work.title}</span>
               </li>
             ))}
           </ul>

@@ -237,7 +237,7 @@ export default async function ToursPage({
 
       <InfoSection index="02" title={c.sections.dates}>
         {tours.length === 0 ? (
-          <p className="text-muted text-[15px] leading-[22px]">{c.empty}</p>
+          <p className="text-muted text-[0.9375rem] leading-[1.375rem]">{c.empty}</p>
         ) : (
           <InfoList>
             {tours.map((tour) => {

@@ -236,13 +236,13 @@ export default async function MediaPage({
         <ul className="flex flex-col">
           {c.articles.map((article) => (
             <li className="border-line border-b py-4" key={article.title}>
-              <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.12em] uppercase">
+              <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.12em] uppercase">
                 {article.date}
               </p>
-              <h3 className="mt-1.5 text-[17px] leading-[23px] font-bold tracking-[-0.02em]">
+              <h3 className="mt-1.5 text-[1.0625rem] leading-[1.4375rem] font-bold tracking-[-0.02em]">
                 {article.title}
               </h3>
-              <p className="text-muted mt-1 max-w-[560px] text-[14px] leading-[21px]">
+              <p className="text-muted mt-1 max-w-[560px] text-[0.875rem] leading-[1.3125rem]">
                 {article.body}
               </p>
             </li>
@@ -251,7 +251,7 @@ export default async function MediaPage({
       </InfoSection>
 
       <InfoSection index="02" title={c.sections.photos}>
-        <p className="text-muted max-w-[600px] text-[15px] leading-[23px]">
+        <p className="text-muted max-w-[600px] text-[0.9375rem] leading-[1.4375rem]">
           {c.photosBody}
         </p>
         <div className="mt-5 grid grid-cols-2 gap-3">
@@ -267,7 +267,7 @@ export default async function MediaPage({
                 className="aspect-[4/3] w-full rounded-[16px] transition-opacity group-hover:opacity-90"
                 src={photo.src}
               />
-              <p className="text-muted mt-1.5 flex items-center gap-1.5 text-[11px] leading-[15px]">
+              <p className="text-muted mt-1.5 flex items-center gap-1.5 text-[0.6875rem] leading-[0.9375rem]">
                 <Download aria-hidden="true" size={12} strokeWidth={1.8} />
                 {c.photoCredit}
               </p>
@@ -284,7 +284,7 @@ export default async function MediaPage({
             </span>
           </div>
           <div className="min-w-0">
-            <p className="text-muted max-w-[460px] text-[14px] leading-[21px]">
+            <p className="text-muted max-w-[460px] text-[0.875rem] leading-[1.3125rem]">
               {c.logoTip}
             </p>
             <InfoActions

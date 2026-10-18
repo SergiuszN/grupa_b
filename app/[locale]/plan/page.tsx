@@ -84,10 +84,10 @@ export default function Plan() {
           ref={cardRef}
         >
           <div className="flex items-center justify-between">
-            <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
+            <p className="text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-muted">
               {t("count")}
             </p>
-            <p className="text-[11px] leading-[15px] font-medium tracking-[0.16em] text-gold">
+            <p className="text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-gold">
               {MIN} – {MAX}
             </p>
           </div>
@@ -112,18 +112,18 @@ export default function Plan() {
                 />
                 <span
                   aria-hidden="true"
-                  className="text-muted text-[26px] leading-none font-light"
+                  className="text-muted text-[1.625rem] leading-none font-light"
                 >
                   ×
                 </span>
                 <p
-                  className="text-[96px] leading-[92px] font-light tracking-[-0.05em]"
+                  className="text-[6rem] leading-[5.75rem] font-light tracking-[-0.05em]"
                   ref={numberRef}
                 >
                   {people}
                 </p>
               </div>
-              <p className="mt-1 text-[11px] leading-[15px] font-medium tracking-[0.16em] text-muted">
+              <p className="mt-1 text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-muted">
                 {people === 1 ? t("one") : people < 5 ? t("few") : t("many")}
               </p>
             </div>
@@ -176,7 +176,7 @@ export default function Plan() {
                     </div>
 
                     <span
-                      className={`flex size-7 items-center justify-center rounded-full text-[13px] leading-none transition-all ${
+                      className={`flex size-7 items-center justify-center rounded-full text-[0.8125rem] leading-none transition-all ${
                         isCurrent
                           ? "bg-gold text-white font-bold shadow-sm"
                           : "text-muted font-medium group-hover:text-ink"
@@ -202,7 +202,7 @@ export default function Plan() {
               />
             </div>
 
-            <p className="text-center text-[11px] leading-[14px] tracking-[0.02em] text-muted">
+            <p className="text-center text-[0.6875rem] leading-[0.875rem] tracking-[0.02em] text-muted">
               {t("drag")}
             </p>
           </div>

@@ -255,10 +255,10 @@ export default async function ExhibitionsPage({
         <InfoList>
           {c.galleries.map((gallery) => (
             <div className="border-line border-b py-4" key={gallery.title}>
-              <h3 className="text-[18px] leading-[24px] font-bold tracking-[-0.02em]">
+              <h3 className="text-[1.125rem] leading-[1.5rem] font-bold tracking-[-0.02em]">
                 {gallery.title}
               </h3>
-              <p className="text-muted mt-1.5 max-w-[560px] text-[14px] leading-[21px]">
+              <p className="text-muted mt-1.5 max-w-[560px] text-[0.875rem] leading-[1.3125rem]">
                 {gallery.body}
               </p>
             </div>
@@ -271,12 +271,12 @@ export default async function ExhibitionsPage({
 
       <InfoSection index="02" title={c.sections.now}>
         {shows.length === 0 ? (
-          <p className="text-muted text-[15px] leading-[22px]">{c.empty}</p>
+          <p className="text-muted text-[0.9375rem] leading-[1.375rem]">{c.empty}</p>
         ) : (
           <div className="flex flex-col gap-6">
             {currentShows.length > 0 ? (
               <div>
-                <p className="text-muted mb-1 text-[10px] leading-[13px] font-medium tracking-[0.14em] uppercase">
+                <p className="text-muted mb-1 text-[0.625rem] leading-[0.8125rem] font-medium tracking-[0.14em] uppercase">
                   {c.sections.current}
                 </p>
                 <InfoList>
@@ -295,7 +295,7 @@ export default async function ExhibitionsPage({
 
             {upcomingShows.length > 0 ? (
               <div>
-                <p className="text-muted mb-1 text-[10px] leading-[13px] font-medium tracking-[0.14em] uppercase">
+                <p className="text-muted mb-1 text-[0.625rem] leading-[0.8125rem] font-medium tracking-[0.14em] uppercase">
                   {c.sections.upcoming}
                 </p>
                 <InfoList>

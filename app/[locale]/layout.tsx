@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SkipLink } from "@/components/SkipLink";
 import { AccessibilityControl } from "@/components/AccessibilityControl";
+import { A11Y_BOOT_SCRIPT } from "@/components/a11y-boot";
 import { PageTransition } from "@/components/flow/page-transition";
 import "../globals.css";
 
@@ -62,7 +63,10 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} translate="no">
+    <html lang={locale} suppressHydrationWarning translate="no">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: A11Y_BOOT_SCRIPT }} />
+      </head>
       <body className={`${helveticaNow.className} ${helveticaNow.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <SkipLink />

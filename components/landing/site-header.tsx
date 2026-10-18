@@ -21,7 +21,7 @@ const circle = {
 } as const;
 
 const circleBase =
-  "flex size-11 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold";
+  "flex size-[44px] shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold";
 
 export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const color = toneClass[tone];
@@ -41,7 +41,7 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
         <span className="sr-only">{t("home")}</span>
       </Link>
 
-      <div className={`flex items-center gap-2 ${color}`}>
+      <div className={`flex items-center gap-[8px] ${color}`}>
         <button
           aria-haspopup="dialog"
           aria-label={ta("openPanel")}

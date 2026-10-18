@@ -119,19 +119,19 @@ export function VoiceAssistant({
         </div>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center px-6 pb-2.5 text-center">
-          <p className="text-gold mb-3.5 text-[17px] leading-[22px] font-medium tracking-[0.02em]">
+          <p className="text-gold mb-3.5 text-[1.0625rem] leading-[1.375rem] font-medium tracking-[0.02em]">
             {labels.hi}
           </p>
-          <h1 className="max-w-[300px] text-[31px] leading-[112%] font-bold tracking-[-0.03em] md:max-w-[460px]">
+          <h1 className="max-w-[300px] text-[1.9375rem] leading-[112%] font-bold tracking-[-0.03em] md:max-w-[460px]">
             {labels.title}
           </h1>
-          <p className="text-muted mt-[18px] max-w-[250px] text-[14px] leading-[150%]">
+          <p className="text-muted mt-[18px] max-w-[250px] text-[0.875rem] leading-[150%]">
             {labels.subtitle}
           </p>
           <div className="mt-6 flex max-w-[340px] flex-wrap justify-center gap-2">
             {labels.suggestions.map((s) => (
               <button
-                className="border-line hover:bg-surface focus-visible:outline-gold rounded-full border px-3.5 py-2 text-[13px] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="border-line hover:bg-surface focus-visible:outline-gold rounded-full border px-3.5 py-2 text-[0.8125rem] leading-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
                 key={s}
                 onClick={() => ask(s)}
                 type="button"
@@ -157,7 +157,7 @@ export function VoiceAssistant({
         />
         <p
           aria-live="polite"
-          className={`mt-3 text-[12px] leading-4 font-medium tracking-[0.14em] uppercase ${
+          className={`mt-3 text-[0.75rem] leading-4 font-medium tracking-[0.14em] uppercase ${
             busy ? "text-muted" : ""
           }`}
         >
@@ -165,7 +165,7 @@ export function VoiceAssistant({
         </p>
         {error ? (
           <p
-            className="mt-2 max-w-[300px] text-center text-[13px] leading-5 text-[#9B2C1F]"
+            className="mt-2 max-w-[300px] text-center text-[0.8125rem] leading-5 text-[#9B2C1F]"
             role="alert"
           >
             {labels.errors[error]}
@@ -178,7 +178,7 @@ export function VoiceAssistant({
         >
           <input
             aria-label={labels.placeholder}
-            className="placeholder:text-muted min-w-0 flex-1 bg-transparent text-[15px] leading-5 outline-none"
+            className="placeholder:text-muted min-w-0 flex-1 bg-transparent text-[0.9375rem] leading-5 outline-none"
             onChange={(e) => setDraft(e.target.value)}
             placeholder={labels.placeholder}
             value={draft}
@@ -296,7 +296,7 @@ function Message({
     return (
       <div className="flex flex-col items-end gap-1">
         <span className="sr-only">{labels.you}:</span>
-        <p className="bg-ink text-paper max-w-[85%] rounded-[20px] rounded-br-md px-4 py-2.5 text-[15px] leading-[22px]">
+        <p className="bg-ink text-paper max-w-[85%] rounded-[20px] rounded-br-md px-4 py-2.5 text-[0.9375rem] leading-[1.375rem]">
           {message.text || <Dots />}
         </p>
       </div>
@@ -307,7 +307,7 @@ function Message({
     <div className="flex flex-col gap-3">
       <span className="sr-only">{labels.guide}:</span>
       {message.text ? (
-        <p className="max-w-[92%] text-[17px] leading-[26px] tracking-[-0.01em]">
+        <p className="max-w-[92%] text-[1.0625rem] leading-[1.625rem] tracking-[-0.01em]">
           {message.text}
         </p>
       ) : message.pending ? (
@@ -315,13 +315,13 @@ function Message({
       ) : null}
       {message.sources?.length ? (
         <ul className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <li className="text-muted text-[12px] leading-4 font-medium tracking-[0.12em] uppercase">
+          <li className="text-muted text-[0.75rem] leading-4 font-medium tracking-[0.12em] uppercase">
             {labels.source}
           </li>
           {message.sources.map((s) => (
             <li key={s.url}>
               <a
-                className="text-ink decoration-line hover:decoration-ink focus-visible:outline-gold inline-flex items-center gap-1 rounded-sm text-[13px] leading-4 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="text-ink decoration-line hover:decoration-ink focus-visible:outline-gold inline-flex items-center gap-1 rounded-sm text-[0.8125rem] leading-4 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
                 href={s.url}
                 rel="noreferrer"
                 target="_blank"
@@ -379,22 +379,22 @@ function Card({
         }
       />
       <div className="flex min-w-0 flex-1 flex-col gap-[3px]">
-        <p className="text-gold truncate text-[11px] leading-[14px] font-medium tracking-[0.12em] uppercase">
+        <p className="text-gold truncate text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.12em] uppercase">
           {event.subtitle ?? event.kind}
         </p>
-        <h3 className="text-[16px] leading-5 font-bold tracking-[-0.02em]">
+        <h3 className="text-[1rem] leading-5 font-bold tracking-[-0.02em]">
           {event.title}
         </h3>
-        <p className="text-muted text-[13px] leading-4">
+        <p className="text-muted text-[0.8125rem] leading-4">
           {when}
           {event.venue ? ` · ${event.venue}` : ""}
         </p>
         <div className="mt-1.5 flex items-center gap-3">
-          <span className="text-[13px] leading-4 font-medium">
+          <span className="text-[0.8125rem] leading-4 font-medium">
             {soldOut ? labels.soldOut : formatPrice(event, labels.free)}
           </span>
           <a
-            className="border-ink hover:bg-surface focus-visible:outline-gold ml-auto flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[13px] leading-4 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="border-ink hover:bg-surface focus-visible:outline-gold ml-auto flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[0.8125rem] leading-4 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
             href={(!soldOut && event.ticket_url) || event.source_url}
             rel="noreferrer"
             target="_blank"

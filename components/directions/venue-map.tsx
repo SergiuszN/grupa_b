@@ -69,7 +69,7 @@ export function VenueMap() {
       />
 
       <a
-        className="bg-ink text-paper hover:bg-ink/90 focus-visible:outline-gold mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-full text-[14px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+        className="bg-ink text-paper hover:bg-ink/90 focus-visible:outline-gold mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-full text-[0.875rem] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
         href={MAPS_HREF}
         rel="noreferrer"
         target="_blank"

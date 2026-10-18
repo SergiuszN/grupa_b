@@ -17,16 +17,16 @@
   --font-sans: var(--font-helvetica-now), Helvetica, "Helvetica Neue", Arial, sans-serif;
   --font-helvetica: var(--font-helvetica-now);
 
-  --text-caption: 12px;
-  --text-caption--line-height: 16px;
-  --text-body: 15px;
-  --text-body--line-height: 22px;
-  --text-title: 22px;
-  --text-title--line-height: 28px;
-  --text-display: 34px;
-  --text-display--line-height: 38px;
-  --text-hero: 40px;
-  --text-hero--line-height: 44px;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.375rem;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.75rem;
+  --text-display: 2.125rem;
+  --text-display--line-height: 2.375rem;
+  --text-hero: 2.5rem;
+  --text-hero--line-height: 2.75rem;
   --text-hero--letter-spacing: -0.035em;
 
   --font-weight-light: 300;
@@ -324,26 +324,132 @@ html[data-a11y-text="xlarge"] {
   font-size: 130%;
 }
 
+/* High contrast: deepen the secondary tokens, then push the whole page. */
 html[data-a11y-contrast="high"] {
+  --color-muted: #3d3a35;
+  --color-line: #8c877d;
   filter: contrast(135%);
 }
 
-html[data-a11y-contrast="yellow-black"],
-html[data-a11y-contrast="yellow-black"] body {
-  background-color: #000000 !important;
-  color: #ffff00 !important;
+html[data-a11y-contrast="high"] :is(.opacity-60, .opacity-70, .opacity-75, .opacity-80) {
+  opacity: 1 !important;
 }
 
-html[data-a11y-contrast="yellow-black"] a,
-html[data-a11y-contrast="yellow-black"] button,
-html[data-a11y-contrast="yellow-black"] p,
-html[data-a11y-contrast="yellow-black"] h1,
-html[data-a11y-contrast="yellow-black"] h2,
-html[data-a11y-contrast="yellow-black"] h3,
-html[data-a11y-contrast="yellow-black"] span,
-html[data-a11y-contrast="yellow-black"] div:not([data-a11y-panel]) {
-  color: #ffff00 !important;
-  border-color: #ffff00 !important;
+/* Yellow on black. Surfaces go black, text and lines go yellow; solid fills
+   (buttons, active pills, badges, dots, switch knobs) go yellow with black
+   content so state stays visible. Photos are left alone. */
+html[data-a11y-contrast="yellow-black"] {
+  --yb-fg: #ffff00;
+  --yb-dim: #8f8f00;
+  --yb-bg: #000000;
+  --color-paper: var(--yb-bg);
+  --color-surface: var(--yb-bg);
+  --color-gold-soft: var(--yb-bg);
+  --color-ink: var(--yb-fg);
+  --color-muted: var(--yb-fg);
+  --color-gold: var(--yb-fg);
+  --color-gold-deep: var(--yb-fg);
+  --color-line: var(--yb-dim);
+  color-scheme: dark;
+}
+
+html[data-a11y-contrast="yellow-black"],
+html[data-a11y-contrast="yellow-black"] body,
+html[data-a11y-contrast="yellow-black"] [class*="bg-"],
+html[data-a11y-contrast="yellow-black"] .concert-card,
+html[data-a11y-contrast="yellow-black"] :is(input, textarea, select) {
+  background-color: var(--yb-bg) !important;
+}
+
+html[data-a11y-contrast="yellow-black"] *,
+html[data-a11y-contrast="yellow-black"] *::before,
+html[data-a11y-contrast="yellow-black"] *::after {
+  color: var(--yb-fg) !important;
+  border-color: var(--yb-fg) !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+html[data-a11y-contrast="yellow-black"] ::placeholder {
+  color: var(--yb-fg) !important;
+  opacity: 0.8;
+}
+
+html[data-a11y-contrast="yellow-black"] ::selection {
+  background-color: var(--yb-fg);
+  color: var(--yb-bg);
+}
+
+html[data-a11y-contrast="yellow-black"] :is(.opacity-60, .opacity-70, .opacity-75, .opacity-80, .opacity-90) {
+  opacity: 1 !important;
+}
+
+/* Overlays over photos keep their darkening, never a flat colour. */
+html[data-a11y-contrast="yellow-black"] [class*="bg-gradient"] {
+  --tw-gradient-from: rgb(0 0 0 / 85%) !important;
+  background-color: transparent !important;
+}
+
+/* Small empty shapes (dots, bars, knobs) read as indicators. */
+html[data-a11y-contrast="yellow-black"] [class*="bg-"]:empty:not(input, textarea, select, .inset-0, .bg-cover, [data-a11y-guide]) {
+  background-color: var(--yb-dim) !important;
+}
+
+/* Tracks with a knob inside: black with a yellow ring. */
+html[data-a11y-contrast="yellow-black"] .bg-line:not(:empty) {
+  background-color: var(--yb-bg) !important;
+  box-shadow: inset 0 0 0 2px var(--yb-fg) !important;
+}
+
+html[data-a11y-contrast="yellow-black"]
+  :is(
+    .bg-gold,
+    .bg-gold-deep,
+    .bg-black,
+    .bg-white,
+    span.bg-ink,
+    button.bg-ink,
+    a.bg-ink,
+    p.bg-ink,
+    .bg-ink:empty,
+    .bg-paper:empty
+  ):not(main, section, footer, header, nav, dl, [role="dialog"], .bg-cover, .inset-0, .min-h-dvh) {
+  background-color: var(--yb-fg) !important;
+}
+
+html[data-a11y-contrast="yellow-black"]
+  :is(.bg-gold, .bg-gold-deep, .bg-black, .bg-white, span.bg-ink, button.bg-ink, a.bg-ink, p.bg-ink):not(main, section, footer, header, nav, dl, [role="dialog"], .bg-cover, .inset-0, .min-h-dvh),
+html[data-a11y-contrast="yellow-black"]
+  :is(.bg-gold, .bg-gold-deep, .bg-black, .bg-white, span.bg-ink, button.bg-ink, a.bg-ink, p.bg-ink):not(main, section, footer, header, nav, dl, [role="dialog"], .bg-cover, .inset-0, .min-h-dvh)
+  * {
+  color: var(--yb-bg) !important;
+  border-color: var(--yb-bg) !important;
+}
+
+/* A knob inside a filled track flips back to black ([class] twice only
+   lifts specificity above the fill rule). */
+html[data-a11y-contrast="yellow-black"]
+  :is(button, a, span):is(.bg-gold, .bg-ink, .bg-black)
+  > :is(.bg-gold, .bg-ink, .bg-paper, .bg-white, .bg-black)[class][class] {
+  background-color: var(--yb-bg) !important;
+}
+
+html[data-a11y-contrast="yellow-black"] :is(a, button):hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html[data-a11y-contrast="yellow-black"] :focus-visible {
+  outline: 3px solid var(--yb-fg) !important;
+  outline-offset: 3px;
+}
+
+html[data-a11y-contrast="yellow-black"] [data-a11y-guide] {
+  background-color: rgb(255 255 0 / 18%) !important;
+}
+
+html[data-a11y-contrast="yellow-black"] .page-veil {
+  display: none;
 }
 
 html[data-a11y-cursor="big"],
@@ -389,6 +495,15 @@ html[data-a11y-grayscale="true"] {
 
 html[data-a11y-contrast="high"][data-a11y-grayscale="true"] {
   filter: contrast(135%) grayscale(100%);
+}
+
+/* Grayscale would wash the yellow out; in that mode only photos go grey. */
+html[data-a11y-contrast="yellow-black"][data-a11y-grayscale="true"] {
+  filter: none;
+}
+
+html[data-a11y-contrast="yellow-black"][data-a11y-grayscale="true"] :is(img, video, [style*="background-image"]) {
+  filter: grayscale(100%);
 }
 
 html[data-a11y-readable-font="true"] *,

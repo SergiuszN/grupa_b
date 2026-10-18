@@ -77,7 +77,7 @@ export function MenuSearch({ onNavigate }: { onNavigate: () => void }) {
           strokeWidth={1.8}
         />
         <input
-          className="focus-visible:outline-ink h-12 w-full rounded-full border-[1.5px] border-ink/25 bg-transparent pr-11 pl-11 text-[15px] placeholder:text-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 [&::-webkit-search-cancel-button]:appearance-none"
+          className="focus-visible:outline-ink h-12 w-full rounded-full border-[1.5px] border-ink/25 bg-transparent pr-11 pl-11 text-[0.9375rem] placeholder:text-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 [&::-webkit-search-cancel-button]:appearance-none"
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t("placeholder")}
           type="search"
@@ -98,11 +98,11 @@ export function MenuSearch({ onNavigate }: { onNavigate: () => void }) {
       {value.length >= 2 ? (
         <div aria-live="polite" className="mt-3">
           {searching ? (
-            <p className="text-[13px] opacity-70">{t("searching")}</p>
+            <p className="text-[0.8125rem] opacity-70">{t("searching")}</p>
           ) : null}
 
           {empty ? (
-            <p className="text-[13px] opacity-70">{t("empty")}</p>
+            <p className="text-[0.8125rem] opacity-70">{t("empty")}</p>
           ) : null}
 
           {events.length > 0 ? (
@@ -123,11 +123,11 @@ export function MenuSearch({ onNavigate }: { onNavigate: () => void }) {
                       }
                     />
                     <span className="min-w-0">
-                      <span className="block truncate text-[15px] leading-5 font-bold">
+                      <span className="block truncate text-[0.9375rem] leading-5 font-bold">
                         {event.title}
                       </span>
                       {event.subtitle ? (
-                        <span className="block truncate text-[12px] leading-4 opacity-70">
+                        <span className="block truncate text-[0.75rem] leading-4 opacity-70">
                           {event.subtitle}
                         </span>
                       ) : null}
@@ -140,14 +140,14 @@ export function MenuSearch({ onNavigate }: { onNavigate: () => void }) {
 
           {artists.length > 0 ? (
             <div className="mt-2">
-              <p className="text-[10px] leading-3 font-medium tracking-[0.14em] uppercase opacity-60">
+              <p className="text-[0.625rem] leading-3 font-medium tracking-[0.14em] uppercase opacity-60">
                 {t("artists")}
               </p>
               <ul className="mt-1 flex flex-col">
                 {artists.map((artist) => (
                   <li key={artist.id}>
                     <Link
-                      className="focus-visible:outline-ink block rounded-md py-1 text-[14px] leading-5 focus-visible:outline-2 focus-visible:outline-offset-2 hover:underline"
+                      className="focus-visible:outline-ink block rounded-md py-1 text-[0.875rem] leading-5 focus-visible:outline-2 focus-visible:outline-offset-2 hover:underline"
                       href={`/artists/${artist.id}`}
                       onClick={onNavigate}
                     >
@@ -161,12 +161,12 @@ export function MenuSearch({ onNavigate }: { onNavigate: () => void }) {
 
           {works.length > 0 ? (
             <div className="mt-2">
-              <p className="text-[10px] leading-3 font-medium tracking-[0.14em] uppercase opacity-60">
+              <p className="text-[0.625rem] leading-3 font-medium tracking-[0.14em] uppercase opacity-60">
                 {t("works")}
               </p>
               <ul className="mt-1 flex flex-col">
                 {works.map((work) => (
-                  <li className="py-1 text-[14px] leading-5" key={work.id}>
+                  <li className="py-1 text-[0.875rem] leading-5" key={work.id}>
                     {work.title}
                     {work.composer?.name ? (
                       <span className="opacity-70"> — {work.composer.name}</span>
@@ -179,12 +179,12 @@ export function MenuSearch({ onNavigate }: { onNavigate: () => void }) {
 
           {series.length > 0 ? (
             <div className="mt-2">
-              <p className="text-[10px] leading-3 font-medium tracking-[0.14em] uppercase opacity-60">
+              <p className="text-[0.625rem] leading-3 font-medium tracking-[0.14em] uppercase opacity-60">
                 {t("series")}
               </p>
               <ul className="mt-1 flex flex-col">
                 {series.map((item) => (
-                  <li className="py-1 text-[14px] leading-5" key={item.id}>
+                  <li className="py-1 text-[0.875rem] leading-5" key={item.id}>
                     {item.name}
                   </li>
                 ))}

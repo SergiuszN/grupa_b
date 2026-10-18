@@ -59,14 +59,14 @@ export default function Checkout() {
 
       <div className="flex flex-col gap-1.5 px-6 pt-3.5 pb-4">
         <p
-          className="text-gold flex items-center gap-1.5 text-[12px] leading-4 font-medium tracking-[0.14em]"
+          className="text-gold flex items-center gap-1.5 text-[0.75rem] leading-4 font-medium tracking-[0.14em]"
           data-flow="eyebrow"
         >
           <Ticket aria-hidden="true" size={13} strokeWidth={1.8} />
           {t("eyebrow")}
         </p>
         <h1
-          className="text-[32px] leading-9 font-bold tracking-[-0.03em]"
+          className="text-[2rem] leading-9 font-bold tracking-[-0.03em]"
           data-flow="title"
         >
           {t("title")}
@@ -81,12 +81,12 @@ export default function Checkout() {
         />
 
         <div className="flex flex-col gap-1.5 px-[18px] pt-4 pb-3.5">
-          <h2 className="text-[22px] leading-[26px] font-bold tracking-[-0.03em]">
+          <h2 className="text-[1.375rem] leading-[1.625rem] font-bold tracking-[-0.03em]">
             {event.title}
           </h2>
-          <p className="text-muted text-[14px] leading-[18px]">{event.subtitle}</p>
+          <p className="text-muted text-[0.875rem] leading-[1.125rem]">{event.subtitle}</p>
 
-          <div className="text-muted mt-1 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[12px] leading-4">
+          <div className="text-muted mt-1 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[0.75rem] leading-4">
             <span className="flex items-center gap-1.5">
               <Music
                 aria-hidden="true"
@@ -120,7 +120,7 @@ export default function Checkout() {
 
           <div className="border-line mt-2 grid grid-cols-2 gap-4 border-t pt-3">
             <div>
-              <p className="text-muted flex items-center gap-1.5 text-[10px] leading-[14px] font-medium tracking-[0.14em]">
+              <p className="text-muted flex items-center gap-1.5 text-[0.625rem] leading-[0.875rem] font-medium tracking-[0.14em]">
                 <CalendarDays
                   aria-hidden="true"
                   className="text-gold shrink-0"
@@ -129,12 +129,12 @@ export default function Checkout() {
                 />
                 {t("date")}
               </p>
-              <p className="mt-1 text-[15px] leading-5 font-medium">
+              <p className="mt-1 text-[0.9375rem] leading-5 font-medium">
                 {sentenceCase(weekday)}
               </p>
             </div>
             <div>
-              <p className="text-muted flex items-center gap-1.5 text-[10px] leading-[14px] font-medium tracking-[0.14em]">
+              <p className="text-muted flex items-center gap-1.5 text-[0.625rem] leading-[0.875rem] font-medium tracking-[0.14em]">
                 <Clock
                   aria-hidden="true"
                   className="text-gold shrink-0"
@@ -143,13 +143,13 @@ export default function Checkout() {
                 />
                 {t("time")}
               </p>
-              <p className="mt-1 text-[22px] leading-6 font-bold tracking-[-0.02em]">
+              <p className="mt-1 text-[1.375rem] leading-6 font-bold tracking-[-0.02em]">
                 {time}
               </p>
             </div>
           </div>
 
-          <p className="text-muted mt-1 flex items-center gap-1.5 text-[14px] leading-[18px]">
+          <p className="text-muted mt-1 flex items-center gap-1.5 text-[0.875rem] leading-[1.125rem]">
             <Users
               aria-hidden="true"
               className="text-gold shrink-0"
@@ -164,7 +164,7 @@ export default function Checkout() {
           className="flex items-end gap-4 px-[18px] pt-4 pb-[18px]"
           data-flow-item
         >
-          <p className="text-muted flex items-center gap-1.5 pb-1.5 text-[12px] leading-4 font-medium tracking-[0.14em]">
+          <p className="text-muted flex items-center gap-1.5 pb-1.5 text-[0.75rem] leading-4 font-medium tracking-[0.14em]">
             <Ticket
               aria-hidden="true"
               className="text-gold shrink-0"
@@ -174,7 +174,7 @@ export default function Checkout() {
             {t("total")}
           </p>
           <span aria-hidden="true" className="border-line mb-[13px] flex-1 border-t" />
-          <p className="text-[32px] leading-9 font-bold tracking-[-0.03em]">
+          <p className="text-[2rem] leading-9 font-bold tracking-[-0.03em]">
             {people * PRICE} zł
           </p>
         </div>
@@ -192,7 +192,7 @@ export default function Checkout() {
           {t("buy")}
         </CtaButton>
 
-        <div className="flex items-center justify-center gap-[22px] text-[14px] leading-[18px] font-medium">
+        <div className="flex items-center justify-center gap-[22px] text-[0.875rem] leading-[1.125rem] font-medium">
           <a
             className="focus-visible:outline-gold flex items-center gap-1.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
             href={calendar}

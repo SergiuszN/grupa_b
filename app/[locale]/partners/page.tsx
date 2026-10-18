@@ -282,10 +282,10 @@ export default async function PartnersPage({
                   size={20}
                   strokeWidth={1.7}
                 />
-                <h3 className="mt-3 text-[18px] leading-[24px] font-bold tracking-[-0.02em]">
+                <h3 className="mt-3 text-[1.125rem] leading-[1.5rem] font-bold tracking-[-0.02em]">
                   {form.title}
                 </h3>
-                <p className="text-muted mt-1.5 text-[14px] leading-[21px]">
+                <p className="text-muted mt-1.5 text-[0.875rem] leading-[1.3125rem]">
                   {form.body}
                 </p>
               </div>
@@ -301,10 +301,10 @@ export default async function PartnersPage({
               className="border-line flex flex-col gap-0.5 border-b py-3.5 md:flex-row md:items-baseline md:justify-between md:gap-6"
               key={partner.name}
             >
-              <span className="text-[16px] leading-[22px] font-bold tracking-[-0.015em]">
+              <span className="text-[1rem] leading-[1.375rem] font-bold tracking-[-0.015em]">
                 {partner.name}
               </span>
-              <span className="text-muted text-[12px] leading-[16px] tracking-[0.06em] uppercase">
+              <span className="text-muted text-[0.75rem] leading-[1rem] tracking-[0.06em] uppercase">
                 {partner.role}
               </span>
             </li>
@@ -338,7 +338,7 @@ export default async function PartnersPage({
         <ul className="flex flex-col">
           {c.contact.map((line) => (
             <li
-              className="border-line text-[15px] leading-[23px] border-b py-3.5"
+              className="border-line text-[0.9375rem] leading-[1.4375rem] border-b py-3.5"
               key={line}
             >
               {line}

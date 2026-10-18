@@ -92,11 +92,11 @@ const FOCUS_CLASSES: Record<ButtonTone, Record<ButtonVariant, string>> = {
 
 const SIZE_CLASSES = {
   pill: {
-    lg: "h-14 px-6 text-[15px] leading-5 font-bold",
-    default: "h-14 px-6 text-[15px] leading-5 font-bold",
-    md: "h-[52px] px-5 text-[16px] leading-5 font-medium",
-    sm: "h-11 px-4 text-[14px] leading-5 font-medium",
-    xs: "h-9 px-3 text-[13px] leading-4 font-medium",
+    lg: "h-14 px-6 text-[0.9375rem] leading-5 font-bold",
+    default: "h-14 px-6 text-[0.9375rem] leading-5 font-bold",
+    md: "h-[52px] px-5 text-[1rem] leading-5 font-medium",
+    sm: "h-11 px-4 text-[0.875rem] leading-5 font-medium",
+    xs: "h-9 px-3 text-[0.8125rem] leading-4 font-medium",
     icon: "size-14 p-0 shrink-0 aspect-square",
   },
   iconOnly: {

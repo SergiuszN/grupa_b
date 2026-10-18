@@ -17,13 +17,13 @@ export default function EventInfo() {
 
       <div className="px-6 pt-3">
         <h1
-          className="text-[32px] leading-9 font-bold tracking-[-0.03em]"
+          className="text-[2rem] leading-9 font-bold tracking-[-0.03em]"
           data-flow="title"
         >
           {event.title}
         </h1>
         <p
-          className="text-muted mt-2 text-[15px] leading-[22px]"
+          className="text-muted mt-2 text-[0.9375rem] leading-[1.375rem]"
           data-flow="copy"
         >
           {event.subtitle}
@@ -37,10 +37,10 @@ export default function EventInfo() {
       />
 
       <section className="px-6 pt-7" data-flow="copy">
-        <p className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+        <p className="text-gold-deep text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
           {t("about")}
         </p>
-        <div className="text-muted mt-3 flex flex-col gap-3 text-[15px] leading-[23px]">
+        <div className="text-muted mt-3 flex flex-col gap-3 text-[0.9375rem] leading-[1.4375rem]">
           <p>{event.description}</p>
           <p>{t("aboutP1")}</p>
           <p>{t("aboutP2")}</p>
@@ -48,7 +48,7 @@ export default function EventInfo() {
       </section>
 
       <section className="px-6 pt-8" data-flow="media">
-        <p className="text-gold-deep text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+        <p className="text-gold-deep text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
           {t("programme")}
         </p>
 
@@ -60,14 +60,14 @@ export default function EventInfo() {
               }`}
               key={step}
             >
-              <span className="text-gold w-5 shrink-0 pt-0.5 text-[10px] leading-4 font-medium tracking-[0.1em]">
+              <span className="text-gold w-5 shrink-0 pt-0.5 text-[0.625rem] leading-4 font-medium tracking-[0.1em]">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <div className="flex flex-col gap-0.5">
-                <p className="text-[14px] leading-[18px] font-bold">
+                <p className="text-[0.875rem] leading-[1.125rem] font-bold">
                   {t(`prog${step}Title` as never)}
                 </p>
-                <p className="text-muted text-[13px] leading-[19px]">
+                <p className="text-muted text-[0.8125rem] leading-[1.1875rem]">
                   {t(`prog${step}Text` as never)}
                 </p>
               </div>

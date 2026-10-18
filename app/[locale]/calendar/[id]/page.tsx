@@ -262,11 +262,11 @@ export default async function EventPage({
       ) : null}
 
       <div className="px-6 pt-5">
-        <p className="text-gold text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+        <p className="text-gold text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
           {tc(categoryKey(event.calendar_category))}
         </p>
         <div className="mt-1.5 flex items-start justify-between gap-3">
-          <h1 className="min-w-0 flex-1 text-[32px] leading-9 font-bold tracking-[-0.03em]">
+          <h1 className="min-w-0 flex-1 text-[2rem] leading-9 font-bold tracking-[-0.03em]">
             {event.title}
           </h1>
           {event.calendar_category === "concerts" ? (
@@ -280,32 +280,32 @@ export default async function EventPage({
           ) : null}
         </div>
         {event.subtitle ? (
-          <p className="text-muted mt-2 text-[16px] leading-6">
+          <p className="text-muted mt-2 text-[1rem] leading-6">
             {event.subtitle}
           </p>
         ) : null}
 
         <div className="mt-4 flex flex-wrap gap-1.5">
           {startsAt ? (
-            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
               <CalendarDays aria-hidden="true" size={13} strokeWidth={1.7} />
               {startsAt}
             </span>
           ) : null}
           {performance?.venue ? (
-            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
               <MapPin aria-hidden="true" size={13} strokeWidth={1.7} />
               {performance.venue.name}
             </span>
           ) : null}
           {event.duration_minutes ? (
-            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
               <Clock aria-hidden="true" size={13} strokeWidth={1.7} />
               {t("duration", { count: event.duration_minutes })}
             </span>
           ) : null}
           {event.min_age ? (
-            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] leading-4">
+            <span className="border-line flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.75rem] leading-4">
               <Users aria-hidden="true" size={13} strokeWidth={1.7} />
               {t("age", { age: event.min_age })}
             </span>
@@ -316,7 +316,7 @@ export default async function EventPage({
       {event.description ? (
         <section className="flex flex-col gap-3 px-6 pt-6">
           {paragraphsOf(event.description).map((paragraph, index) => (
-            <p className="text-[15px] leading-[23px]" key={index}>
+            <p className="text-[0.9375rem] leading-[1.4375rem]" key={index}>
               {paragraph}
             </p>
           ))}
@@ -325,7 +325,7 @@ export default async function EventPage({
 
       {event.works && event.works.length > 0 ? (
         <section className="px-6 pt-7">
-          <h2 className="text-muted flex items-center gap-1.5 text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          <h2 className="text-muted flex items-center gap-1.5 text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
             <Music aria-hidden="true" size={13} strokeWidth={1.7} />
             {t("programme")}
           </h2>
@@ -339,9 +339,9 @@ export default async function EventPage({
                   strokeWidth={1.7}
                 />
                 <div>
-                  <p className="text-[15px] leading-5 font-medium">{work.title}</p>
+                  <p className="text-[0.9375rem] leading-5 font-medium">{work.title}</p>
                   {work.composer?.name ? (
-                    <p className="text-muted text-[13px] leading-4">
+                    <p className="text-muted text-[0.8125rem] leading-4">
                       {work.composer.name}
                     </p>
                   ) : null}
@@ -355,14 +355,14 @@ export default async function EventPage({
       {event.artists && event.artists.length > 0 ? (
         <section className="px-6 pt-7">
           <div className="bg-surface rounded-[20px] px-[18px] py-4">
-            <h2 className="text-muted flex items-center gap-1.5 text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+            <h2 className="text-muted flex items-center gap-1.5 text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
               <UserRound aria-hidden="true" size={13} strokeWidth={1.7} />
               {t("performers")}
             </h2>
             <ul className="mt-3 flex flex-col gap-2">
               {event.artists.map((artist) => (
                 <li
-                  className="flex items-start gap-2.5 text-[15px] leading-5"
+                  className="flex items-start gap-2.5 text-[0.9375rem] leading-5"
                   key={artist.id}
                 >
                   <UserRound
@@ -386,7 +386,7 @@ export default async function EventPage({
 
       {similar.length > 0 ? (
         <section className="px-6 pt-7">
-          <h2 className="text-muted flex items-center gap-1.5 text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          <h2 className="text-muted flex items-center gap-1.5 text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
             <Sparkles aria-hidden="true" size={13} strokeWidth={1.7} />
             {t("similar")}
           </h2>
@@ -409,10 +409,10 @@ export default async function EventPage({
                       }
                     />
                     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                      <p className="text-[15px] leading-5 font-bold tracking-[-0.01em]">
+                      <p className="text-[0.9375rem] leading-5 font-bold tracking-[-0.01em]">
                         {item.title}
                       </p>
-                      <p className="text-muted text-[12px] leading-4">
+                      <p className="text-muted text-[0.75rem] leading-4">
                         {first
                           ? [
                               dateFormat.format(new Date(first.starts_at)),
@@ -470,7 +470,7 @@ export default async function EventPage({
             </span>
           </CtaButton>
         ) : (
-          <div className="border-line text-muted flex h-14 flex-1 items-center justify-center rounded-full border text-[15px] leading-5 font-medium">
+          <div className="border-line text-muted flex h-14 flex-1 items-center justify-center rounded-full border text-[0.9375rem] leading-5 font-medium">
             {isFree ? t("free") : t("unavailable")}
           </div>
         )}

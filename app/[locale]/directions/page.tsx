@@ -27,13 +27,13 @@ export default async function Directions() {
 
       <div className="px-6 pt-4">
         <h1
-          className="text-[32px] leading-9 font-bold tracking-[-0.03em]"
+          className="text-[2rem] leading-9 font-bold tracking-[-0.03em]"
           data-flow="title"
         >
           {t("title")}
         </h1>
         <p
-          className="text-muted mt-2 text-[15px] leading-[22px]"
+          className="text-muted mt-2 text-[0.9375rem] leading-[1.375rem]"
           data-flow="copy"
         >
           {t("subtitle")}
@@ -45,10 +45,10 @@ export default async function Directions() {
         data-flow="copy"
       >
         <div className="flex flex-col gap-[3px]">
-          <p className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+          <p className="text-muted text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
             {t("venue")}
           </p>
-          <p className="text-[16px] leading-5 font-medium">{t("address")}</p>
+          <p className="text-[1rem] leading-5 font-medium">{t("address")}</p>
         </div>
         <svg
           aria-hidden="true"
@@ -77,19 +77,19 @@ export default async function Directions() {
               aria-hidden="true"
               className={`size-2 shrink-0 rounded-full ${item.color}`}
             />
-            <p className="text-[14px] leading-[18px]">{t(item.key)}</p>
+            <p className="text-[0.875rem] leading-[1.125rem]">{t(item.key)}</p>
           </div>
         ))}
       </div>
 
       <div className="px-6 pt-7" data-flow="copy">
-        <p className="text-muted text-[11px] leading-[14px] font-medium tracking-[0.14em]">
+        <p className="text-muted text-[0.6875rem] leading-[0.875rem] font-medium tracking-[0.14em]">
           {p("eyebrow")}
         </p>
-        <h2 className="mt-2 text-[22px] leading-[26px] font-bold tracking-[-0.03em]">
+        <h2 className="mt-2 text-[1.375rem] leading-[1.625rem] font-bold tracking-[-0.03em]">
           {p("title")}
         </h2>
-        <p className="text-muted mt-1.5 text-[14px] leading-5">{p("body")}</p>
+        <p className="text-muted mt-1.5 text-[0.875rem] leading-5">{p("body")}</p>
 
         <div className="mt-3 flex flex-col gap-2.5">
           {PARKING.map(({ key, Icon }) => (
@@ -100,7 +100,7 @@ export default async function Directions() {
                 size={17}
                 strokeWidth={1.7}
               />
-              <p className="text-[14px] leading-[18px]">{p(key)}</p>
+              <p className="text-[0.875rem] leading-[1.125rem]">{p(key)}</p>
             </div>
           ))}
         </div>

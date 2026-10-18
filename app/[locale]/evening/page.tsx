@@ -38,10 +38,10 @@ function Row({
       }`}
       data-flow-item
     >
-      <span className="text-muted w-[52px] shrink-0 text-[14px] leading-[18px] font-medium">
+      <span className="text-muted w-[52px] shrink-0 text-[0.875rem] leading-[1.125rem] font-medium">
         {time}
       </span>
-      <span className="text-ink flex flex-1 items-center gap-2 text-[16px] leading-5 font-medium">
+      <span className="text-ink flex flex-1 items-center gap-2 text-[1rem] leading-5 font-medium">
         {Icon ? (
           <Icon
             aria-hidden="true"
@@ -52,7 +52,7 @@ function Row({
         ) : null}
         {title}
       </span>
-      <span className="text-muted w-[118px] shrink-0 text-right text-[13px] leading-4">
+      <span className="text-muted w-[118px] shrink-0 text-right text-[0.8125rem] leading-4">
         {place}
       </span>
     </div>
@@ -61,7 +61,7 @@ function Row({
 
 function Label({ children }: { children: string }) {
   return (
-    <p className="text-muted pb-1 text-[12px] leading-4 font-medium tracking-[0.14em]">
+    <p className="text-muted pb-1 text-[0.75rem] leading-4 font-medium tracking-[0.14em]">
       {children}
     </p>
   );
@@ -77,7 +77,7 @@ export default function Evening() {
 
       <div className="px-6 pt-4 pb-2.5">
         <h1
-          className="text-[30px] leading-[34px] font-bold tracking-[-0.03em]"
+          className="text-[1.875rem] leading-[2.125rem] font-bold tracking-[-0.03em]"
           data-flow="title"
         >
           {t("title")}
@@ -105,10 +105,10 @@ export default function Evening() {
         >
           <div className="from-ink/72 flex items-end bg-gradient-to-t to-transparent px-3.5 py-3">
             <div className="flex flex-col gap-0.5">
-              <p className="bg-ink/70 text-gold mb-0.5 inline-flex w-fit items-center rounded-full px-2.5 py-1 text-[11px] leading-4 font-medium tracking-[0.12em]">
+              <p className="bg-ink/70 text-gold mb-0.5 inline-flex w-fit items-center rounded-full px-2.5 py-1 text-[0.6875rem] leading-4 font-medium tracking-[0.12em]">
                 {t("concert")}
               </p>
-              <p className="text-[22px] leading-[26px] font-bold tracking-[-0.03em] text-white">
+              <p className="text-[1.375rem] leading-[1.625rem] font-bold tracking-[-0.03em] text-white">
                 {event.title}
               </p>
             </div>

@@ -271,10 +271,10 @@ export default async function ArtistsPage({
                 />
               ) : null}
               <div className="min-w-0">
-                <h3 className="text-[24px] leading-[30px] font-bold tracking-[-0.03em]">
+                <h3 className="text-[1.5rem] leading-[1.875rem] font-bold tracking-[-0.03em]">
                   {orchestra.name}
                 </h3>
-                <p className="text-muted mt-3 text-[15px] leading-[23px]">
+                <p className="text-muted mt-3 text-[0.9375rem] leading-[1.4375rem]">
                   {excerpt(orchestra.biography)}
                 </p>
                 <InfoActions
@@ -289,10 +289,10 @@ export default async function ArtistsPage({
               <dl className="border-line bg-line grid grid-cols-2 gap-px overflow-clip rounded-2xl border md:grid-cols-4">
                 {c.orchestraFacts.map((fact) => (
                   <div className="bg-paper px-4 py-4" key={fact.label}>
-                    <dt className="text-muted text-[10px] leading-[13px] font-medium tracking-[0.14em] uppercase">
+                    <dt className="text-muted text-[0.625rem] leading-[0.8125rem] font-medium tracking-[0.14em] uppercase">
                       {fact.label}
                     </dt>
-                    <dd className="mt-1.5 text-[19px] leading-[24px] font-bold tracking-[-0.02em]">
+                    <dd className="mt-1.5 text-[1.1875rem] leading-[1.5rem] font-bold tracking-[-0.02em]">
                       {fact.value}
                     </dd>
                   </div>
@@ -301,7 +301,7 @@ export default async function ArtistsPage({
             </div>
           </>
         ) : (
-          <p className="text-muted text-[15px] leading-[22px]">
+          <p className="text-muted text-[0.9375rem] leading-[1.375rem]">
             {c.sections.orchestra}
           </p>
         )}
@@ -311,14 +311,14 @@ export default async function ArtistsPage({
         <div className="flex flex-wrap gap-2">
           {c.ensembles.map((name) => (
             <span
-              className="border-line text-ink rounded-full border px-3.5 py-1.5 text-[13px] leading-[18px]"
+              className="border-line text-ink rounded-full border px-3.5 py-1.5 text-[0.8125rem] leading-[1.125rem]"
               key={name}
             >
               {name}
             </span>
           ))}
         </div>
-        <p className="text-muted mt-4 max-w-[560px] text-[14px] leading-[21px]">
+        <p className="text-muted mt-4 max-w-[560px] text-[0.875rem] leading-[1.3125rem]">
           {c.ensemblesNote}
         </p>
       </InfoSection>
@@ -334,7 +334,7 @@ export default async function ArtistsPage({
               strokeWidth={1.8}
             />
             <input
-              className="border-line focus-visible:outline-gold h-12 w-full rounded-full border-[1.5px] bg-transparent pr-4 pl-11 text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="border-line focus-visible:outline-gold h-12 w-full rounded-full border-[1.5px] bg-transparent pr-4 pl-11 text-[0.9375rem] focus-visible:outline-2 focus-visible:outline-offset-2"
               defaultValue={q}
               name="q"
               placeholder={c.searchPlaceholder}
@@ -343,14 +343,14 @@ export default async function ArtistsPage({
           </label>
           <div className="mt-2.5 flex items-center gap-4">
             <button
-              className="bg-ink text-paper hover:bg-ink/85 focus-visible:outline-gold inline-flex h-10 items-center rounded-full px-4 text-[13px] font-bold focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="bg-ink text-paper hover:bg-ink/85 focus-visible:outline-gold inline-flex h-10 items-center rounded-full px-4 text-[0.8125rem] font-bold focus-visible:outline-2 focus-visible:outline-offset-2"
               type="submit"
             >
               {c.searchButton}
             </button>
             {q ? (
               <Link
-                className="text-muted text-[13px] underline underline-offset-4"
+                className="text-muted text-[0.8125rem] underline underline-offset-4"
                 href="/artists"
               >
                 {c.clear}
@@ -359,7 +359,7 @@ export default async function ArtistsPage({
           </div>
         </form>
 
-        <p className="text-muted mb-3 text-[13px] leading-[18px]">
+        <p className="text-muted mb-3 text-[0.8125rem] leading-[1.125rem]">
           {q
             ? people.length === 1
               ? c.resultCountOne
@@ -368,7 +368,7 @@ export default async function ArtistsPage({
         </p>
 
         {people.length === 0 ? (
-          <p className="text-muted text-[15px] leading-[22px]">{c.empty}</p>
+          <p className="text-muted text-[0.9375rem] leading-[1.375rem]">{c.empty}</p>
         ) : (
           <ul className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3">
             {people.map((artist) => (
@@ -386,10 +386,10 @@ export default async function ArtistsPage({
                   ) : (
                     <div className="aspect-[4/5] w-full rounded-[16px] bg-[#E7E2D8]" />
                   )}
-                  <p className="mt-2 text-[14px] leading-[19px] font-bold tracking-[-0.01em]">
+                  <p className="mt-2 text-[0.875rem] leading-[1.1875rem] font-bold tracking-[-0.01em]">
                     {artist.name}
                   </p>
-                  <p className="text-muted mt-0.5 text-[11px] leading-[15px] tracking-[0.1em] uppercase">
+                  <p className="text-muted mt-0.5 text-[0.6875rem] leading-[0.9375rem] tracking-[0.1em] uppercase">
                     {labels[artist.type] ?? artist.type}
                   </p>
                 </Link>

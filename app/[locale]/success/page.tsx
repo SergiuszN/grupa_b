@@ -117,7 +117,7 @@ export default function Success() {
         </div>
 
         <p
-          className="text-gold mt-8 text-[12px] leading-4 font-medium tracking-[0.14em]"
+          className="text-gold mt-8 text-[0.75rem] leading-4 font-medium tracking-[0.14em]"
           data-flow="eyebrow"
         >
           {t("eyebrow")}
@@ -126,7 +126,7 @@ export default function Success() {
           {t("title")}
         </h1>
         <p
-          className="text-muted mt-3 max-w-[300px] text-[15px] leading-[22px]"
+          className="text-muted mt-3 max-w-[300px] text-[0.9375rem] leading-[1.375rem]"
           data-flow="copy"
         >
           {t("body")}
@@ -143,7 +143,7 @@ export default function Success() {
             { Icon: Users, label: `${people} ${label}` },
           ].map(({ Icon, label: text }) => (
             <p
-              className="bg-surface flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] leading-5 font-medium"
+              className="bg-surface flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.8125rem] leading-5 font-medium"
               key={text}
             >
               <Icon
@@ -171,7 +171,7 @@ export default function Success() {
 
         <div className="flex flex-col gap-2 print:hidden">
           <button
-            className="border-ink text-ink hover:bg-surface focus-visible:outline-gold flex h-[52px] items-center justify-center gap-2 rounded-full border-[1.5px] text-[15px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+            className="border-ink text-ink hover:bg-surface focus-visible:outline-gold flex h-[52px] items-center justify-center gap-2 rounded-full border-[1.5px] text-[0.9375rem] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
             onClick={() => window.print()}
             type="button"
           >
@@ -180,7 +180,7 @@ export default function Success() {
           </button>
 
           <button
-            className="focus-visible:outline-ink flex h-[52px] items-center justify-center gap-2 rounded-full bg-black text-[15px] leading-5 font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
+            className="focus-visible:outline-ink flex h-[52px] items-center justify-center gap-2 rounded-full bg-black text-[0.9375rem] leading-5 font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
             onClick={() => setWalletNote(true)}
             type="button"
           >
@@ -198,7 +198,7 @@ export default function Success() {
         </div>
 
         {walletNote ? (
-          <p aria-live="polite" className="text-muted text-center text-[12px] leading-4 print:hidden">
+          <p aria-live="polite" className="text-muted text-center text-[0.75rem] leading-4 print:hidden">
             {t("walletSoon")}
           </p>
         ) : null}

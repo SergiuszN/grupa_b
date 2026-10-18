@@ -45,7 +45,7 @@ export function Timeline({
           return (
             <button
               aria-pressed={active}
-              className={`focus-visible:outline-gold shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-medium tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
+              className={`focus-visible:outline-gold shrink-0 rounded-full border px-3 py-1.5 text-[0.75rem] font-medium tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 active
                   ? "border-gold bg-gold text-white"
                   : "border-line text-muted hover:text-ink"
@@ -66,18 +66,18 @@ export function Timeline({
         className="border-line mt-5 rounded-[20px] border px-5 py-6 md:px-8 md:py-8"
       >
         <div className="flex items-baseline justify-between gap-4">
-          <p className="text-gold text-[40px] leading-[44px] font-bold tracking-[-0.04em] tabular-nums md:text-[56px] md:leading-[60px]">
+          <p className="text-gold text-[2.5rem] leading-[2.75rem] font-bold tracking-[-0.04em] tabular-nums md:text-[3.5rem] md:leading-[3.75rem]">
             {entry.year}
           </p>
-          <p className="text-muted text-[12px] tabular-nums">
+          <p className="text-muted text-[0.75rem] tabular-nums">
             {String(index + 1).padStart(2, "0")} /{" "}
             {String(entries.length).padStart(2, "0")}
           </p>
         </div>
-        <h3 className="mt-3 text-[22px] leading-[28px] font-bold tracking-[-0.03em] md:text-[26px] md:leading-[32px]">
+        <h3 className="mt-3 text-[1.375rem] leading-[1.75rem] font-bold tracking-[-0.03em] md:text-[1.625rem] md:leading-[2rem]">
           {entry.title}
         </h3>
-        <p className="text-muted mt-2 max-w-[560px] text-[15px] leading-[23px]">
+        <p className="text-muted mt-2 max-w-[560px] text-[0.9375rem] leading-[1.4375rem]">
           {entry.body}
         </p>
       </div>
