@@ -234,7 +234,7 @@ export function CalendarList({ days, terms, today, labels, emptyLabel }: Calenda
 
   return (
     <>
-      <div className="px-5 pt-2 md:px-6">
+      <div className="px-5 pt-6 md:px-6">
         <label className="sr-only" htmlFor="calendar-search">
           {t("searchLabel")}
         </label>
