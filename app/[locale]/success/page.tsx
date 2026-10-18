@@ -1,6 +1,14 @@
 "use client";
 
-import { CalendarDays, Check, Clock, Download, Music, Users } from "lucide-react";
+import {
+  CalendarDays,
+  Check,
+  Clock,
+  Download,
+  Music,
+  Share2,
+  Users,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
@@ -41,6 +49,16 @@ export default function Success() {
   const label =
     people === 1 ? tCheckout("one") : people < 5 ? tCheckout("few") : tCheckout("many");
   const [weekday, time] = event.date.split("·").map((part) => part.trim());
+  const calendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+    event.title,
+  )}&location=${encodeURIComponent("Filharmonia Szczecin")}`;
+
+  function share() {
+    const text = `${event.title} · ${event.date} · Filharmonia Szczecin`;
+
+    if (navigator.share) void navigator.share({ title: event.title, text });
+    else void navigator.clipboard?.writeText(text);
+  }
 
   useEffect(() => {
     const badge = badgeRef.current;
@@ -194,6 +212,27 @@ export default function Success() {
             </svg>
             {t("wallet")}
           </button>
+
+          <div className="flex items-center justify-center gap-[22px] pt-2 text-[0.875rem] leading-[1.125rem] font-medium">
+            <a
+              className="focus-visible:outline-gold flex items-center gap-1.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+              href={calendar}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <CalendarDays aria-hidden="true" size={16} strokeWidth={1.7} />
+              {t("calendar")}
+            </a>
+            <span aria-hidden="true" className="bg-gold size-1 rounded-full" />
+            <button
+              className="focus-visible:outline-gold flex items-center gap-1.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+              onClick={share}
+              type="button"
+            >
+              <Share2 aria-hidden="true" size={16} strokeWidth={1.7} />
+              {t("share")}
+            </button>
+          </div>
         </div>
 
         {walletNote ? (

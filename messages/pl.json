@@ -126,8 +126,6 @@
     "few": "osoby",
     "many": "osób",
     "buy": "Kup bilet",
-    "calendar": "Kalendarz",
-    "share": "Udostępnij",
     "date": "Data",
     "time": "Godzina"
   },
@@ -140,7 +138,9 @@
     "info": "Jak się przygotować?",
     "wallet": "Dodaj do Wallet",
     "pdf": "Zapisz PDF",
-    "walletSoon": "Bilet do Wallet pojawi się po potwierdzeniu płatności."
+    "walletSoon": "Bilet do Wallet pojawi się po potwierdzeniu płatności.",
+    "calendar": "Kalendarz",
+    "share": "Udostępnij"
   },
   "Onboarding": {
     "eyebrow": "JAK SIĘ UBRAĆ",

@@ -126,8 +126,6 @@
     "few": "people",
     "many": "people",
     "buy": "Buy ticket",
-    "calendar": "Calendar",
-    "share": "Share",
     "date": "Date",
     "time": "Time"
   },
@@ -140,7 +138,9 @@
     "info": "How to prepare?",
     "wallet": "Add to Wallet",
     "pdf": "Save PDF",
-    "walletSoon": "Your Wallet pass will appear once the payment is confirmed."
+    "walletSoon": "Your Wallet pass will appear once the payment is confirmed.",
+    "calendar": "Calendar",
+    "share": "Share"
   },
   "Onboarding": {
     "eyebrow": "WHAT TO WEAR",
