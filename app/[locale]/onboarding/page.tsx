@@ -74,7 +74,7 @@ export default async function Onboarding() {
                 </div>
             </div>
 
-            <FlowArrows items={INFO_FLOW} step={0} />
+            <FlowArrows items={INFO_FLOW} step={0} sticky />
         </Screen>
     );
 }

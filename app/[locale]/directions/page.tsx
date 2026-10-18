@@ -108,7 +108,7 @@ export default async function Directions() {
 
       <div className="flex-1" />
 
-      <FlowArrows items={INFO_FLOW} step={1} />
+      <FlowArrows items={INFO_FLOW} step={1} sticky />
     </Screen>
   );
 }

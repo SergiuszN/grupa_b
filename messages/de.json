@@ -139,7 +139,10 @@
     "seatSelectedAnnounce": "Ausgewählt: {seat}. Plätze insgesamt: {count}.",
     "seatDeselectedAnnounce": "Abgewählt: {seat}.",
     "available": "Verfügbar",
-    "occupied": "Besetzt"
+    "occupied": "Besetzt",
+    "countOf": "{selected} von {total}",
+    "continue": "Weiter",
+    "back": "Zurück"
   },
   "Evening": {
     "eyebrow": "Rund um das Konzert",
@@ -218,7 +221,7 @@
   },
   "Checkout": {
     "eyebrow": "Ticket",
-    "title": "Dein Abend.",
+    "title": "Dein Ticket.",
     "total": "Gesamt",
     "included": "{count} {people} · Abendplan inklusive",
     "one": "Person",
@@ -226,7 +229,8 @@
     "many": "Personen",
     "buy": "Ticket kaufen",
     "date": "Datum",
-    "time": "Uhrzeit"
+    "time": "Uhrzeit",
+    "back": "Zurück"
   },
   "Success": {
     "eyebrow": "BESTÄTIGUNG",

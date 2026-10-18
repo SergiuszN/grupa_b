@@ -152,7 +152,7 @@ export default function Plan() {
         </div>
       </div>
 
-      <FlowArrows nextHref="/evening" step={3} />
+      <FlowArrows nextHref="/evening" step={3} sticky />
     </Screen>
   );
 }

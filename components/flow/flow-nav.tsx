@@ -108,17 +108,8 @@ export function FlowArrows({
   const href = nextHref ?? upcoming?.href;
   const label = nextLabel ?? t("nextStep");
 
-  return (
-    <div
-      className={`flex items-center gap-3 px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)] ${
-        sticky
-          ? `sticky bottom-0 z-20 pt-3 border-t ${
-              tone === "dark" ? "bg-ink/95 border-paper/10" : "bg-paper/95 border-line"
-            } backdrop-blur-sm`
-          : ""
-      }`}
-      data-flow="actions"
-    >
+  const buttons = (
+    <>
       {previous ? (
         <CtaButton
           aria-label={`Poprzedni krok: ${previous.label}`}
@@ -143,6 +134,38 @@ export function FlowArrows({
       ) : (
         <span className="flex-1" />
       )}
+    </>
+  );
+
+  if (sticky) {
+    return (
+      <>
+        <div
+          aria-hidden="true"
+          className="h-[calc(env(safe-area-inset-bottom)+84px)]"
+        />
+        <div
+          className={`fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur-sm ${
+            tone === "dark"
+              ? "bg-ink/95 border-paper/10"
+              : "bg-paper/95 border-line"
+          }`}
+          data-flow="actions"
+        >
+          <div className="mx-auto flex w-full max-w-[1100px] items-center gap-3 px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+16px)]">
+            {buttons}
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <div
+      className="flex items-center gap-3 px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)]"
+      data-flow="actions"
+    >
+      {buttons}
     </div>
   );
 }

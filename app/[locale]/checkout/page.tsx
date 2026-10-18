@@ -2,6 +2,7 @@
 
 import { Link } from "@/i18n/routing";
 import {
+  ArrowLeft,
   CalendarDays,
   Clock,
   MapPin,
@@ -9,7 +10,7 @@ import {
   Ticket,
   Users,
 } from "lucide-react";
-import { FlowArrows, FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
+import { FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { CtaButton } from "@/components/ui";
 import { useTranslations } from "next-intl";
@@ -54,14 +55,7 @@ export default function Checkout() {
     <Screen>
       <FlowSteps skip={skippedSteps(seated)} step={6} />
 
-      <div className="flex flex-col gap-1.5 px-6 pt-3.5 pb-4">
-        <p
-          className="text-gold flex items-center gap-1.5 text-[0.75rem] leading-4 font-medium tracking-[0.14em]"
-          data-flow="eyebrow"
-        >
-          <Ticket aria-hidden="true" size={13} strokeWidth={1.8} />
-          {t("eyebrow")}
-        </p>
+      <div className="px-6 pt-3.5 pb-4">
         <h1
           className="text-[2rem] leading-9 font-bold tracking-[-0.03em]"
           data-flow="title"
@@ -192,20 +186,32 @@ export default function Checkout() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center gap-4 px-6 pt-[22px]" data-flow="actions">
-        <CtaButton
-          fullWidth
-          href="/success"
-          iconLeft={<Ticket aria-hidden="true" size={18} strokeWidth={1.8} />}
-          onClick={buy}
-          size="md"
-          variant="primary"
-        >
-          {t("buy")}
-        </CtaButton>
-      </div>
+      <div
+        aria-hidden="true"
+        className="h-[calc(env(safe-area-inset-bottom)+84px)]"
+      />
 
-      <FlowArrows next={false} step={6} />
+      <div className="border-line bg-paper/95 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur-md">
+        <div className="mx-auto flex w-full max-w-[1100px] items-center gap-3 px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+16px)]">
+          <CtaButton
+            aria-label={t("back")}
+            href="/evening"
+            iconLeft={<ArrowLeft aria-hidden="true" size={18} strokeWidth={1.8} />}
+            size="icon"
+            variant="outline"
+          />
+          <CtaButton
+            flex1
+            href="/success"
+            iconLeft={<Ticket aria-hidden="true" size={18} strokeWidth={1.8} />}
+            onClick={buy}
+            size="md"
+            variant="primary"
+          >
+            {t("buy")}
+          </CtaButton>
+        </div>
+      </div>
     </Screen>
   );
 }

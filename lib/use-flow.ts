@@ -11,6 +11,7 @@ export function useFlow() {
   const locale = useLocale();
   const [event, setEvent] = useState(EVENTS[0]);
   const [people, setPeople] = useState(2);
+  const [partySize, setPartySize] = useState(2);
   const [seats, setSeats] = useState<SelectedSeat[]>([]);
   const [ready, setReady] = useState(false);
 
@@ -32,7 +33,9 @@ export function useFlow() {
 
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of the flow's saved choices
     setEvent(resolved);
-    setPeople(Number(localStorage.getItem(PARTY_KEY)) || 2);
+    const savedParty = Number(localStorage.getItem(PARTY_KEY)) || 2;
+    setPeople(savedParty);
+    setPartySize(savedParty);
 
     try {
       const storedSeats = JSON.parse(
@@ -48,5 +51,11 @@ export function useFlow() {
   // At a concert the party is as big as the number of seats picked on the map.
   const party = hasSeats(event) && seats.length > 0 ? seats.length : people;
 
-  return { event: localizeEvent(event, locale), people: party, seats, ready };
+  return {
+    event: localizeEvent(event, locale),
+    people: party,
+    partySize,
+    seats,
+    ready,
+  };
 }

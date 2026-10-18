@@ -139,7 +139,10 @@
     "seatSelectedAnnounce": "Selected: {seat}. Seats in total: {count}.",
     "seatDeselectedAnnounce": "Deselected: {seat}.",
     "available": "Available",
-    "occupied": "Occupied"
+    "occupied": "Occupied",
+    "countOf": "{selected} of {total}",
+    "continue": "Next",
+    "back": "Back"
   },
   "Evening": {
     "eyebrow": "Around the concert",
@@ -218,7 +221,7 @@
   },
   "Checkout": {
     "eyebrow": "Ticket",
-    "title": "Your evening.",
+    "title": "Your ticket.",
     "total": "Total",
     "included": "{count} {people} · evening plan included",
     "one": "person",
@@ -226,7 +229,8 @@
     "many": "people",
     "buy": "Buy ticket",
     "date": "Date",
-    "time": "Time"
+    "time": "Time",
+    "back": "Back"
   },
   "Success": {
     "eyebrow": "CONFIRMATION",

@@ -2,18 +2,19 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { FlowArrows, FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
+import { FlowSteps, skippedSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { HallMap } from "@/components/seats/hall-map";
+import { CtaButton } from "@/components/ui";
 import { SEATS_KEY, type SelectedSeat } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
 import { hasSeats, seatPrice } from "@/lib/events";
 import { useRouter } from "@/i18n/routing";
-import { Armchair, Sparkles, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Ticket } from "lucide-react";
 
 export default function SeatsPage() {
   const t = useTranslations("Seats");
-  const { event, ready } = useFlow();
+  const { event, ready, partySize } = useFlow();
   const [selectedSeats, setSelectedSeats] = useState<SelectedSeat[]>([]);
   const [pageAnnouncement, setPageAnnouncement] = useState("");
   const router = useRouter();
@@ -87,80 +88,18 @@ export default function SeatsPage() {
         {pageAnnouncement}
       </div>
 
-      <div className="flex flex-1 flex-col px-4 sm:px-8 py-2 sm:py-4 gap-3 sm:gap-5 max-w-[1040px] mx-auto w-full">
+      <div className="flex flex-1 flex-col px-4 sm:px-8 py-2 sm:py-4 gap-3 sm:gap-5 max-w-[1040px] mx-auto w-full pb-[calc(env(safe-area-inset-bottom)+96px)]">
         {/* Header */}
-        <div className="flex flex-col gap-1 sm:gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-[#AD891C] flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
-              <Armchair size={14} aria-hidden="true" />
-              {t("eyebrow")}
-            </span>
-            <span
-              className="bg-[#AD891C]/15 text-[#AD891C] px-2.5 py-0.5 rounded-full text-xs font-medium"
-            >
-              {t("countSelected", { count: selectedSeats.length })}
-            </span>
-          </div>
-
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-ink">
             {t("title")}
           </h1>
-          <p className="text-xs sm:text-base text-muted max-w-2xl">
-            {t("subtitle")}
-          </p>
-        </div>
-
-        {/* Selected Seats Badges & Total */}
-        <div
-          role="region"
-          aria-label="Podsumowanie wybranych miejsc"
-          className="bg-surface border border-line rounded-xl p-3 sm:p-4 flex items-center justify-between gap-3 shadow-sm"
-        >
-          <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-muted">
-              <Sparkles size={13} className="text-[#AD891C] shrink-0" aria-hidden="true" />
-              <span>{t("selected")}</span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 max-h-16 overflow-y-auto">
-              {selectedSeats.length === 0 ? (
-                <span className="text-xs text-muted italic">
-                  Kliknij miejsce na planie, aby je wybrać.
-                </span>
-              ) : (
-                selectedSeats.map((seat) => (
-                  <div
-                    key={seat.id}
-                    className="flex items-center gap-1 bg-[#AD891C]/10 border border-[#AD891C]/30 px-2.5 py-0.5 rounded-lg text-xs font-semibold text-ink"
-                  >
-                    <span>
-                      {seat.sector} · Rz. {seat.row}, m. {seat.seatNumber}
-                    </span>
-                    <span className="text-muted font-normal">({seatPrice(event, seat.category)} zł)</span>
-                    <button
-                      type="button"
-                      onClick={() => handleDeselectSeat(seat.id)}
-                      className="text-muted hover:text-ink transition-colors p-0.5 rounded-full hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#AD891C]"
-                      aria-label={t("removeSeat", {
-                        seat: `${seat.sector}, Rząd ${seat.row}, Miejsce ${seat.seatNumber}`,
-                      })}
-                    >
-                      <X size={11} aria-hidden="true" />
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          <div className="text-right shrink-0 pl-3 border-l border-line">
-            <p className="text-[10px] font-medium tracking-wider text-muted uppercase">
-              {t("total")}
-            </p>
-            <p className="text-xl sm:text-2xl font-bold tracking-tight text-ink">
-              {totalPrice} zł
-            </p>
-          </div>
+          <span className="text-muted text-sm font-medium tabular-nums sm:text-base">
+            {t("countOf", {
+              selected: selectedSeats.length,
+              total: partySize,
+            })}
+          </span>
         </div>
 
         {/* Interactive Canvas Hall Map */}
@@ -191,7 +130,27 @@ export default function SeatsPage() {
         </section>
       </div>
 
-      <FlowArrows next={selectedSeats.length > 0} prevHref="/swipe" step={4} sticky />
+      <div className="border-line bg-paper/95 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur-md">
+        <div className="mx-auto flex w-full max-w-[1100px] items-center gap-3 px-6 pt-3 pb-[calc(env(safe-area-inset-bottom)+16px)]">
+          <CtaButton
+            aria-label={t("back")}
+            href="/swipe"
+            iconLeft={<ArrowLeft aria-hidden="true" size={18} strokeWidth={1.8} />}
+            size="icon"
+            variant="outline"
+          />
+          <CtaButton
+            disabled={selectedSeats.length === 0}
+            flex1
+            href={selectedSeats.length > 0 ? "/evening" : undefined}
+            iconLeft={<Ticket aria-hidden="true" size={18} strokeWidth={1.8} />}
+            iconRight={<ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />}
+            variant="primary"
+          >
+            {t("continue")} · {totalPrice} zł
+          </CtaButton>
+        </div>
+      </div>
     </Screen>
   );
 }

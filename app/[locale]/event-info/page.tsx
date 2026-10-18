@@ -84,6 +84,7 @@ export default function EventInfo() {
           nextHref="/"
           nextLabel={t("home")}
           step={2}
+          sticky
         />
       </div>
     </Screen>
