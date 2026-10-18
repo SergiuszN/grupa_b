@@ -138,43 +138,79 @@ export default function Plan() {
             />
           </div>
 
-          <div className="flex flex-col gap-2.5 pt-1">
-            <div className="relative flex h-[18px] items-center justify-between">
-              {Array.from({ length: MAX }, (_, index) => (
-                <span
-                  className={`shrink-0 rounded-[2px] ${
-                    index < people
-                      ? "bg-gold h-[18px] w-[3px]"
-                      : "bg-line h-2.5 w-0.5"
-                  }`}
-                  data-bar
-                  key={index}
-                />
-              ))}
+          <div className="flex flex-col gap-2 pt-1">
+            <div
+              className="relative flex flex-col gap-2 rounded-2xl p-2.5 transition-all focus-within:outline-2 focus-within:outline-gold focus-within:outline-offset-2 focus-within:ring-2 focus-within:ring-gold/20"
+              data-guest-slider=""
+            >
+              <div className="relative flex h-[18px] items-center justify-between px-2">
+                {Array.from({ length: MAX }, (_, index) => {
+                  const val = index + 1;
+                  const isCurrent = val === people;
+                  const isFilled = val <= people;
+
+                  return (
+                    <span
+                      className={`shrink-0 rounded-[2px] transition-all ${
+                        isCurrent
+                          ? "bg-gold h-[20px] w-[3.5px] scale-110 shadow-sm"
+                          : isFilled
+                            ? "bg-gold h-[18px] w-[3px]"
+                            : "bg-line h-2.5 w-0.5"
+                      }`}
+                      data-bar
+                      key={index}
+                    />
+                  );
+                })}
+              </div>
+
+              <div
+                aria-label={t("count")}
+                className="flex items-center justify-between px-0.5"
+                role="radiogroup"
+              >
+                {Array.from({ length: MAX }, (_, index) => {
+                  const val = index + 1;
+                  const isCurrent = val === people;
+
+                  return (
+                    <button
+                      aria-checked={isCurrent}
+                      aria-label={`${val} ${val === 1 ? t("one") : val < 5 ? t("few") : t("many")}`}
+                      className={`relative flex size-7 items-center justify-center rounded-full text-[12px] leading-none font-semibold transition-all select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2 ${
+                        isCurrent
+                          ? "bg-gold text-white font-bold shadow-sm scale-110"
+                          : "text-muted hover:text-ink hover:bg-black/5"
+                      }`}
+                      key={val}
+                      onClick={() => change(val)}
+                      role="radio"
+                      type="button"
+                    >
+                      {val}
+                    </button>
+                  );
+                })}
+              </div>
+
               <input
                 aria-label={t("slider")}
                 aria-valuetext={`${people} ${people === 1 ? t("one") : t("few")}`}
-                className="absolute inset-0 w-full cursor-pointer opacity-0"
+                className="absolute inset-x-2 top-0 h-[24px] cursor-pointer opacity-0 focus-visible:outline-none"
                 max={MAX}
                 min={MIN}
                 onChange={(event) => change(Number(event.target.value))}
                 step={1}
+                tabIndex={-1}
                 type="range"
                 value={people}
               />
             </div>
 
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] leading-[14px] font-medium tracking-[0.06em] text-muted">
-                {MIN}
-              </p>
-              <p className="text-[11px] leading-[14px] tracking-[0.02em] text-muted">
-                {t("drag")}
-              </p>
-              <p className="text-[11px] leading-[14px] font-medium tracking-[0.06em] text-muted">
-                {MAX}
-              </p>
-            </div>
+            <p className="text-center text-[11px] leading-[14px] tracking-[0.02em] text-muted">
+              {t("drag")}
+            </p>
           </div>
         </div>
       </div>

@@ -50,26 +50,43 @@ const VARIANT_CLASSES: Record<
   Record<ButtonTone, string>
 > = {
   primary: {
-    light:
-      "bg-gold text-white hover:bg-gold-deep active:bg-gold-deep focus-visible:outline-ink",
-    dark:
-      "bg-gold text-white hover:bg-gold-deep active:bg-gold-deep focus-visible:outline-paper",
+    light: "bg-gold text-white hover:bg-gold-deep active:bg-gold-deep",
+    dark: "bg-gold text-white hover:bg-gold-deep active:bg-gold-deep",
   },
   outline: {
-    light:
-      "border-[1.5px] border-ink text-ink hover:bg-surface focus-visible:outline-gold",
-    dark:
-      "border-[1.5px] border-paper text-paper hover:bg-paper/10 focus-visible:outline-paper",
+    light: "border-[1.5px] border-ink text-ink hover:bg-surface",
+    dark: "border-[1.5px] border-paper text-paper hover:bg-paper/10",
   },
   secondary: {
-    light:
-      "border-[1.5px] border-ink text-ink hover:bg-surface focus-visible:outline-gold",
-    dark:
-      "border-[1.5px] border-paper text-paper hover:bg-paper/10 focus-visible:outline-paper",
+    light: "border-[1.5px] border-ink text-ink hover:bg-surface",
+    dark: "border-[1.5px] border-paper text-paper hover:bg-paper/10",
   },
   ghost: {
-    light: "text-ink hover:bg-surface focus-visible:outline-gold",
-    dark: "text-paper hover:bg-paper/10 focus-visible:outline-paper",
+    light: "text-ink hover:bg-surface",
+    dark: "text-paper hover:bg-paper/10",
+  },
+};
+
+const FOCUS_CLASSES: Record<ButtonTone, Record<ButtonVariant, string>> = {
+  light: {
+    primary:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper forced-colors:focus-visible:outline",
+    outline:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-paper forced-colors:focus-visible:outline",
+    secondary:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-paper forced-colors:focus-visible:outline",
+    ghost:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-paper forced-colors:focus-visible:outline",
+  },
+  dark: {
+    primary:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ink forced-colors:focus-visible:outline",
+    outline:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink forced-colors:focus-visible:outline",
+    secondary:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink forced-colors:focus-visible:outline",
+    ghost:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink forced-colors:focus-visible:outline",
   },
 };
 
@@ -114,7 +131,7 @@ export const Button = forwardRef<
     (!children && Boolean(iconLeft || iconRight));
 
   const baseClasses =
-    "inline-flex items-center justify-center rounded-full transition-colors transition-transform select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center rounded-full transition-colors transition-transform select-none cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed";
 
   const sizeClass = isIconOnly
     ? SIZE_CLASSES.iconOnly[size]
@@ -122,6 +139,9 @@ export const Button = forwardRef<
 
   const variantClass =
     VARIANT_CLASSES[variant]?.[tone] ?? VARIANT_CLASSES.primary[tone];
+
+  const focusClass =
+    FOCUS_CLASSES[tone]?.[variant] ?? FOCUS_CLASSES[tone].primary;
 
   const interactionClass = isIconOnly
     ? "active:scale-95"
@@ -134,6 +154,7 @@ export const Button = forwardRef<
     baseClasses,
     sizeClass,
     variantClass,
+    focusClass,
     interactionClass,
     widthClass,
     gapClass,
