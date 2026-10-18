@@ -222,7 +222,12 @@ export function CalendarList({
                     <h2 className="text-[30px] leading-8 font-bold tracking-[-0.03em]">
                       {day.label}
                     </h2>
-                    <p className="text-muted text-[12px] leading-4">{day.date}</p>
+                    <time
+                      className="text-muted text-[12px] leading-4"
+                      dateTime={day.key}
+                    >
+                      {day.date}
+                    </time>
                   </div>
 
                   <div className="mt-2 divide-y divide-line">
@@ -271,7 +276,16 @@ export function CalendarList({
                             <p className="text-muted mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] leading-4">
                               <span className="flex items-center gap-1">
                                 <Clock aria-hidden="true" size={12} strokeWidth={1.8} />
-                                {term.time}
+                                <time
+                                  dateTime={
+                                    /^\d{2}:\d{2}$/.test(term.time)
+                                      ? `${day.key}T${term.time}`
+                                      : day.key
+                                  }
+                                >
+                                  <span className="sr-only">{day.date}, </span>
+                                  {term.time}
+                                </time>
                               </span>
                               {term.venue ? (
                                 <span className="flex items-center gap-1">
