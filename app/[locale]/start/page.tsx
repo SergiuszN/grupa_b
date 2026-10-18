@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { gsap } from "gsap";
-import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
+import { FlowArrows } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { TASTE_KEY } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
@@ -190,7 +190,6 @@ export default function Start() {
         className="bg-paper pointer-events-none fixed inset-0 z-50 opacity-0"
         ref={fadeRef}
       />
-      <FlowSteps step={1} />
 
       <div
         className="flex flex-1 flex-col justify-center overflow-hidden px-6"
