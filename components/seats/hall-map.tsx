@@ -77,8 +77,7 @@ const COLORS = {
   selectedBorder: "#eab308",
   wheelchairBg: "#1d4ed8",
   wheelchairIcon: "#ffffff",
-  stageFill: "#111111",
-  stageBorder: "#111111",
+  stageFill: "#6b7280",
 };
 
 type Seat = {
@@ -166,8 +165,8 @@ const SECTIONS = [
   { key: "Parter Prawy", label: "Parter P", price: "40–50 zł", fill: "rgba(173,137,28,0.16)", stroke: "rgba(173,137,28,0.55)", vertical: false },
   { key: "Balkon Lewy", label: "Balkon L", price: "40 zł", fill: "rgba(173,137,28,0.08)", stroke: "rgba(173,137,28,0.4)", vertical: false },
   { key: "Balkon Prawy", label: "Balkon P", price: "40 zł", fill: "rgba(173,137,28,0.08)", stroke: "rgba(173,137,28,0.4)", vertical: false },
-  { key: "Loża A", label: "Loża A", price: "30 zł", fill: "rgba(17,17,17,0.05)", stroke: "rgba(17,17,17,0.22)", vertical: true },
-  { key: "Loża B", label: "Loża B", price: "30 zł", fill: "rgba(17,17,17,0.05)", stroke: "rgba(17,17,17,0.22)", vertical: true },
+  { key: "Loża A", label: "Loża A", price: "30 zł", fill: "rgba(234,88,12,0.16)", stroke: "rgba(234,88,12,0.55)", vertical: true },
+  { key: "Loża B", label: "Loża B", price: "30 zł", fill: "rgba(234,88,12,0.16)", stroke: "rgba(234,88,12,0.55)", vertical: true },
 ] as const;
 
 type SectionKey = (typeof SECTIONS)[number]["key"];
@@ -323,12 +322,9 @@ export function HallMap({
 
     // Stage
     ctx.fillStyle = COLORS.stageFill;
-    ctx.strokeStyle = COLORS.stageBorder;
-    ctx.lineWidth = 2 / t.scale;
     ctx.beginPath();
     ctx.roundRect(STAGE_RECT.x, STAGE_RECT.y, STAGE_RECT.w, STAGE_RECT.h, 16);
     ctx.fill();
-    ctx.stroke();
 
     // Schematic blocks. The active one fades out while its seats fade in.
     for (const sec of SECTIONS) {
