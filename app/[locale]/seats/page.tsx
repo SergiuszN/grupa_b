@@ -7,11 +7,12 @@ import { Screen } from "@/components/flow/screen";
 import { HallMap } from "@/components/seats/hall-map";
 import { SEATS_KEY, type SelectedSeat } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
+import { seatPrice } from "@/lib/events";
 import { Armchair, Sparkles, X } from "lucide-react";
 
 export default function SeatsPage() {
   const t = useTranslations("Seats");
-  const { people } = useFlow();
+  const { event, people } = useFlow();
   const [selectedSeats, setSelectedSeats] = useState<SelectedSeat[]>([]);
   const [pageAnnouncement, setPageAnnouncement] = useState("");
 
@@ -40,7 +41,8 @@ export default function SeatsPage() {
     }
   };
 
-  const handleSelectSeat = (seat: SelectedSeat) => {
+  const handleSelectSeat = (picked: SelectedSeat) => {
+    const seat = { ...picked, price: seatPrice(event, picked.category) };
     let next: SelectedSeat[];
     if (selectedSeats.length >= people) {
       // FIFO replacement: remove first, add new
@@ -72,8 +74,8 @@ export default function SeatsPage() {
   };
 
   const totalPrice = useMemo(() => {
-    return selectedSeats.reduce((sum, s) => sum + (s.price || 50), 0);
-  }, [selectedSeats]);
+    return selectedSeats.reduce((sum, s) => sum + seatPrice(event, s.category), 0);
+  }, [event, selectedSeats]);
 
   return (
     <Screen>
@@ -160,7 +162,7 @@ export default function SeatsPage() {
                     <span>
                       {seat.sector} · Rz. {seat.row}, m. {seat.seatNumber}
                     </span>
-                    <span className="text-muted font-normal">({seat.price} zł)</span>
+                    <span className="text-muted font-normal">({seatPrice(event, seat.category)} zł)</span>
                     <button
                       type="button"
                       onClick={() => handleDeselectSeat(seat.id)}

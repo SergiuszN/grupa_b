@@ -16,8 +16,7 @@ import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 import { ORDERS_KEY, type Order } from "@/lib/taste";
 import { sentenceCase } from "@/lib/format";
-
-const PRICE = 140;
+import { seatPrice } from "@/lib/events";
 
 export default function Checkout() {
   const t = useTranslations("Checkout");
@@ -28,8 +27,8 @@ export default function Checkout() {
 
   const totalAmount =
     seats.length > 0
-      ? seats.reduce((acc, s) => acc + (s.price || 50), 0)
-      : people * PRICE;
+      ? seats.reduce((acc, s) => acc + seatPrice(event, s.category), 0)
+      : people * seatPrice(event, 2);
 
   function buy() {
     const orders = JSON.parse(

@@ -146,7 +146,8 @@
     "title": "Plan",
     "before": "BEFORE",
     "after": "AFTER",
-    "concert": "20:00 · CONCERT",
+    "concert": "{time} · CONCERT",
+    "concertUntimed": "CONCERT",
     "footnote": "You can move every point.",
     "party": "{place} · for {count}",
     "activities": {

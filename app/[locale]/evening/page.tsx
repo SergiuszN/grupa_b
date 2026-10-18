@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import {
+  fitPlanToEvent,
   pickEveningPlan,
   type EveningPlan,
   type PlanItem,
@@ -14,6 +15,7 @@ import {
 import { prefersStillMotion } from "@/lib/motion";
 import { TASTE_KEY, type TasteAnswers } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
+import { startMinutes } from "@/lib/events";
 
 function Row({
   time,
@@ -67,19 +69,23 @@ function Label({ children }: { children: string }) {
 export default function Evening() {
   const t = useTranslations("Evening");
   const { event, people } = useFlow();
-  const [plan, setPlan] = useState<EveningPlan | null>(null);
+  const [picked, setPicked] = useState<EveningPlan | null>(null);
+  const start = startMinutes(event);
+  const time = event.date.split("·").at(-1)?.trim();
+  const plan =
+    picked && start !== null ? fitPlanToEvent(picked, start, event.duration) : picked;
 
   useEffect(() => {
     const answers = JSON.parse(
       localStorage.getItem(TASTE_KEY) ?? "{}",
     ) as TasteAnswers;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- random pick must wait for the client to avoid a hydration mismatch
-    setPlan(pickEveningPlan(answers.tastes));
+    setPicked(pickEveningPlan(answers.tastes));
   }, []);
 
   // The rows mount after FlowMotion's entrance has run, so they bring their own.
   useEffect(() => {
-    if (!plan) return;
+    if (!picked) return;
     const rows = document.querySelectorAll("[data-flow-screen] [data-flow-item]");
 
     if (prefersStillMotion()) {
@@ -104,7 +110,7 @@ export default function Evening() {
     return () => {
       tween.kill();
     };
-  }, [plan]);
+  }, [picked]);
 
   function item(entry: PlanItem, index: number, all: PlanItem[]) {
     const place = t(`places.${entry.place}`);
@@ -147,7 +153,7 @@ export default function Evening() {
           <div className="from-ink/72 flex items-end bg-gradient-to-t to-transparent px-3.5 py-3">
             <div className="flex flex-col gap-0.5">
               <p className="bg-ink/70 text-gold mb-0.5 inline-flex w-fit items-center rounded-full px-2.5 py-1 text-[0.6875rem] leading-4 font-medium tracking-[0.12em]">
-                {t("concert")}
+                {start !== null && time ? t("concert", { time }) : t("concertUntimed")}
               </p>
               <p className="text-[1.375rem] leading-[1.625rem] font-bold tracking-[-0.03em] text-white">
                 {event.title}

@@ -8,7 +8,12 @@ export type Recommendation = {
   subtitle: string | null;
   image_url: string | null;
   duration_minutes: number | null;
-  performances: { starts_at: string; venue: { name: string } | null }[];
+  performances: {
+    starts_at: string;
+    venue: { name: string } | null;
+    price_min: number | null;
+    price_max: number | null;
+  }[];
   performers: string[];
   composers: string[];
   excerpt: string | null;
@@ -64,5 +69,8 @@ export function toEventInfo(
     duration: rec.duration_minutes ?? undefined,
     audio: LISTEN.has(rec.kind),
     image: rec.image_url ?? "/images/concert-hall.jpg",
+    startsAt: first?.starts_at,
+    priceMin: first?.price_min ?? null,
+    priceMax: first?.price_max ?? null,
   };
 }

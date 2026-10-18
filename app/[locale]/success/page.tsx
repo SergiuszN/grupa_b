@@ -18,6 +18,12 @@ import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 import { prefersStillMotion } from "@/lib/motion";
 import { sentenceCase } from "@/lib/format";
+import { eventStart } from "@/lib/events";
+
+/** Google Calendar wants UTC stamps like 20270515T170000Z. */
+function calendarStamp(date: Date) {
+  return date.toISOString().replace(/[-:]|\.\d{3}/g, "");
+}
 
 const CONFETTI = [
   { left: 6, delay: 0, duration: 2600, size: 8, color: "#AD891C", round: false },
@@ -49,9 +55,24 @@ export default function Success() {
   const label =
     people === 1 ? tCheckout("one") : people < 5 ? tCheckout("few") : tCheckout("many");
   const [weekday, time] = event.date.split("·").map((part) => part.trim());
-  const calendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
-    event.title,
-  )}&location=${encodeURIComponent("Filharmonia Szczecin")}`;
+
+  // Built on click: the start of a built-in event depends on the viewer's clock and time zone.
+  function calendarUrl() {
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: event.title,
+      details: event.subtitle,
+      location: `Filharmonia Szczecin, ${sentenceCase(event.room)}`,
+    });
+    const start = eventStart(event);
+
+    if (start) {
+      const end = new Date(start.getTime() + (event.duration ?? 120) * 60_000);
+      params.set("dates", `${calendarStamp(start)}/${calendarStamp(end)}`);
+    }
+
+    return `https://calendar.google.com/calendar/render?${params}`;
+  }
 
   function share() {
     const text = `${event.title} · ${event.date} · Filharmonia Szczecin`;
@@ -216,7 +237,10 @@ export default function Success() {
           <div className="flex items-center justify-center gap-[22px] pt-2 text-[0.875rem] leading-[1.125rem] font-medium">
             <a
               className="focus-visible:outline-gold flex items-center gap-1.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
-              href={calendar}
+              href="https://calendar.google.com/calendar/render"
+              onClick={(click) => {
+                click.currentTarget.href = calendarUrl();
+              }}
               rel="noreferrer"
               target="_blank"
             >

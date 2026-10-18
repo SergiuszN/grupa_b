@@ -21,12 +21,22 @@ export type EventInfo = {
   duration?: number;
   audio?: boolean;
   image: string;
+  /** Exact start (ISO) — set for events from the API. */
+  startsAt?: string;
+  /** Built-in events repeat weekly on this day (0 = Sunday); none means daily. */
+  weekday?: number;
+  /** Ticket price range in zł; 0 means free entry. */
+  priceMin?: number | null;
+  priceMax?: number | null;
   i18n?: Record<"en" | "de", Localized>;
 };
 
 export const EVENTS: EventInfo[] = [
   {
     id: "mozart-40",
+    weekday: 6,
+    priceMin: 30,
+    priceMax: 80,
     date: "SOBOTA · 19:00",
     room: "SALA SYMFONICZNA",
     kind: "Koncert symfoniczny",
@@ -61,6 +71,9 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "slavic-sessions",
+    weekday: 3,
+    priceMin: 40,
+    priceMax: 60,
     date: "ŚRODA · 19:00",
     room: "SALA KAMERALNA",
     kind: "Koncert kameralny",
@@ -95,6 +108,9 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "przybysz-insides",
+    weekday: 1,
+    priceMin: 60,
+    priceMax: 120,
     date: "PONIEDZIAŁEK · 19:00",
     room: "SALA SYMFONICZNA",
     kind: "Koncert jazzowy",
@@ -128,6 +144,8 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "bryla",
+    priceMin: 0,
+    priceMax: 0,
     date: "CODZIENNIE · 12:00",
     room: "GALERIA POZIOM 4.",
     kind: "Wystawa",
@@ -161,6 +179,9 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "barok-pory-roku",
+    weekday: 0,
+    priceMin: 15,
+    priceMax: 25,
     date: "NIEDZIELA · 11:00",
     room: "SALA SYMFONICZNA",
     kind: "Koncert dla dzieci",
@@ -195,6 +216,9 @@ export const EVENTS: EventInfo[] = [
   },
   {
     id: "noc-w-foyer",
+    weekday: 5,
+    priceMin: 0,
+    priceMax: 0,
     date: "PIĄTEK · 22:15",
     room: "FOYER",
     kind: "Wydarzenie",
@@ -254,4 +278,57 @@ export function localizeEvent(event: EventInfo, locale: string): EventInfo {
   }
 
   return event;
+}
+
+/** "SOBOTA · 19:00" → minutes after midnight (1140), or null when the label has no time. */
+export function startMinutes(event: EventInfo): number | null {
+  if (event.startsAt) {
+    const [hours, minutes] = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+      timeZone: "Europe/Warsaw",
+    })
+      .format(new Date(event.startsAt))
+      .split(":")
+      .map(Number);
+    return hours * 60 + minutes;
+  }
+
+  const match = event.date.match(/(\d{1,2}):(\d{2})/);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : null;
+}
+
+/** When the event starts: the API date, or the next weekly (or daily) slot of a built-in one. */
+export function eventStart(event: EventInfo, now = new Date()): Date | null {
+  if (event.startsAt) return new Date(event.startsAt);
+
+  const minutes = startMinutes(event);
+  if (minutes === null) return null;
+
+  const start = new Date(now);
+  start.setHours(Math.floor(minutes / 60), minutes % 60, 0, 0);
+
+  if (event.weekday === undefined) {
+    if (start <= now) start.setDate(start.getDate() + 1);
+  } else {
+    start.setDate(start.getDate() + ((event.weekday - start.getDay() + 7) % 7));
+    if (start <= now) start.setDate(start.getDate() + 7);
+  }
+
+  return start;
+}
+
+/** Seat category prices without an event price range. */
+const FALLBACK_PRICES: Record<number, number> = { 1: 50, 2: 40, 3: 30 };
+
+/** Price of one seat: category 1 is the top of the event's range, 3 the bottom, 2 halfway. */
+export function seatPrice(event: EventInfo, category: number): number {
+  const min = event.priceMin ?? null;
+  if (min === null) return FALLBACK_PRICES[category] ?? FALLBACK_PRICES[2];
+
+  const max = event.priceMax ?? min;
+  if (category === 1) return max;
+  if (category === 3) return min;
+  return Math.round((min + max) / 10) * 5;
 }

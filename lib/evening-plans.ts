@@ -321,3 +321,29 @@ export function pickEveningPlan(tastes: string[] | undefined): EveningPlan {
     Object.values(EVENING_PLANS).flat();
   return pool[Math.floor(Math.random() * pool.length)];
 }
+
+/** The plans above are written around a 20:00 concert that ends at 22:00. */
+const PLAN_START = 20 * 60;
+const PLAN_END = 22 * 60;
+/** Assumed length of a concert without a known duration, intermission included. */
+const DEFAULT_DURATION = 120;
+
+function shiftTime(time: string, by: number) {
+  const [hours, minutes] = time.split(":").map(Number);
+  const total = (((hours * 60 + minutes + by) % 1440) + 1440) % 1440;
+  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+}
+
+/** Moves "before" items with the concert's start and "after" items with its end. */
+export function fitPlanToEvent(
+  plan: EveningPlan,
+  start: number,
+  duration = DEFAULT_DURATION,
+): EveningPlan {
+  const before = start - PLAN_START;
+  const after = start + duration - PLAN_END;
+  return {
+    before: plan.before.map((item) => ({ ...item, time: shiftTime(item.time, before) })),
+    after: plan.after.map((item) => ({ ...item, time: shiftTime(item.time, after) })),
+  };
+}
