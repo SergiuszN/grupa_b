@@ -1,10 +1,29 @@
-import { Ban, Footprints, Palette, type LucideIcon } from "lucide-react";
+import {
+  Ban,
+  createLucideIcon,
+  Footprints,
+  type LucideIcon,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { FlowArrows, FlowSteps, INFO_FLOW } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 
+// Lucide has no jacket icon, so draw a blazer in the same stroke style.
+const Blazer = createLucideIcon("blazer", [
+  [
+    "path",
+    {
+      d: "M9 3 4.5 4.8A2 2 0 0 0 3 6.7V20a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6.7a2 2 0 0 0-1.5-1.9L15 3",
+      key: "body",
+    },
+  ],
+  ["path", { d: "M9 3 7 8l2.5 1.5L12 15l2.5-5.5L17 8l-2-5", key: "lapels" }],
+  ["path", { d: "m9 3 3 4 3-4", key: "collar" }],
+  ["path", { d: "M12 15v6", key: "front" }],
+]);
+
 const TIPS: { key: string; Icon: LucideIcon }[] = [
-  { key: "1", Icon: Palette },
+  { key: "1", Icon: Blazer },
   { key: "2", Icon: Footprints },
   { key: "3", Icon: Ban },
 ];
