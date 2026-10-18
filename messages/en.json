@@ -8,7 +8,8 @@
     "programme": "Programme",
     "menu": "Menu",
     "closeMenu": "Close menu",
-    "language": "Language: {name}. Change",
+    "language": "Language: {name}. Choose language",
+    "languageMenu": "Choose language",
     "nextStep": "Next"
   },
   "Home": {

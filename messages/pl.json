@@ -8,7 +8,8 @@
     "programme": "Repertuar",
     "menu": "Menu",
     "closeMenu": "Zamknij menu",
-    "language": "Język: {name}. Zmień",
+    "language": "Język: {name}. Wybierz język",
+    "languageMenu": "Wybierz język",
     "nextStep": "Dalej"
   },
   "Home": {
