@@ -14,8 +14,8 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
   >([]);
 
   // Physics state
-  const targetRotation = useRef(-32); // Default resting tilt: -32deg
-  const currentRotation = useRef(-32);
+  const targetRotation = useRef(0); // Resting angle relative to natural 45deg tilt
+  const currentRotation = useRef(0);
   const velocity = useRef(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const lastChimeTime = useRef(0);
@@ -72,11 +72,11 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
 
         // Envelope: instant chime attack with lush exponential decay
         gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.18, now + 0.015);
+        gain.gain.linearRampToValueAtTime(0.2, now + 0.015);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
 
         harmonicGain.gain.setValueAtTime(0, now);
-        harmonicGain.gain.linearRampToValueAtTime(0.06, now + 0.01);
+        harmonicGain.gain.linearRampToValueAtTime(0.08, now + 0.01);
         harmonicGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
 
         osc.connect(gain);
@@ -101,8 +101,8 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
       const ctx = getAudioContext();
       if (!ctx) return;
       const chords = [440, 554.37, 659.25, 880];
-      chords.forEach((freq, idx) => {
-        setTimeout(() => playChime(idx), idx * 75);
+      chords.forEach((_, idx) => {
+        setTimeout(() => playChime(idx), idx * 80);
       });
     } catch {
       // Ignored
@@ -115,7 +115,7 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
     setConductCount(nextCount);
 
     // Conduct flick impulse in spring physics
-    velocity.current = 36;
+    velocity.current = 28;
     playChime(nextCount);
 
     // Spawn musical sparkle particles
@@ -123,8 +123,8 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
     const char = notesChars[Math.floor(Math.random() * notesChars.length)];
     const newSpark = {
       id: ++sparkIdCounter.current,
-      x: Math.random() * 20 - 10,
-      y: -28 - Math.random() * 15,
+      x: Math.random() * 24 - 12,
+      y: -24 - Math.random() * 16,
       char,
     };
     setSparkles((prev) => [...prev.slice(-4), newSpark]);
@@ -144,12 +144,12 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma !== null) {
         // gamma: left-to-right tilt in degrees [-90, 90]
-        const tilt = Math.max(-45, Math.min(45, e.gamma));
-        targetRotation.current = -32 + tilt * 0.85;
+        const tilt = Math.max(-40, Math.min(40, e.gamma));
+        targetRotation.current = tilt * 0.75;
 
         // Sound chime on energetic tilt crossings
         const now = Date.now();
-        if (Math.abs(e.gamma) > 22 && now - lastChimeTime.current > 400) {
+        if (Math.abs(e.gamma) > 24 && now - lastChimeTime.current > 400) {
           lastChimeTime.current = now;
           playChime();
         }
@@ -159,7 +159,7 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
     const handleMouseMove = (e: MouseEvent) => {
       // Desktop fallback: baton tilts smoothly with cursor position across window
       const normalizedX = (e.clientX / window.innerWidth) * 2 - 1; // [-1, 1]
-      targetRotation.current = -32 + normalizedX * 28;
+      targetRotation.current = normalizedX * 24;
     };
 
     window.addEventListener("deviceorientation", handleOrientation);
@@ -206,14 +206,16 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
 
   const glowFilter =
     tone === "dark"
-      ? "drop-shadow(0 0 8px rgba(173,137,28,0.75))"
-      : "drop-shadow(0 1px 3px rgba(0,0,0,0.18))";
+      ? "drop-shadow(0 0 10px rgba(173,137,28,0.85)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))"
+      : "drop-shadow(0 2px 6px rgba(173,137,28,0.5)) drop-shadow(0 1px 2px rgba(0,0,0,0.15))";
 
   return (
     <div className="relative inline-flex items-center">
       <button
         aria-label="Złota Batuta Dyrygenta (Easter Egg)"
-        className="group relative flex size-9 items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer select-none"
+        className={`group relative flex size-11 items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer select-none ${
+          tone === "dark" ? "hover:bg-paper/10" : "hover:bg-black/5"
+        }`}
         onClick={() => {
           requestGyroPermission();
           conduct();
@@ -224,78 +226,94 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
       >
         <svg
           aria-hidden="true"
-          className="size-8 origin-bottom-left transition-transform ease-out"
+          className="size-9 origin-bottom-left transition-transform ease-out"
           fill="none"
           ref={wandRef}
           style={{
             filter: glowFilter,
-            transform: "rotate(-32deg)",
-            transformOrigin: "4px 28px",
+            transform: "rotate(0deg)",
+            transformOrigin: "8px 36px",
           }}
-          viewBox="0 0 32 32"
+          viewBox="0 0 44 44"
         >
           <defs>
             {/* Rich gold metallic gradient */}
-            <linearGradient id="goldShaft" x1="0" x2="1" y1="1" y2="0">
+            <linearGradient id="goldShaft44" x1="0" x2="1" y1="1" y2="0">
               <stop offset="0%" stopColor="#8F7017" />
-              <stop offset="35%" stopColor="#F3EBD6" />
-              <stop offset="55%" stopColor="#AD891C" />
-              <stop offset="100%" stopColor="#E5C868" />
+              <stop offset="25%" stopColor="#AD891C" />
+              <stop offset="50%" stopColor="#FFF2D6" />
+              <stop offset="75%" stopColor="#E5C868" />
+              <stop offset="100%" stopColor="#AD891C" />
             </linearGradient>
 
             {/* Handle gradient */}
-            <linearGradient id="batonHandle" x1="0" x2="1" y1="1" y2="0">
-              <stop offset="0%" stopColor="#111111" />
-              <stop offset="50%" stopColor="#3A3732" />
-              <stop offset="100%" stopColor="#8F7017" />
+            <linearGradient id="batonHandle44" x1="0" x2="1" y1="1" y2="0">
+              <stop offset="0%" stopColor="#1A1815" />
+              <stop offset="45%" stopColor="#3E3A33" />
+              <stop offset="85%" stopColor="#8F7017" />
+              <stop offset="100%" stopColor="#AD891C" />
             </linearGradient>
 
             {/* Pearl tip glow */}
-            <radialGradient id="tipGlow" cx="50%" cy="50%" r="50%">
+            <radialGradient id="tipGlow44" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="70%" stopColor="#AD891C" />
+              <stop offset="60%" stopColor="#FFF2D6" />
+              <stop offset="85%" stopColor="#AD891C" />
               <stop offset="100%" stopColor="#8F7017" />
             </radialGradient>
           </defs>
 
-          {/* Conductors Baton Handle (Ergonomic grip at bottom) */}
+          {/* Conductors Baton Handle (Ergonomic grip at bottom-left) */}
           <path
-            d="M3 28 C2.5 29 4 30.5 5.5 30 C7 29 6 26.5 5 25.5 C4.2 24.8 3.5 26.8 3 28 Z"
-            fill="url(#batonHandle)"
+            d="M5 38 C4 39.5 6 41 8 40.5 C10.5 39.5 11 36.5 9.5 34.5 C8.5 33.5 6 35.5 5 38 Z"
+            fill="url(#batonHandle44)"
             stroke="#AD891C"
-            strokeWidth="0.5"
+            strokeWidth="0.8"
           />
 
-          {/* Gold Collar */}
+          {/* Gold Collar band */}
           <ellipse
-            cx="5"
-            cy="25"
-            fill="#AD891C"
-            rx="1.2"
-            ry="0.8"
-            transform="rotate(-45 5 25)"
+            cx="10"
+            cy="34"
+            fill="#FFF2D6"
+            rx="1.6"
+            ry="1.1"
+            stroke="#8F7017"
+            strokeWidth="0.5"
+            transform="rotate(-45 10 34)"
           />
 
-          {/* Tapering Gold Shaft */}
+          {/* Tapering Gold Shaft (Tilted gracefully from 10,34 to 37,7) */}
           <polygon
-            fill="url(#goldShaft)"
-            points="4.6,24.8 5.6,25.4 27.8,4.2 27.2,3.6"
+            fill="url(#goldShaft44)"
+            points="9.2,34.8 10.8,33.2 37.8,6.8 36.8,5.8"
+            stroke="#8F7017"
+            strokeWidth="0.4"
           />
 
           {/* Glowing Luminous Tip */}
-          <circle cx="27.8" cy="3.8" fill="url(#tipGlow)" r="1.4" />
+          <circle cx="37.4" cy="6.2" fill="url(#tipGlow44)" r="2.2" />
+
+          {/* Sparkle glint on tip */}
+          <path
+            d="M37.4 3 L37.4 9.4 M34.2 6.2 L40.6 6.2"
+            opacity="0.8"
+            stroke="#FFFFFF"
+            strokeLinecap="round"
+            strokeWidth="0.8"
+          />
         </svg>
 
         {/* Floating animated sparkles on conduct */}
         {sparkles.map((sp) => (
           <span
-            className="pointer-events-none absolute text-[12px] font-bold text-gold animate-bounce"
+            className="pointer-events-none absolute text-[13px] font-bold text-gold animate-bounce"
             key={sp.id}
             style={{
               left: `calc(50% + ${sp.x}px)`,
               top: `${sp.y}px`,
               animationDuration: "0.75s",
-              textShadow: "0 0 6px rgba(173,137,28,0.8)",
+              textShadow: "0 0 8px rgba(173,137,28,0.9)",
             }}
           >
             {sp.char}
@@ -305,7 +323,7 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
 
       {/* Maestro celebration tooltip */}
       {showApplause ? (
-        <div className="absolute top-10 left-0 z-50 flex items-center gap-1.5 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-white shadow-lg animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-white shadow-xl animate-in fade-in zoom-in-95 duration-200">
           <span>🎼</span>
           <span>Maestro!</span>
         </div>

@@ -41,15 +41,10 @@ export function FlowSteps({
   tone?: Tone;
 }) {
   return (
-    <div className="relative flex items-center justify-center px-6 pt-5 pb-2">
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center">
-        <GoldenBaton tone={tone} />
-      </div>
-
-      <nav
-        aria-label="Paginacja kroków"
-        className="flex items-center justify-center gap-1"
-      >
+    <nav
+      aria-label="Paginacja kroków"
+      className="flex items-center justify-center gap-1 pt-5 pb-2"
+    >
         {items.map((item, index) => {
           const isCurrent = index === step;
           return (
@@ -76,7 +71,6 @@ export function FlowSteps({
           );
         })}
       </nav>
-    </div>
   );
 }
 
