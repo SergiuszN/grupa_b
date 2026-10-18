@@ -291,7 +291,9 @@
     "media": "Strefa mediów",
     "visit": "Planuj wizytę",
     "account": "Moje konto",
-    "contact": "KONTAKT"
+    "contact": "KONTAKT",
+    "sound": "Zagraj na zdjęciu",
+    "soundHint": "Wodź kursorem po zdjęciu na stronie głównej, by grać na skrzypcach"
   },
   "Quiz": {
     "eyebrow": "Pytanie {current} / {total}",

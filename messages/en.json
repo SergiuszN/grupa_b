@@ -291,7 +291,9 @@
     "media": "Media room",
     "visit": "Plan your visit",
     "account": "My account",
-    "contact": "CONTACT"
+    "contact": "CONTACT",
+    "sound": "Play the photo",
+    "soundHint": "Move your cursor over the home page photo to play the violin"
   },
   "Quiz": {
     "eyebrow": "Question {current} / {total}",

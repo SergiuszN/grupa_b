@@ -291,7 +291,9 @@
     "media": "Medienraum",
     "visit": "Besuch planen",
     "account": "Mein Konto",
-    "contact": "KONTAKT"
+    "contact": "KONTAKT",
+    "sound": "Spiel auf dem Foto",
+    "soundHint": "Fahre mit dem Cursor über das Foto der Startseite, um Geige zu spielen"
   },
   "Quiz": {
     "eyebrow": "Frage {current} / {total}",

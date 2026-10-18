@@ -1,6 +1,7 @@
 import { AudioWaveform, ArrowRight } from "lucide-react";
 import { CtaButton } from "@/components/ui";
 import { HeroGallery } from "@/components/landing/hero-gallery";
+import { StringPlayground } from "@/components/landing/string-playground";
 import { HeroMotion } from "@/components/landing/hero-motion";
 import { SiteHeader } from "@/components/landing/site-header";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -23,6 +24,7 @@ export default async function Home({
     >
       <HeroMotion />
       <HeroGallery />
+      <StringPlayground />
       <div aria-hidden="true" data-anim="scrim" className="hero-scrim absolute inset-0" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1100px] flex-1 flex-col">

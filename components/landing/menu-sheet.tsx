@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight, LoaderCircle, Music2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { Logo } from "@/components/brand/logo";
 import { MenuSearch } from "@/components/landing/menu-search";
+import { toggleStringSound, useStringSound } from "@/components/landing/string-sound";
 
 const PRIMARY = [
   { key: "programme", href: "/calendar" },
@@ -50,6 +51,7 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const sound = useStringSound();
 
   useEffect(() => {
     // Trigger fluid background transition on mount
@@ -65,6 +67,13 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
       onClose();
     }, 450);
   }, [isClosing, onClose]);
+
+  async function toggleSound() {
+    const turningOn = sound.status === "off";
+    await toggleStringSound();
+    // Close the sheet once the violin is ready, so the photo can be played right away.
+    if (turningOn) handleClose();
+  }
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -159,6 +168,53 @@ export function MenuSheet({ onClose }: { onClose: () => void }) {
             ))}
           </div>
         </nav>
+
+        {sound.available ? (
+          <button
+            aria-busy={sound.status === "loading"}
+            aria-checked={sound.status !== "off"}
+            className="rise focus-visible:outline-ink mt-6 flex w-full cursor-pointer items-center gap-4 rounded-2xl border-[1.5px] border-ink/25 px-4 py-3.5 text-left transition-colors hover:bg-ink/5 focus-visible:outline-2 focus-visible:outline-offset-2"
+            disabled={sound.status === "loading"}
+            onClick={toggleSound}
+            role="switch"
+            type="button"
+          >
+            <Music2
+              aria-hidden="true"
+              className="shrink-0"
+              size={22}
+              strokeWidth={1.7}
+            />
+            <span className="flex-1">
+              <span className="block text-[17px] leading-6 font-bold">
+                {t("sound")}
+              </span>
+              <span className="block text-[13px] leading-[18px] opacity-75">
+                {t("soundHint")}
+              </span>
+            </span>
+            <span
+              aria-hidden="true"
+              className={`relative h-7 w-12 shrink-0 rounded-full border-[1.5px] border-ink transition-colors ${
+                sound.status === "off" ? "" : "bg-ink"
+              }`}
+            >
+              <span
+                className={`absolute top-1/2 left-[3px] flex size-5 -translate-y-1/2 items-center justify-center rounded-full transition-transform duration-200 ${
+                  sound.status === "off" ? "bg-ink" : "bg-gold translate-x-5"
+                }`}
+              >
+                {sound.status === "loading" ? (
+                  <LoaderCircle
+                    className="animate-spin text-ink"
+                    size={14}
+                    strokeWidth={2.2}
+                  />
+                ) : null}
+              </span>
+            </span>
+          </button>
+        ) : null}
 
         <div className="mt-auto pt-10">
           <p className="text-[11px] leading-[14px] font-medium tracking-[0.14em] opacity-70">
