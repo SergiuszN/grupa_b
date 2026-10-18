@@ -20,7 +20,8 @@ export default function SeatsPage() {
     try {
       const stored = localStorage.getItem(SEATS_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as SelectedSeat[];
+        // The choir seats were dropped from the plan; ignore any saved before that.
+        const parsed = (JSON.parse(stored) as SelectedSeat[]).filter((s) => s.sector !== "Chór");
         if (parsed.length > 0) {
           // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of the seats saved earlier in the flow
           setSelectedSeats(parsed);
@@ -110,33 +111,7 @@ export default function SeatsPage() {
           </p>
         </div>
 
-        {/* Interactive Canvas Hall Map */}
-        <section aria-label="Plan sali symfonicznej">
-          <HallMap
-            maxSelectable={people}
-            selectedSeats={selectedSeats}
-            onSelectSeat={handleSelectSeat}
-            onDeselectSeat={handleDeselectSeat}
-            labels={{
-              allSectors: t("allSectors"),
-              parter: t("parter"),
-              balkon: t("balkon"),
-              loza: t("loza"),
-              chor: t("chor"),
-              wheelchairFilter: t("wheelchairFilter"),
-              seatTakenNotice: t("seatTakenNotice"),
-              keyboardNavHint: t("keyboardNavHint"),
-              row: t("row"),
-              seat: t("seat"),
-              sector: t("sector"),
-              zoomIn: t("zoomIn"),
-              zoomOut: t("zoomOut"),
-              resetZoom: t("resetZoom"),
-            }}
-          />
-        </section>
-
-        {/* Selected Seats Badges & Bottom Total */}
+        {/* Selected Seats Badges & Total */}
         <div
           role="region"
           aria-label="Podsumowanie wybranych miejsc"
@@ -188,9 +163,36 @@ export default function SeatsPage() {
             </p>
           </div>
         </div>
+
+        {/* Interactive Canvas Hall Map */}
+        <section aria-label="Plan sali symfonicznej">
+          <HallMap
+            selectedSeats={selectedSeats}
+            onSelectSeat={handleSelectSeat}
+            onDeselectSeat={handleDeselectSeat}
+            labels={{
+              allSectors: t("allSectors"),
+              parter: t("parter"),
+              balkon: t("balkon"),
+              loza: t("loza"),
+              wheelchairFilter: t("wheelchairFilter"),
+              seatTakenNotice: t("seatTakenNotice"),
+              keyboardNavHint: t("keyboardNavHint"),
+              row: t("row"),
+              seat: t("seat"),
+              sector: t("sector"),
+              zoomIn: t("zoomIn"),
+              zoomOut: t("zoomOut"),
+              resetZoom: t("resetZoom"),
+              backToHall: t("backToHall"),
+              pickSectorHint: t("pickSectorHint"),
+              stage: t("stage"),
+            }}
+          />
+        </section>
       </div>
 
-      <FlowArrows step={4} />
+      <FlowArrows step={4} sticky />
     </Screen>
   );
 }

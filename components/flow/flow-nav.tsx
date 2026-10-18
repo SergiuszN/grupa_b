@@ -78,6 +78,7 @@ export function FlowArrows({
   next = true,
   nextHref,
   nextLabel,
+  sticky = false,
 }: {
   step: number;
   items?: readonly FlowItem[];
@@ -85,6 +86,8 @@ export function FlowArrows({
   next?: boolean;
   nextHref?: string;
   nextLabel?: string;
+  /** Pin the buttons to the viewport bottom, above the scrolling content. */
+  sticky?: boolean;
 }) {
   const t = useTranslations("Nav");
   const previous = items[step - 1];
@@ -94,7 +97,13 @@ export function FlowArrows({
 
   return (
     <div
-      className="flex items-center gap-3 px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)]"
+      className={`flex items-center gap-3 px-6 pt-2 pb-[calc(env(safe-area-inset-bottom)+20px)] ${
+        sticky
+          ? `sticky bottom-0 z-20 pt-3 border-t ${
+              tone === "dark" ? "bg-ink/95 border-paper/10" : "bg-paper/95 border-line"
+            } backdrop-blur-sm`
+          : ""
+      }`}
       data-flow="actions"
     >
       {previous ? (
