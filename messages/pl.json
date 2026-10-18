@@ -310,7 +310,7 @@
     "grayscale": "Skala szarości",
     "grayscaleDesc": "Dla osób z daltonizmem",
     "readableFont": "Czcionka czytelna",
-    "readableFontDesc": "Dociążone podstawy liter (dysleksja)",
+    "readableFontDesc": "Łatwo rozróżnialne litery",
     "shortcutsTitle": "Skróty klawiszowe",
     "shortcutA11y": "Alt + A: Panel dostępności",
     "shortcutLang": "Alt + L: Zmień język"

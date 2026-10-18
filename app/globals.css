@@ -508,8 +508,7 @@ html[data-a11y-contrast="yellow-black"][data-a11y-grayscale="true"] :is(img, vid
 
 html[data-a11y-readable-font="true"] *,
 html[data-a11y-readable-font="true"] body {
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive, sans-serif !important;
-  letter-spacing: 0.04em !important;
+  font-family: var(--font-readable), sans-serif !important;
 }
 
 /* Purchase confirmation confetti. */

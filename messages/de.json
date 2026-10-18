@@ -310,7 +310,7 @@
     "grayscale": "Graustufen",
     "grayscaleDesc": "Für Menschen mit Farbenblindheit",
     "readableFont": "Lesbare Schrift",
-    "readableFontDesc": "Schriftbasis für Legasthenie",
+    "readableFontDesc": "Leicht unterscheidbare Buchstaben",
     "shortcutsTitle": "Tastaturkürzel",
     "shortcutA11y": "Alt + A: Bedienungshilfen",
     "shortcutLang": "Alt + L: Sprache wechseln"

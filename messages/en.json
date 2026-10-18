@@ -310,7 +310,7 @@
     "grayscale": "Grayscale",
     "grayscaleDesc": "For people with colour blindness",
     "readableFont": "Readable font",
-    "readableFontDesc": "Weighted letter bases (dyslexia)",
+    "readableFontDesc": "Easy-to-tell-apart letters",
     "shortcutsTitle": "Keyboard shortcuts",
     "shortcutA11y": "Alt + A: Accessibility panel",
     "shortcutLang": "Alt + L: Switch language"

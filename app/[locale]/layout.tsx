@@ -32,6 +32,16 @@ const helveticaNow = localFont({
   display: "swap",
 });
 
+// Bundled so the readable-font mode looks the same on every device; only
+// downloaded once the mode is switched on.
+const atkinsonHyperlegible = localFont({
+  src: "../fonts/AtkinsonHyperlegibleNext.woff2",
+  weight: "200 800",
+  variable: "--font-readable",
+  display: "swap",
+  preload: false,
+});
+
 export const metadata: Metadata = {
   title: "Filharmonia Szczecin",
   description:
@@ -63,7 +73,12 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning translate="no">
+    <html
+      lang={locale}
+      className={atkinsonHyperlegible.variable}
+      suppressHydrationWarning
+      translate="no"
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: A11Y_BOOT_SCRIPT }} />
       </head>
