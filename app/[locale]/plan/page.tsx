@@ -11,13 +11,19 @@ import { PARTY_KEY } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
 
 const MIN = 1;
-const MAX = 8;
+
+function plural(n: number) {
+  if (n === 1) return "one";
+  const ones = n % 10;
+  const tens = n % 100;
+  return ones >= 2 && ones <= 4 && (tens < 12 || tens > 14) ? "few" : "many";
+}
 
 export default function Plan() {
   const t = useTranslations("Plan");
   const [people, setPeople] = useState(2);
-  const numberRef = useRef<HTMLParagraphElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [draft, setDraft] = useState(String(people));
+  const numberRef = useRef<HTMLInputElement>(null);
   const shown = useRef(people);
 
   useEffect(() => {
@@ -27,38 +33,28 @@ export default function Plan() {
 
     if (!el || previous === people || prefersStillMotion()) return;
 
-    const counter = { value: previous };
-    const tl = gsap.timeline({
-      onUpdate: () => {
-        el.textContent = String(Math.round(counter.value));
-      },
-      onComplete: () => {
-        el.textContent = String(people);
-      },
-    });
-
-    tl.to(counter, { value: people, duration: 0.45, ease: "power2.out" }, 0);
-    tl.fromTo(el, { scale: 1.12 }, { scale: 1, duration: 0.55, ease: "back.out(2)" }, 0);
-
-    const bars = cardRef.current?.querySelectorAll("[data-bar]");
-    if (bars?.length) {
-      tl.fromTo(
-        bars,
-        { scaleY: 0.35, transformOrigin: "50% 100%" },
-        { scaleY: 1, duration: 0.3, stagger: 0.03, ease: "back.out(2)" },
-        0,
-      );
-    }
+    const tween = gsap.fromTo(
+      el,
+      { scale: 1.12 },
+      { scale: 1, duration: 0.55, ease: "back.out(2)" },
+    );
 
     return () => {
-      tl.kill();
+      tween.kill();
     };
   }, [people]);
 
   function change(value: number) {
-    const next = Math.min(MAX, Math.max(MIN, value));
+    const next = Math.max(MIN, value);
     setPeople(next);
+    setDraft(String(next));
     localStorage.setItem(PARTY_KEY, String(next));
+  }
+
+  function type(value: string) {
+    const digits = value.replace(/\D/g, "");
+    if (digits) change(Number(digits));
+    else setDraft("");
   }
 
   return (
@@ -81,16 +77,10 @@ export default function Plan() {
         <div
           className="bg-surface flex flex-col gap-[18px] rounded-3xl px-[22px] pt-[22px] pb-[18px]"
           data-flow="media"
-          ref={cardRef}
         >
-          <div className="flex items-center justify-between">
-            <p className="text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-muted">
-              {t("count")}
-            </p>
-            <p className="text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-gold">
-              {MIN} – {MAX}
-            </p>
-          </div>
+          <p className="text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-muted">
+            {t("count")}
+          </p>
 
           <div className="flex items-center justify-between">
             <CtaButton
@@ -102,109 +92,51 @@ export default function Plan() {
               variant="outline"
             />
 
-            <div aria-live="polite" className="flex flex-col items-center">
-              <div className="flex items-center gap-2.5">
+            <div className="flex flex-col items-center">
+              <div className="flex items-center gap-1.5">
                 <Users
                   aria-hidden="true"
-                  className="text-gold"
-                  size={44}
+                  className="text-gold max-[359px]:hidden"
+                  size={32}
                   strokeWidth={1.4}
                 />
                 <span
                   aria-hidden="true"
-                  className="text-muted text-[1.625rem] leading-none font-light"
+                  className="text-muted text-[1.625rem] leading-none font-light max-[359px]:hidden"
                 >
                   ×
                 </span>
-                <p
-                  className="text-[6rem] leading-[5.75rem] font-light tracking-[-0.05em]"
+                <input
+                  aria-label={t("input")}
+                  className={`box-content rounded-xl border border-line bg-transparent px-1.5 text-center font-light tracking-[-0.05em] tabular-nums caret-gold transition-colors hover:border-gold/60 focus:border-gold focus:outline-2 focus:outline-gold/30 focus:outline-offset-2 ${
+                    draft.length > 2
+                      ? "text-[2.5rem] leading-[4.5rem]"
+                      : "text-[3.5rem] leading-[4.5rem]"
+                  }`}
+                  inputMode="numeric"
+                  onBlur={() => setDraft(String(people))}
+                  onChange={(event) => type(event.target.value)}
+                  onFocus={(event) => event.target.select()}
+                  maxLength={3}
+                  pattern="[0-9]*"
                   ref={numberRef}
-                >
-                  {people}
-                </p>
+                  style={{ width: `${Math.max(2, draft.length)}ch` }}
+                  type="text"
+                  value={draft}
+                />
               </div>
               <p className="mt-1 text-[0.6875rem] leading-[0.9375rem] font-medium tracking-[0.16em] text-muted">
-                {people === 1 ? t("one") : people < 5 ? t("few") : t("many")}
+                {t(plural(people))}
               </p>
             </div>
 
             <CtaButton
               aria-label={t("more")}
-              disabled={people === MAX}
               iconLeft={<Plus aria-hidden="true" size={24} strokeWidth={1.5} />}
               onClick={() => change(people + 1)}
               size="icon"
               variant="primary"
             />
-          </div>
-
-          <div className="flex flex-col gap-2 pt-1">
-            <div
-              aria-label={t("count")}
-              className="relative grid grid-cols-8 gap-1 rounded-2xl p-1.5 transition-all focus-within:outline-2 focus-within:outline-gold focus-within:outline-offset-2 focus-within:ring-2 focus-within:ring-gold/20"
-              data-guest-slider=""
-              role="radiogroup"
-            >
-              {Array.from({ length: MAX }, (_, index) => {
-                const val = index + 1;
-                const isCurrent = val === people;
-                const isFilled = val <= people;
-
-                return (
-                  <button
-                    aria-checked={isCurrent}
-                    aria-label={`${val} ${val === 1 ? t("one") : val < 5 ? t("few") : t("many")}`}
-                    className={`group relative flex flex-col items-center gap-2 rounded-xl py-2 transition-all select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2 ${
-                      isCurrent ? "scale-105" : "hover:bg-black/5"
-                    }`}
-                    key={val}
-                    onClick={() => change(val)}
-                    role="radio"
-                    type="button"
-                  >
-                    <div className="flex h-5 w-full items-center justify-center">
-                      <span
-                        className={`rounded-[2px] transition-all ${
-                          isCurrent
-                            ? "bg-gold h-5 w-[3.5px] scale-110 shadow-sm"
-                            : isFilled
-                              ? "bg-gold h-[18px] w-[3px]"
-                              : "bg-line h-2.5 w-0.5"
-                        }`}
-                        data-bar
-                      />
-                    </div>
-
-                    <span
-                      className={`flex size-7 items-center justify-center rounded-full text-[0.8125rem] leading-none transition-all ${
-                        isCurrent
-                          ? "bg-gold text-white font-bold shadow-sm"
-                          : "text-muted font-medium group-hover:text-ink"
-                      }`}
-                    >
-                      {val}
-                    </span>
-                  </button>
-                );
-              })}
-
-              <input
-                aria-label={t("slider")}
-                aria-valuetext={`${people} ${people === 1 ? t("one") : t("few")}`}
-                className="absolute inset-x-2 top-0 h-full cursor-pointer opacity-0 pointer-events-none"
-                max={MAX}
-                min={MIN}
-                onChange={(event) => change(Number(event.target.value))}
-                step={1}
-                tabIndex={-1}
-                type="range"
-                value={people}
-              />
-            </div>
-
-            <p className="text-center text-[0.6875rem] leading-[0.875rem] tracking-[0.02em] text-muted">
-              {t("drag")}
-            </p>
           </div>
         </div>
       </div>

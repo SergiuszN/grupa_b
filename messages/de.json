@@ -97,10 +97,9 @@
     "one": "PERSON",
     "few": "PERSONEN",
     "many": "PERSONEN",
-    "drag": "seitlich ziehen",
     "fewer": "Weniger Personen",
     "more": "Mehr Personen",
-    "slider": "Anzahl der Personen"
+    "input": "Anzahl der Personen"
   },
   "Evening": {
     "eyebrow": "Rund um das Konzert",
