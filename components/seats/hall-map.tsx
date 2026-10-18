@@ -374,7 +374,10 @@ export function HallMap({
   const focusSection = useCallback(
     (sectionName: string) => {
       if (sectionName === "Cała sala") {
-        animateTransform(0, 150, 0.8);
+        const clientH = canvasRef.current?.clientHeight || 400;
+        const targetScale = clientH < 400 ? 0.62 : 0.8;
+        const targetY = clientH < 400 ? 90 : 150;
+        animateTransform(0, targetY, targetScale);
         return;
       }
 
@@ -560,6 +563,10 @@ export function HallMap({
 
   useEffect(() => {
     seatsRef.current = generateSeats();
+    const clientH = containerRef.current?.clientHeight || 400;
+    if (clientH < 400) {
+      transformRef.current = { x: 0, y: 90, scale: 0.62 };
+    }
     render();
 
     const onResize = () => queueRender();
@@ -594,13 +601,13 @@ export function HallMap({
   /* ---------- JSX ---------- */
 
   return (
-    <div ref={containerRef} className="relative w-full" style={{ height: "clamp(360px, 60vh, 600px)" }}>
+    <div ref={containerRef} className="relative w-full rounded-2xl overflow-hidden border border-line bg-white shadow-sm" style={{ height: "clamp(260px, 45vh, 480px)" }}>
       {/* Zoom Controls */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 bg-white/95 shadow-lg border border-gray-200 rounded-lg p-1.5 backdrop-blur-md">
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-1 bg-white/95 shadow-md border border-gray-200 rounded-lg p-1 backdrop-blur-md">
         <button
           type="button"
           onClick={zoomIn}
-          className="w-9 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100 hover:text-black rounded text-xl font-medium transition-colors"
+          className="w-8 h-8 flex items-center justify-center text-gray-700 hover:bg-gray-100 hover:text-black rounded text-lg font-medium transition-colors"
           title="Przybliż"
           aria-label="Przybliż"
         >
@@ -610,7 +617,7 @@ export function HallMap({
         <button
           type="button"
           onClick={zoomOut}
-          className="w-9 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100 hover:text-black rounded text-xl font-medium transition-colors"
+          className="w-8 h-8 flex items-center justify-center text-gray-700 hover:bg-gray-100 hover:text-black rounded text-lg font-medium transition-colors"
           title="Oddal"
           aria-label="Oddal"
         >
@@ -619,8 +626,8 @@ export function HallMap({
       </div>
 
       {/* Selected count badge */}
-      <div className="absolute top-4 left-4 z-10 bg-white/95 shadow-lg border border-gray-200 rounded-lg px-4 py-2.5 backdrop-blur-md flex items-center gap-2.5">
-        <div className="w-3.5 h-3.5 border-2 border-yellow-500 bg-white rounded-sm shadow-[0_0_8px_rgba(234,179,8,0.4)]" />
+      <div className="absolute top-3 left-3 z-10 bg-white/95 shadow-md border border-gray-200 rounded-lg px-3 py-1.5 backdrop-blur-md flex items-center gap-2">
+        <div className="w-3 h-3 border-2 border-yellow-500 bg-white rounded-sm shadow-[0_0_8px_rgba(234,179,8,0.4)]" />
         <span className="text-xs font-semibold text-gray-800">
           Wybrane:{" "}
           <span className="text-black font-bold">
@@ -630,13 +637,13 @@ export function HallMap({
       </div>
 
       {/* Section pill bar */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-200 rounded-full p-1.5 backdrop-blur-md flex items-center gap-1 overflow-x-auto max-w-[95%] w-max" style={{ scrollbarWidth: "none" }}>
+      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-200 rounded-full p-1 backdrop-blur-md flex items-center gap-1 overflow-x-auto max-w-[95%] w-max" style={{ scrollbarWidth: "none" }}>
         {SECTIONS.map((sec) => (
           <button
             key={sec.key}
             type="button"
             onClick={() => handleSectionClick(sec.key)}
-            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
               activeSection === sec.key
                 ? "bg-gray-800 text-white"
                 : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"

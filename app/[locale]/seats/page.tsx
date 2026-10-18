@@ -4,11 +4,10 @@ import { useEffect, useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
-import { CtaButton } from "@/components/ui";
 import { HallMap } from "@/components/seats/hall-map";
 import { SEATS_KEY, type SelectedSeat } from "@/lib/taste";
 import { useFlow } from "@/lib/use-flow";
-import { Armchair, Sparkles, X, ChevronRight } from "lucide-react";
+import { Armchair, Sparkles, X } from "lucide-react";
 
 export default function SeatsPage() {
   const t = useTranslations("Seats");
@@ -84,9 +83,9 @@ export default function SeatsPage() {
         {pageAnnouncement}
       </div>
 
-      <div className="flex flex-1 flex-col px-4 sm:px-8 py-4 gap-6 max-w-[1040px] mx-auto w-full">
+      <div className="flex flex-1 flex-col px-4 sm:px-8 py-2 sm:py-4 gap-3 sm:gap-5 max-w-[1040px] mx-auto w-full">
         {/* Header */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1 sm:gap-2">
           <div className="flex items-center gap-2">
             <span className="text-[#AD891C] flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
               <Armchair size={14} aria-hidden="true" />
@@ -100,10 +99,10 @@ export default function SeatsPage() {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-ink">
             {t("title")}
           </h1>
-          <p className="text-sm sm:text-base text-muted max-w-2xl">
+          <p className="text-xs sm:text-base text-muted max-w-2xl">
             {t("subtitle")}
           </p>
         </div>
@@ -134,28 +133,28 @@ export default function SeatsPage() {
           />
         </section>
 
-        {/* Selected Seats Badges & Bottom Confirmation Card */}
-        <footer
+        {/* Selected Seats Badges & Bottom Total */}
+        <div
           role="region"
           aria-label="Podsumowanie wybranych miejsc"
-          className="bg-surface border border-line rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+          className="bg-surface border border-line rounded-xl p-3 sm:p-4 flex items-center justify-between gap-3 shadow-sm"
         >
-          <div className="flex flex-col gap-2 w-full sm:w-auto">
-            <div className="flex items-center gap-2 text-xs font-medium text-muted">
-              <Sparkles size={14} className="text-[#AD891C]" aria-hidden="true" />
+          <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-muted">
+              <Sparkles size={13} className="text-[#AD891C] shrink-0" aria-hidden="true" />
               <span>{t("autoAssigned", { count: selectedSeats.length })}</span>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 max-h-16 overflow-y-auto">
               {selectedSeats.length === 0 ? (
-                <span className="text-sm text-muted italic">
+                <span className="text-xs text-muted italic">
                   Kliknij miejsce na planie, aby je wybrać.
                 </span>
               ) : (
                 selectedSeats.map((seat) => (
                   <div
                     key={seat.id}
-                    className="flex items-center gap-1.5 bg-[#AD891C]/10 border border-[#AD891C]/30 px-3 py-1 rounded-xl text-xs font-semibold text-ink"
+                    className="flex items-center gap-1 bg-[#AD891C]/10 border border-[#AD891C]/30 px-2.5 py-0.5 rounded-lg text-xs font-semibold text-ink"
                   >
                     <span>
                       {seat.sector} · Rz. {seat.row}, m. {seat.seatNumber}
@@ -169,7 +168,7 @@ export default function SeatsPage() {
                         seat: `${seat.sector}, Rząd ${seat.row}, Miejsce ${seat.seatNumber}`,
                       })}
                     >
-                      <X size={12} aria-hidden="true" />
+                      <X size={11} aria-hidden="true" />
                     </button>
                   </div>
                 ))
@@ -177,37 +176,15 @@ export default function SeatsPage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between sm:justify-end gap-5 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-line">
-            <div className="text-right">
-              <p className="text-[11px] font-medium tracking-wider text-muted uppercase">
-                {t("total")}
-              </p>
-              <p className="text-2xl font-bold tracking-tight text-ink">
-                {totalPrice} zł
-              </p>
-            </div>
-
-            {selectedSeats.length > 0 ? (
-              <CtaButton
-                href="/evening"
-                variant="primary"
-                size="md"
-                iconRight={<ChevronRight size={18} aria-hidden="true" />}
-              >
-                {t("confirmSeats")}
-              </CtaButton>
-            ) : (
-              <CtaButton
-                variant="primary"
-                size="md"
-                disabled
-                iconRight={<ChevronRight size={18} aria-hidden="true" />}
-              >
-                {t("confirmSeats")}
-              </CtaButton>
-            )}
+          <div className="text-right shrink-0 pl-3 border-l border-line">
+            <p className="text-[10px] font-medium tracking-wider text-muted uppercase">
+              {t("total")}
+            </p>
+            <p className="text-xl sm:text-2xl font-bold tracking-tight text-ink">
+              {totalPrice} zł
+            </p>
           </div>
-        </footer>
+        </div>
       </div>
 
       <FlowArrows step={4} />
