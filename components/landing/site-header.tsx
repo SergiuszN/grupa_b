@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Accessibility, CalendarDays, Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
-import { GoldenBaton } from "@/components/flow/golden-baton";
 import { MenuSheet } from "@/components/landing/menu-sheet";
 import { openAccessibilityPanel } from "@/components/AccessibilityControl";
 import {
@@ -66,17 +65,13 @@ export function SiteHeader({ tone = "dark" }: { tone?: "dark" | "light" }) {
     <header
       className={`mx-auto flex w-full items-center justify-between px-6 pt-[calc(env(safe-area-inset-top)+21px)] ${color}`}
     >
-      <div className="flex items-center gap-2.5">
-        <Link
-          className="focus-visible:outline-gold rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
-          href="/"
-        >
-          <Logo />
-          <span className="sr-only">{t("home")}</span>
-        </Link>
-
-        <GoldenBaton tone={tone} />
-      </div>
+      <Link
+        className="focus-visible:outline-gold rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+        href="/"
+      >
+        <Logo />
+        <span className="sr-only">{t("home")}</span>
+      </Link>
 
       <div className={`flex items-center gap-2 ${color}`}>
         <button

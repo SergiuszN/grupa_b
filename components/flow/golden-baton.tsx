@@ -4,24 +4,32 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 type Tone = "dark" | "light";
 
-export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
-  const containerRef = useRef<HTMLButtonElement>(null);
-  const wandRef = useRef<SVGSVGElement>(null);
-  const [conductCount, setConductCount] = useState(0);
-  const [showApplause, setShowApplause] = useState(false);
-  const [sparkles, setSparkles] = useState<
-    Array<{ id: number; x: number; y: number; char: string }>
-  >([]);
+interface GlidingBatonProps {
+  tone?: Tone;
+  stepCount?: number;
+}
+
+export function GlidingBaton({ tone = "light", stepCount = 9 }: { tone?: Tone; stepCount?: number }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const batonRef = useRef<HTMLDivElement>(null);
 
   // Physics state
-  const targetRotation = useRef(0); // Resting angle relative to natural 45deg tilt
-  const currentRotation = useRef(0);
-  const velocity = useRef(0);
+  const posX = useRef<number>(12); // Start on the left side
+  const velX = useRef<number>(0);
+  const tiltAngle = useRef<number>(-35); // Start tilted
+  const gravityAcc = useRef<number>(0);
+  const isDragging = useRef<boolean>(false);
+  const dragStartX = useRef<number>(0);
+  const dragStartPosX = useRef<number>(0);
+  const lastCrossedDot = useRef<number>(-1);
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const lastChimeTime = useRef(0);
+
+  const [sparkles, setSparkles] = useState<
+    Array<{ id: number; offset: number; y: number; char: string }>
+  >([]);
   const sparkIdCounter = useRef(0);
 
-  // Initialize Web Audio safely on first user gesture
+  // Safe Web Audio API synthesizer
   const getAudioContext = useCallback(() => {
     if (typeof window === "undefined") return null;
     if (!audioCtxRef.current) {
@@ -39,295 +47,305 @@ export function GoldenBaton({ tone = "light" }: { tone?: Tone }) {
     return audioCtxRef.current;
   }, []);
 
-  // Play magical orchestral chime / harp note
-  const playChime = useCallback(
-    (noteIndex?: number) => {
+  // Play delicate harp chime for step dots or bounces
+  const playNote = useCallback(
+    (index: number) => {
       try {
         const ctx = getAudioContext();
         if (!ctx) return;
 
         const now = ctx.currentTime;
-        // Pentatonic orchestral chord in A major (Karłowicz overture tuning)
-        const notes = [440, 554.37, 659.25, 830.61, 880, 1108.73];
-        const freq =
-          notes[
-            typeof noteIndex === "number"
-              ? noteIndex % notes.length
-              : Math.floor(Math.random() * notes.length)
-          ];
+        // Pentatonic scale in A major
+        const scale = [440, 493.88, 554.37, 659.25, 739.99, 880, 987.77, 1108.73, 1318.51];
+        const freq = scale[Math.max(0, Math.min(scale.length - 1, index))];
 
-        // Primary bell oscillator
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
-        // Overtone harmonic
-        const harmonic = ctx.createOscillator();
-        const harmonicGain = ctx.createGain();
 
         osc.type = "sine";
         osc.frequency.setValueAtTime(freq, now);
 
-        harmonic.type = "triangle";
-        harmonic.frequency.setValueAtTime(freq * 2, now);
-
-        // Envelope: instant chime attack with lush exponential decay
         gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.2, now + 0.015);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
-
-        harmonicGain.gain.setValueAtTime(0, now);
-        harmonicGain.gain.linearRampToValueAtTime(0.08, now + 0.01);
-        harmonicGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+        gain.gain.linearRampToValueAtTime(0.12, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
 
         osc.connect(gain);
-        harmonic.connect(harmonicGain);
         gain.connect(ctx.destination);
-        harmonicGain.connect(ctx.destination);
 
         osc.start(now);
-        harmonic.start(now);
-        osc.stop(now + 1.25);
-        harmonic.stop(now + 0.85);
+        osc.stop(now + 0.65);
       } catch {
-        // Audio error handling without throwing
+        // Audio error handling
       }
     },
     [getAudioContext],
   );
 
-  // Play tutti orchestra flourish when maestro hits 4 beats
-  const playMaestroFanfare = useCallback(() => {
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      const chords = [440, 554.37, 659.25, 880];
-      chords.forEach((_, idx) => {
-        setTimeout(() => playChime(idx), idx * 80);
-      });
-    } catch {
-      // Ignored
-    }
-  }, [getAudioContext, playChime]);
-
-  // Trigger conduct downbeat
-  const conduct = useCallback(() => {
-    const nextCount = conductCount + 1;
-    setConductCount(nextCount);
-
-    // Conduct flick impulse in spring physics
-    velocity.current = 28;
-    playChime(nextCount);
-
-    // Spawn musical sparkle particles
-    const notesChars = ["♩", "♪", "♫", "✨", "𝄞"];
-    const char = notesChars[Math.floor(Math.random() * notesChars.length)];
-    const newSpark = {
+  // Spawn visual sparkle
+  const spawnSparkle = useCallback(() => {
+    const chars = ["♩", "♪", "♫", "✨"];
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    const spark = {
       id: ++sparkIdCounter.current,
-      x: Math.random() * 24 - 12,
-      y: -24 - Math.random() * 16,
+      offset: Math.random() * 16 - 8,
+      y: -20 - Math.random() * 12,
       char,
     };
-    setSparkles((prev) => [...prev.slice(-4), newSpark]);
+    setSparkles((prev) => [...prev.slice(-3), spark]);
+  }, []);
 
-    // Easter egg: 4 beats conducts a bar -> Bravo Maestro!
-    if (nextCount % 4 === 0) {
-      playMaestroFanfare();
-      setShowApplause(true);
-      setTimeout(() => setShowApplause(false), 2400);
-    }
-  }, [conductCount, playChime, playMaestroFanfare]);
-
-  // Handle Gyroscope & Device Tilt with spring physics
+  // Physics animation loop & Gyroscope / Mouse listeners
   useEffect(() => {
-    let animFrame: number;
+    let animId: number;
 
     const handleOrientation = (e: DeviceOrientationEvent) => {
-      if (e.gamma !== null) {
+      if (e.gamma !== null && !isDragging.current) {
         // gamma: left-to-right tilt in degrees [-90, 90]
-        const tilt = Math.max(-40, Math.min(40, e.gamma));
-        targetRotation.current = tilt * 0.75;
-
-        // Sound chime on energetic tilt crossings
-        const now = Date.now();
-        if (Math.abs(e.gamma) > 24 && now - lastChimeTime.current > 400) {
-          lastChimeTime.current = now;
-          playChime();
-        }
+        const clamped = Math.max(-45, Math.min(45, e.gamma));
+        // Tilt creates horizontal gravity acceleration
+        gravityAcc.current = (clamped / 45) * 0.95;
       }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Desktop fallback: baton tilts smoothly with cursor position across window
-      const normalizedX = (e.clientX / window.innerWidth) * 2 - 1; // [-1, 1]
-      targetRotation.current = normalizedX * 24;
+      if (isDragging.current || !trackRef.current) return;
+      const rect = trackRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const diff = e.clientX - centerX;
+      // Mouse position gently pulls gravity towards cursor
+      const normalized = Math.max(-1, Math.min(1, diff / (window.innerWidth / 2)));
+      gravityAcc.current = normalized * 0.55;
     };
 
     window.addEventListener("deviceorientation", handleOrientation);
     window.addEventListener("mousemove", handleMouseMove);
 
     // Physics render loop
-    const tick = () => {
-      const k = 0.12; // Spring stiffness
-      const damping = 0.82; // Friction
+    const updatePhysics = () => {
+      if (!isDragging.current && trackRef.current) {
+        const trackWidth = trackRef.current.clientWidth;
+        const batonWidth = 36;
+        const minX = 4;
+        const maxX = Math.max(minX, trackWidth - batonWidth - 4);
 
-      const displacement = targetRotation.current - currentRotation.current;
-      velocity.current = (velocity.current + displacement * k) * damping;
-      currentRotation.current += velocity.current;
+        // Apply acceleration from tilt
+        velX.current += gravityAcc.current;
+        // Damping / friction (glides smoothly like on ice)
+        velX.current *= 0.93;
 
-      if (wandRef.current) {
-        wandRef.current.style.transform = `rotate(${currentRotation.current}deg)`;
+        posX.current += velX.current;
+
+        // Bounce off left/right edges with restitution
+        if (posX.current <= minX) {
+          posX.current = minX;
+          if (Math.abs(velX.current) > 1.2) {
+            playNote(0);
+          }
+          velX.current = -velX.current * 0.42;
+        } else if (posX.current >= maxX) {
+          posX.current = maxX;
+          if (Math.abs(velX.current) > 1.2) {
+            playNote(stepCount - 1);
+          }
+          velX.current = -velX.current * 0.42;
+        }
+
+        // Tilted angle sways dynamically with velocity
+        // Resting tilt is -35deg, leaning into movement
+        const dynamicTilt = -35 + velX.current * 3.5;
+        tiltAngle.current += (dynamicTilt - tiltAngle.current) * 0.15;
+
+        // Check if baton crossed a step dot along the track
+        if (maxX > minX && stepCount > 1) {
+          const progress = (posX.current - minX) / (maxX - minX);
+          const currentDot = Math.round(progress * (stepCount - 1));
+
+          if (currentDot !== lastCrossedDot.current && Math.abs(velX.current) > 0.8) {
+            lastCrossedDot.current = currentDot;
+            playNote(currentDot);
+            spawnSparkle();
+          }
+        }
+
+        // Update DOM transform directly for 60fps smoothness
+        if (batonRef.current) {
+          batonRef.current.style.transform = `translateX(${posX.current}px) rotate(${tiltAngle.current}deg)`;
+        }
       }
 
-      animFrame = requestAnimationFrame(tick);
+      animId = requestAnimationFrame(updatePhysics);
     };
 
-    animFrame = requestAnimationFrame(tick);
+    animId = requestAnimationFrame(updatePhysics);
 
     return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
       window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animFrame);
+      cancelAnimationFrame(animId);
     };
-  }, [playChime]);
+  }, [playNote, spawnSparkle, stepCount]);
 
-  // Request gyroscope permission on iOS 13+ devices
-  const requestGyroPermission = async () => {
+  // Pointer drag support (works for touch drag and mouse drag)
+  const onPointerDown = (e: React.PointerEvent) => {
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragStartPosX.current = posX.current;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+
+    // Play initial chime on touch
+    playNote(Math.floor(Math.random() * stepCount));
+    spawnSparkle();
+
+    // Request iOS orientation permission if needed
     const DeviceOrientation = window.DeviceOrientationEvent as unknown as {
       requestPermission?: () => Promise<"granted" | "denied">;
     };
     if (typeof DeviceOrientation?.requestPermission === "function") {
-      try {
-        await DeviceOrientation.requestPermission();
-      } catch {
-        // Ignore user cancellation
-      }
+      DeviceOrientation.requestPermission().catch(() => {});
+    }
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging.current || !trackRef.current) return;
+    const delta = e.clientX - dragStartX.current;
+    const trackWidth = trackRef.current.clientWidth;
+    const batonWidth = 36;
+    const minX = 4;
+    const maxX = Math.max(minX, trackWidth - batonWidth - 4);
+
+    const newX = Math.max(minX, Math.min(maxX, dragStartPosX.current + delta));
+    velX.current = newX - posX.current;
+    posX.current = newX;
+
+    if (batonRef.current) {
+      batonRef.current.style.transform = `translateX(${posX.current}px) rotate(${tiltAngle.current}deg)`;
+    }
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    isDragging.current = false;
+    try {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      // Ignored
     }
   };
 
   const glowFilter =
     tone === "dark"
-      ? "drop-shadow(0 0 10px rgba(173,137,28,0.85)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))"
-      : "drop-shadow(0 2px 6px rgba(173,137,28,0.5)) drop-shadow(0 1px 2px rgba(0,0,0,0.15))";
+      ? "drop-shadow(0 0 8px rgba(173,137,28,0.9)) drop-shadow(0 2px 4px rgba(0,0,0,0.6))"
+      : "drop-shadow(0 2px 5px rgba(173,137,28,0.55)) drop-shadow(0 1px 2px rgba(0,0,0,0.2))";
 
   return (
-    <div className="relative inline-flex items-center">
-      <button
-        aria-label="Złota Batuta Dyrygenta (Easter Egg)"
-        className={`group relative flex size-11 items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer select-none ${
-          tone === "dark" ? "hover:bg-paper/10" : "hover:bg-black/5"
-        }`}
-        onClick={() => {
-          requestGyroPermission();
-          conduct();
+    <div
+      className="pointer-events-none absolute inset-x-0 -top-3 z-30 h-10 select-none"
+      ref={trackRef}
+    >
+      {/* Gliding Baton (pointer-events enabled on baton itself) */}
+      <div
+        aria-label="Złota Batuta Dyrygenta — przechyl telefon, by popłynęła!"
+        className="pointer-events-auto absolute top-0 left-0 cursor-grab touch-none active:cursor-grabbing"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        ref={batonRef}
+        role="button"
+        style={{
+          transform: "translateX(12px) rotate(-35deg)",
+          transformOrigin: "8px 30px",
+          willChange: "transform",
         }}
-        ref={containerRef}
-        title="Złota batuta Filharmonii — dotknij lub przechyl telefon!"
-        type="button"
+        tabIndex={0}
+        title="Przechyl telefon w lewo lub prawo, by batuta płynęła wzdłuż nawigacji!"
       >
         <svg
           aria-hidden="true"
-          className="size-9 origin-bottom-left transition-transform ease-out"
+          className="size-9"
           fill="none"
-          ref={wandRef}
-          style={{
-            filter: glowFilter,
-            transform: "rotate(0deg)",
-            transformOrigin: "8px 36px",
-          }}
-          viewBox="0 0 44 44"
+          style={{ filter: glowFilter }}
+          viewBox="0 0 36 36"
         >
           <defs>
-            {/* Rich gold metallic gradient */}
-            <linearGradient id="goldShaft44" x1="0" x2="1" y1="1" y2="0">
+            <linearGradient id="wandShaft" x1="0" x2="1" y1="1" y2="0">
               <stop offset="0%" stopColor="#8F7017" />
-              <stop offset="25%" stopColor="#AD891C" />
-              <stop offset="50%" stopColor="#FFF2D6" />
-              <stop offset="75%" stopColor="#E5C868" />
+              <stop offset="30%" stopColor="#F3EBD6" />
+              <stop offset="60%" stopColor="#AD891C" />
+              <stop offset="100%" stopColor="#FFF4D9" />
+            </linearGradient>
+
+            <linearGradient id="wandGrip" x1="0" x2="1" y1="1" y2="0">
+              <stop offset="0%" stopColor="#111111" />
+              <stop offset="50%" stopColor="#3E3A33" />
               <stop offset="100%" stopColor="#AD891C" />
             </linearGradient>
 
-            {/* Handle gradient */}
-            <linearGradient id="batonHandle44" x1="0" x2="1" y1="1" y2="0">
-              <stop offset="0%" stopColor="#1A1815" />
-              <stop offset="45%" stopColor="#3E3A33" />
-              <stop offset="85%" stopColor="#8F7017" />
-              <stop offset="100%" stopColor="#AD891C" />
-            </linearGradient>
-
-            {/* Pearl tip glow */}
-            <radialGradient id="tipGlow44" cx="50%" cy="50%" r="50%">
+            <radialGradient id="wandTip" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="60%" stopColor="#FFF2D6" />
-              <stop offset="85%" stopColor="#AD891C" />
+              <stop offset="65%" stopColor="#AD891C" />
               <stop offset="100%" stopColor="#8F7017" />
             </radialGradient>
           </defs>
 
-          {/* Conductors Baton Handle (Ergonomic grip at bottom-left) */}
+          {/* Ergonomic Baton Handle at base */}
           <path
-            d="M5 38 C4 39.5 6 41 8 40.5 C10.5 39.5 11 36.5 9.5 34.5 C8.5 33.5 6 35.5 5 38 Z"
-            fill="url(#batonHandle44)"
+            d="M4 31 C3 32.5 5 34 7 33.5 C9 32.5 9.5 30 8.5 28.5 C7.5 27.5 5 29.5 4 31 Z"
+            fill="url(#wandGrip)"
             stroke="#AD891C"
-            strokeWidth="0.8"
+            strokeWidth="0.75"
           />
 
-          {/* Gold Collar band */}
+          {/* Gold Collar */}
           <ellipse
-            cx="10"
-            cy="34"
-            fill="#FFF2D6"
-            rx="1.6"
-            ry="1.1"
-            stroke="#8F7017"
-            strokeWidth="0.5"
-            transform="rotate(-45 10 34)"
-          />
-
-          {/* Tapering Gold Shaft (Tilted gracefully from 10,34 to 37,7) */}
-          <polygon
-            fill="url(#goldShaft44)"
-            points="9.2,34.8 10.8,33.2 37.8,6.8 36.8,5.8"
+            cx="8.5"
+            cy="28"
+            fill="#FFF4D9"
+            rx="1.4"
+            ry="0.9"
             stroke="#8F7017"
             strokeWidth="0.4"
+            transform="rotate(-45 8.5 28)"
           />
 
-          {/* Glowing Luminous Tip */}
-          <circle cx="37.4" cy="6.2" fill="url(#tipGlow44)" r="2.2" />
+          {/* Slender Tapering Gold Wand (pointing up-right) */}
+          <polygon
+            fill="url(#wandShaft)"
+            points="7.8,28.6 9.2,27.4 31.4,5.4 30.6,4.6"
+            stroke="#8F7017"
+            strokeWidth="0.3"
+          />
 
-          {/* Sparkle glint on tip */}
+          {/* Luminous Pearl Tip */}
+          <circle cx="31.2" cy="4.8" fill="url(#wandTip)" r="2" />
+
+          {/* Light Glint Star */}
           <path
-            d="M37.4 3 L37.4 9.4 M34.2 6.2 L40.6 6.2"
-            opacity="0.8"
+            d="M31.2 2 L31.2 7.6 M28.4 4.8 L34 4.8"
+            opacity="0.85"
             stroke="#FFFFFF"
             strokeLinecap="round"
-            strokeWidth="0.8"
+            strokeWidth="0.75"
           />
         </svg>
 
-        {/* Floating animated sparkles on conduct */}
+        {/* Floating Sparkles when gliding past dots */}
         {sparkles.map((sp) => (
           <span
-            className="pointer-events-none absolute text-[13px] font-bold text-gold animate-bounce"
+            className="pointer-events-none absolute text-[12px] font-bold text-gold animate-bounce"
             key={sp.id}
             style={{
-              left: `calc(50% + ${sp.x}px)`,
+              left: `calc(50% + ${sp.offset}px)`,
               top: `${sp.y}px`,
-              animationDuration: "0.75s",
-              textShadow: "0 0 8px rgba(173,137,28,0.9)",
+              animationDuration: "0.6s",
+              textShadow: "0 0 6px rgba(173,137,28,0.9)",
             }}
           >
             {sp.char}
           </span>
         ))}
-      </button>
-
-      {/* Maestro celebration tooltip */}
-      {showApplause ? (
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-white shadow-xl animate-in fade-in zoom-in-95 duration-200">
-          <span>🎼</span>
-          <span>Maestro!</span>
-        </div>
-      ) : null}
+      </div>
     </div>
   );
 }
+
+// Export as GoldenBaton for backwards compatibility
+export const GoldenBaton = GlidingBaton;

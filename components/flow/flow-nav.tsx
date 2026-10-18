@@ -4,9 +4,9 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CtaButton } from "@/components/ui";
-import { GoldenBaton } from "./golden-baton";
+import { GlidingBaton, GoldenBaton } from "./golden-baton";
 
-export { GoldenBaton };
+export { GlidingBaton, GoldenBaton };
 
 export type FlowItem = { href: string; label: string };
 
@@ -41,10 +41,13 @@ export function FlowSteps({
   tone?: Tone;
 }) {
   return (
-    <nav
-      aria-label="Paginacja kroków"
-      className="flex items-center justify-center gap-1 pt-5 pb-2"
-    >
+    <div className="relative mx-auto flex w-full max-w-sm items-center justify-center px-6 pt-6 pb-2">
+      <GlidingBaton stepCount={items.length} tone={tone} />
+
+      <nav
+        aria-label="Paginacja kroków"
+        className="flex items-center justify-center gap-1"
+      >
         {items.map((item, index) => {
           const isCurrent = index === step;
           return (
@@ -71,6 +74,7 @@ export function FlowSteps({
           );
         })}
       </nav>
+    </div>
   );
 }
 
