@@ -244,30 +244,12 @@ body {
   }
 }
 
-/* Soft handoff between pages: the veil blurs the old page, the route changes
-   underneath, then the veil fades away. */
+/* Decorative fade after navigation; never blocks links or blurs the page. */
 .page-veil {
   background-color: rgb(247 245 241 / 38%);
   opacity: 0;
-  transition: opacity 140ms ease;
   pointer-events: none;
 }
-
-.page-veil-cover {
-  opacity: 1;
-  pointer-events: auto;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-.page-veil-reveal {
-  opacity: 0;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition-duration: 320ms;
-}
-
-
 
 @media (prefers-reduced-motion: reduce) {
   .page-veil {
