@@ -67,8 +67,8 @@
   },
   "Swipe": {
     "like": "Wybieram",
-    "skip": "Nie teraz",
-    "cardAria": "{title}, {subtitle}. Przesuń w prawo, aby polubić, w lewo, aby odrzucić.",
+    "skip": "Szukaj dalej",
+    "cardAria": "{title}, {subtitle}. Użyj przycisków: Wybieram albo Szukaj dalej.",
     "endEyebrow": "To wszystkie propozycje",
     "endTitle": "Dobraliśmy wieczór pod Twój gust.",
     "backHome": "Wróć na początek",

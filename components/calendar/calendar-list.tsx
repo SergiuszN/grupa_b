@@ -268,7 +268,7 @@ export function CalendarList({ days, terms, today, labels, emptyLabel }: Calenda
       <div className="flex flex-1 flex-col lg:grid lg:grid-cols-[300px_1fr] lg:items-start lg:gap-10 lg:px-6">
         <aside
           aria-label={t("filters")}
-          className="hidden lg:sticky lg:top-4 lg:block lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-auto lg:pt-4 lg:pr-1"
+          className="calendar-scroll hidden lg:sticky lg:top-4 lg:block lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-auto lg:pt-4 lg:pr-1"
         >
           {panel}
         </aside>

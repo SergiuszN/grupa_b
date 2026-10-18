@@ -67,8 +67,8 @@
   },
   "Swipe": {
     "like": "I want this",
-    "skip": "Not now",
-    "cardAria": "{title}, {subtitle}. Swipe right to like, left to dismiss.",
+    "skip": "Keep looking",
+    "cardAria": "{title}, {subtitle}. Use the buttons: I want this or Keep looking.",
     "endEyebrow": "That is every suggestion",
     "endTitle": "We picked an evening for your taste.",
     "backHome": "Back to start",
