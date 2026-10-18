@@ -48,7 +48,7 @@ export default async function Home({
             </h1>
 
             <p
-              className="text-body md:text-[1.0625rem] md:leading-[1.625rem] mt-3.5 max-w-[342px] font-medium md:mt-5 md:max-w-[460px]"
+              className="text-body md:text-[1.0625rem] md:leading-[1.625rem] mt-3.5 max-w-[342px] font-medium whitespace-pre-line md:mt-5 md:max-w-[460px]"
               data-anim="copy"
             >
               {t("promise")}
