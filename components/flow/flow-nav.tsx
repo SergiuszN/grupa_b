@@ -4,6 +4,9 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CtaButton } from "@/components/ui";
+import { GoldenBaton } from "./golden-baton";
+
+export { GoldenBaton };
 
 export type FlowItem = { href: string; label: string };
 
@@ -38,36 +41,42 @@ export function FlowSteps({
   tone?: Tone;
 }) {
   return (
-    <nav
-      aria-label="Paginacja kroków"
-      className="flex items-center justify-center gap-1 pt-5 pb-2"
-    >
-      {items.map((item, index) => {
-        const isCurrent = index === step;
-        return (
-          <Link
-            aria-current={isCurrent ? "step" : undefined}
-            aria-label={`Krok ${index + 1}: ${item.label}`}
-            className="group flex min-h-[28px] min-w-[20px] items-center justify-center p-1.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
-            href={item.href}
-            key={item.href}
-          >
-            <span
-              className={`h-2 rounded-full transition-all duration-200 ${
-                isCurrent
-                  ? "bg-gold w-[24px]"
-                  : `w-2 group-hover:scale-125 ${
-                      tone === "dark"
-                        ? "bg-paper/35 group-hover:bg-paper/70"
-                        : "bg-[#D9D4CB] group-hover:bg-ink/50"
-                    }`
-              }`}
-              data-flow-dot
-            />
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="relative flex items-center justify-center px-6 pt-5 pb-2">
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center">
+        <GoldenBaton tone={tone} />
+      </div>
+
+      <nav
+        aria-label="Paginacja kroków"
+        className="flex items-center justify-center gap-1"
+      >
+        {items.map((item, index) => {
+          const isCurrent = index === step;
+          return (
+            <Link
+              aria-current={isCurrent ? "step" : undefined}
+              aria-label={`Krok ${index + 1}: ${item.label}`}
+              className="group flex min-h-[28px] min-w-[20px] items-center justify-center p-1.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+              href={item.href}
+              key={item.href}
+            >
+              <span
+                className={`h-2 rounded-full transition-all duration-200 ${
+                  isCurrent
+                    ? "bg-gold w-[24px]"
+                    : `w-2 group-hover:scale-125 ${
+                        tone === "dark"
+                          ? "bg-paper/35 group-hover:bg-paper/70"
+                          : "bg-[#D9D4CB] group-hover:bg-ink/50"
+                      }`
+                }`}
+                data-flow-dot
+              />
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
   );
 }
 
