@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Screen } from "@/components/flow/screen";
-import { EVENTS, localizeEvent } from "@/lib/events";
+import { findEvent, localizeEvent } from "@/lib/events";
 import {
   ACCOUNT_KEY,
   ORDERS_KEY,
@@ -82,8 +82,8 @@ export default function AccountPage() {
   }
 
   const favourites = liked
-    .map((id) => EVENTS.find((item) => item.id === id))
-    .filter((item): item is (typeof EVENTS)[number] => Boolean(item))
+    .map((id) => findEvent(id))
+    .filter((item) => item !== undefined)
     .map((item) => localizeEvent(item, locale));
 
   if (!account) {

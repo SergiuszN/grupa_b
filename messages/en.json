@@ -78,7 +78,17 @@
     "endMeta": "Come back for more suggestions.",
     "preview": "Listen",
     "closePreview": "Close player",
-    "pause": "Pause"
+    "pause": "Pause",
+    "kinds": {
+      "symphonic": "Symphonic concert",
+      "chamber": "Chamber concert",
+      "jazz": "Jazz concert",
+      "concert": "Concert",
+      "exhibition": "Exhibition",
+      "tour": "Guided tour",
+      "festival": "Festival",
+      "other": "Event"
+    }
   },
   "Plan": {
     "title": "How many of you?",

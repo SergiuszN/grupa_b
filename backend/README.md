@@ -33,6 +33,7 @@ Lokalnie bez Dockera: `cd backend && go run ./cmd/api` (domyślnie `DB_PATH=../d
 | `GET /api/v1/venues`, `/venues/{slug}` | sale i galerie, szczegóły z dostępnością i wydarzeniami |
 | `GET /api/v1/filters` | wartości filtrów kalendarza z licznikami nadchodzących wydarzeń |
 | `GET /api/v1/search?q=` | wyszukiwarka pogrupowana: wydarzenia, artyści, utwory, cykle |
+| `GET /api/v1/recommendations?taste=` | propozycje do talii `/swipe` pod odpowiedzi z ankiety (`listen,classical,old-classics`…): ranking po rodzaju, epoce kompozytorów, składzie, sali i słowach z opisu |
 | `POST /api/v1/assistant` | asystent głosowy — jedna tura rozmowy, odpowiedź jako strumień SSE (niżej) |
 
 Wyszukiwanie (`q`) ignoruje wielkość liter i polskie/niemieckie znaki: `karlowicz` = `Karłowicz`. Przeszukuje tytuły we wszystkich językach, wykonawców, utwory, kompozytorów i cykle.

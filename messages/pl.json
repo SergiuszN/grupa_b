@@ -78,7 +78,17 @@
     "endMeta": "Wracaj po kolejne propozycje.",
     "preview": "Posłuchaj",
     "closePreview": "Zamknij odtwarzacz",
-    "pause": "Pauza"
+    "pause": "Pauza",
+    "kinds": {
+      "symphonic": "Koncert symfoniczny",
+      "chamber": "Koncert kameralny",
+      "jazz": "Koncert jazzowy",
+      "concert": "Koncert",
+      "exhibition": "Wystawa",
+      "tour": "Zwiedzanie",
+      "festival": "Festiwal",
+      "other": "Wydarzenie"
+    }
   },
   "Plan": {
     "title": "Ile Was będzie?",

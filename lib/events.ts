@@ -1,3 +1,5 @@
+import { PICKS_KEY } from "./taste";
+
 type Localized = {
   date: string;
   room: string;
@@ -225,6 +227,24 @@ export const EVENTS: EventInfo[] = [
     },
   },
 ];
+
+/** Looks an event up among the built-in ones and the cards liked in the swipe deck. */
+export function findEvent(id: string | null | undefined): EventInfo | undefined {
+  if (!id) return undefined;
+
+  const builtIn = EVENTS.find((item) => item.id === id);
+  if (builtIn) return builtIn;
+
+  try {
+    const picks = JSON.parse(localStorage.getItem(PICKS_KEY) ?? "{}") as Record<
+      string,
+      EventInfo
+    >;
+    return picks[id];
+  } catch {
+    return undefined;
+  }
+}
 
 export function localizeEvent(event: EventInfo, locale: string): EventInfo {
   if (locale === "en" || locale === "de") {

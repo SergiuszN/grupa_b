@@ -302,6 +302,54 @@ paths:
                   data: { $ref: "#/components/schemas/SearchResults" }
         "400": { $ref: "#/components/responses/BadRequest" }
 
+  /api/v1/recommendations:
+    get:
+      operationId: recommendations
+      tags: [Wyszukiwanie]
+      summary: Propozycje dopasowane do odpowiedzi z ankiety na starcie
+      description: |
+        Ranking nadchodzących wydarzeń (bez edukacji dla dzieci, koncertów zewnętrznych i wydarzeń bez zdjęcia).
+        Każdy profil `taste` ma wagi dla rodzaju wydarzenia, sali, epoki kompozytorów z programu
+        (urodzeni przed 1860 / od 1860), małego składu (do trzech wykonawców) i słów kluczowych w opisie;
+        wyniki profili się sumują. Remisy rozstrzyga najbliższy termin. Bez `taste` — najbliższe wydarzenia.
+      parameters:
+        - $ref: "#/components/parameters/lang"
+        - name: taste
+          in: query
+          description: Profile po przecinku, np. odpowiedzi z kolejnych pytań ankiety.
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [listen, watch, classical, contemporary, modern-classic, old-classics, avant-garde, minimal,
+                exhibition, architecture, old-art, contemporary-art, interiors, city]
+          example: [listen, classical, old-classics]
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 50, default: 12 }
+      responses:
+        "200":
+          description: Karty od najlepiej dopasowanej
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/EventSummary"
+                        - type: object
+                          properties:
+                            score: { type: number, description: Suma wag dopasowania }
+                            performers: { type: array, items: { type: string }, description: Do trzech pierwszych wykonawców }
+                            composers: { type: array, items: { type: string } }
+                            excerpt: { type: string, nullable: true, description: Początek opisu (pełne zdania) }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
   /api/v1/assistant:
     post:
       operationId: assistant

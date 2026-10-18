@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
-import { EVENTS, localizeEvent } from "./events";
+import { EVENTS, findEvent, localizeEvent } from "./events";
 import { PARTY_KEY, SWIPE_KEY } from "./taste";
 
 const EVENT_KEY = "filharmonia:event";
@@ -17,11 +17,10 @@ export function useFlow() {
       localStorage.getItem(SWIPE_KEY) ?? "[]",
     ) as { id: string; choice: string }[];
     const liked = [...decisions].reverse().find((d) => d.choice === "tak");
-    let resolved = EVENTS.find((item) => item.id === liked?.id);
+    let resolved = findEvent(liked?.id);
 
     if (!resolved) {
-      const savedId = localStorage.getItem(EVENT_KEY);
-      resolved = EVENTS.find((item) => item.id === savedId);
+      resolved = findEvent(localStorage.getItem(EVENT_KEY));
 
       if (!resolved) {
         resolved = EVENTS[Math.floor(Math.random() * EVENTS.length)];

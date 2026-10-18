@@ -40,6 +40,7 @@ func (a *api) routes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/v1/venues/{slug}", a.handleVenue)
 	mux.HandleFunc("GET /api/v1/filters", a.handleFilters)
 	mux.HandleFunc("GET /api/v1/search", a.handleSearch)
+	mux.HandleFunc("GET /api/v1/recommendations", a.handleRecommendations)
 	mux.HandleFunc("POST /api/v1/assistant", a.handleAssistant)
 	mux.HandleFunc("GET /api/v1/openapi.yaml", handleOpenAPI)
 	mux.HandleFunc("GET /api/docs", handleDocs)
@@ -64,6 +65,7 @@ func (a *api) handleIndex(w http.ResponseWriter, _ *http.Request) {
 			"GET /api/v1/venues/{slug}",
 			"GET /api/v1/filters",
 			"GET /api/v1/search",
+			"GET /api/v1/recommendations",
 			"POST /api/v1/assistant",
 		},
 	})
@@ -201,6 +203,27 @@ func (a *api) handleSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeData(w, res)
+}
+
+func (a *api) handleRecommendations(w http.ResponseWriter, r *http.Request) {
+	tastes := list(r.URL.Query()["taste"])
+	for _, t := range tastes {
+		if _, ok := catalog.Tastes[t]; !ok {
+			a.fail(w, r, badRequest{"unknown taste: " + t})
+			return
+		}
+	}
+	limit, _, err := paging(r.URL.Query(), 12, 50)
+	if err != nil {
+		a.fail(w, r, err)
+		return
+	}
+	recs, err := a.store.Recommend(r.Context(), lang(r), a.today(), tastes, limit)
+	if err != nil {
+		a.fail(w, r, err)
+		return
+	}
+	writeData(w, recs)
 }
 
 // parseFilter reads calendar filters from the query string. List values are

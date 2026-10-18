@@ -24,62 +24,63 @@ import type { LucideIcon } from "lucide-react";
 import { gsap } from "gsap";
 import { FlowArrows } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
-import { TASTE_KEY } from "@/lib/taste";
+import { TASTE_KEY, type TasteAnswers } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
 
 const DEPTH = 3;
 
-type Option = { key: string; icon: LucideIcon; next?: string };
+/** `taste` is the profile the answer adds in GET /api/v1/recommendations. */
+type Option = { key: string; taste: string; icon: LucideIcon; next?: string };
 
 /** Three-level binary tree: every branch asks its own question. */
 const TREE: Record<string, { question: string; options: Option[] }> = {
   q1: {
     question: "q1",
     options: [
-      { key: "q1a", icon: Ear, next: "q2l" },
-      { key: "q1b", icon: Eye, next: "q2w" },
+      { key: "q1a", taste: "listen", icon: Ear, next: "q2l" },
+      { key: "q1b", taste: "watch", icon: Eye, next: "q2w" },
     ],
   },
   q2l: {
     question: "q2l",
     options: [
-      { key: "q2la", icon: Music, next: "q3c" },
-      { key: "q2lb", icon: Waves, next: "q3n" },
+      { key: "q2la", taste: "classical", icon: Music, next: "q3c" },
+      { key: "q2lb", taste: "contemporary", icon: Waves, next: "q3n" },
     ],
   },
   q2w: {
     question: "q2w",
     options: [
-      { key: "q2wa", icon: Frame, next: "q3e" },
-      { key: "q2wb", icon: Building2, next: "q3a" },
+      { key: "q2wa", taste: "exhibition", icon: Frame, next: "q3e" },
+      { key: "q2wb", taste: "architecture", icon: Building2, next: "q3a" },
     ],
   },
   q3c: {
     question: "q3c",
     options: [
-      { key: "q3ca", icon: Sparkles, next: undefined },
-      { key: "q3cb", icon: Landmark, next: undefined },
+      { key: "q3ca", taste: "modern-classic", icon: Sparkles, next: undefined },
+      { key: "q3cb", taste: "old-classics", icon: Landmark, next: undefined },
     ],
   },
   q3n: {
     question: "q3n",
     options: [
-      { key: "q3na", icon: Zap, next: undefined },
-      { key: "q3nb", icon: Moon, next: undefined },
+      { key: "q3na", taste: "avant-garde", icon: Zap, next: undefined },
+      { key: "q3nb", taste: "minimal", icon: Moon, next: undefined },
     ],
   },
   q3e: {
     question: "q3e",
     options: [
-      { key: "q3ea", icon: Sun, next: undefined },
-      { key: "q3eb", icon: Minus, next: undefined },
+      { key: "q3ea", taste: "old-art", icon: Sun, next: undefined },
+      { key: "q3eb", taste: "contemporary-art", icon: Minus, next: undefined },
     ],
   },
   q3a: {
     question: "q3a",
     options: [
-      { key: "q3aa", icon: House, next: undefined },
-      { key: "q3ab", icon: Map, next: undefined },
+      { key: "q3aa", taste: "interiors", icon: House, next: undefined },
+      { key: "q3ab", taste: "city", icon: Map, next: undefined },
     ],
   },
 };
@@ -88,7 +89,7 @@ export default function Start() {
   const t = useTranslations("Quiz");
   const router = useRouter();
   const [nodeId, setNodeId] = useState("q1");
-  const [path, setPath] = useState<string[]>([]);
+  const [path, setPath] = useState<Option[]>([]);
   const [picked, setPicked] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
@@ -136,7 +137,7 @@ export default function Start() {
     if (picked) return;
 
     const still = prefersStillMotion();
-    const nextPath = [...path, option.key];
+    const nextPath = [...path, option];
     setPicked(option.key);
     setPath(nextPath);
 
@@ -160,7 +161,11 @@ export default function Start() {
 
     window.setTimeout(() => {
       if (!option.next) {
-        localStorage.setItem(TASTE_KEY, JSON.stringify({ path: nextPath }));
+        const answers: TasteAnswers = {
+          path: nextPath.map((item) => item.key),
+          tastes: nextPath.map((item) => item.taste),
+        };
+        localStorage.setItem(TASTE_KEY, JSON.stringify(answers));
         const fade = fadeRef.current;
 
         if (!still && fade) {

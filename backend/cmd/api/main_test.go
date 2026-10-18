@@ -280,3 +280,44 @@ func TestAssistantDisabled(t *testing.T) {
 		t.Fatalf("status = %d, want 503; body: %s", rec.Code, rec.Body.String())
 	}
 }
+
+func TestRecommendations(t *testing.T) {
+	h := newTestServer(t)
+
+	first := func(taste string) map[string]any {
+		t.Helper()
+		recs := items(t, get(t, h, "/api/v1/recommendations?taste="+taste, http.StatusOK))
+		if len(recs) == 0 {
+			t.Fatalf("taste %s: no recommendations", taste)
+		}
+		for _, r := range recs {
+			if k := r["kind"]; k == "education" || k == "external" {
+				t.Errorf("taste %s: unexpected %s event %v", taste, k, r["title"])
+			}
+		}
+		return recs[0]
+	}
+
+	if r := first("listen,classical,old-classics"); r["kind"] != "symphonic" && r["kind"] != "chamber" && r["kind"] != "concert" {
+		t.Errorf("old classics: top kind = %v (%v)", r["kind"], r["title"])
+	}
+	if r := first("watch,exhibition,contemporary-art"); r["kind"] != "exhibition" {
+		t.Errorf("contemporary art: top kind = %v (%v)", r["kind"], r["title"])
+	}
+	if r := first("watch,architecture,interiors"); r["kind"] != "tour" || !strings.Contains(r["title"].(string), "polskim") {
+		t.Errorf("interiors: top = %v %v, want the Polish tour", r["kind"], r["title"])
+	}
+
+	recs := items(t, get(t, h, "/api/v1/recommendations?taste=watch,architecture,city&limit=50", http.StatusOK))
+	tours := 0
+	for _, r := range recs {
+		if r["kind"] == "tour" {
+			tours++
+		}
+	}
+	if tours != 1 {
+		t.Errorf("tours in deck = %d, want 1", tours)
+	}
+
+	get(t, h, "/api/v1/recommendations?taste=nope", http.StatusBadRequest)
+}

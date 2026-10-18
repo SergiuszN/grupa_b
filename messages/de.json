@@ -78,7 +78,17 @@
     "endMeta": "Komm für weitere Vorschläge zurück.",
     "preview": "Anhören",
     "closePreview": "Player schließen",
-    "pause": "Pauza"
+    "pause": "Pauza",
+    "kinds": {
+      "symphonic": "Sinfoniekonzert",
+      "chamber": "Kammerkonzert",
+      "jazz": "Jazzkonzert",
+      "concert": "Konzert",
+      "exhibition": "Ausstellung",
+      "tour": "Führung",
+      "festival": "Festival",
+      "other": "Veranstaltung"
+    }
   },
   "Plan": {
     "title": "Wie viele seid ihr?",

@@ -9,9 +9,10 @@ import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
 import { CtaButton } from "@/components/ui";
-import { EVENTS, localizeEvent } from "@/lib/events";
+import { EVENTS, localizeEvent, type EventInfo } from "@/lib/events";
 import { PreviewPlayer } from "@/components/swipe/preview-player";
-import { SWIPE_KEY } from "@/lib/taste";
+import { toEventInfo, type Recommendation } from "@/lib/recommendations";
+import { PICKS_KEY, SWIPE_KEY, TASTE_KEY, type TasteAnswers } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
 import { sentenceCase } from "@/lib/format";
 
@@ -21,7 +22,8 @@ export default function Swipe() {
   const locale = useLocale();
   const router = useRouter();
   const t = useTranslations("Swipe");
-  const [deck, setDeck] = useState(EVENTS);
+  // null until the deck matching the quiz answers arrives.
+  const [deck, setDeck] = useState<EventInfo[] | null>(null);
   const [index, setIndex] = useState(0);
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -31,20 +33,49 @@ export default function Swipe() {
   const cardWrap = useRef<HTMLDivElement>(null);
   const copyWrap = useRef<HTMLDivElement>(null);
 
-  const card = deck[index] ? localizeEvent(deck[index], locale) : undefined;
-  const step = Math.min(index + 1, deck.length);
+  const card = deck?.[index] ? localizeEvent(deck[index], locale) : undefined;
 
   useEffect(() => {
-    const shuffled = [...EVENTS];
+    let cancelled = false;
+    let tastes: string[] = [];
 
-    for (let i = shuffled.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    try {
+      const answers = JSON.parse(
+        localStorage.getItem(TASTE_KEY) ?? "{}",
+      ) as TasteAnswers;
+      tastes = answers.tastes ?? [];
+    } catch {
+      // No quiz answers yet: the API returns the nearest events.
     }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- shuffle the deck once per visit
-    setDeck(shuffled);
-  }, []);
+    const params = new URLSearchParams({ lang: locale });
+    if (tastes.length) params.set("taste", tastes.join(","));
+
+    fetch(`/api/recommendations?${params}`)
+      .then((response) => response.json() as Promise<{ data?: Recommendation[] | null }>)
+      .then(({ data }) => {
+        if (!data?.length) throw new Error("empty deck");
+        if (!cancelled) {
+          setDeck(
+            data.map((rec) =>
+              toEventInfo(
+                rec,
+                locale,
+                t.has(`kinds.${rec.kind}`) ? t(`kinds.${rec.kind}`) : t("kinds.other"),
+              ),
+            ),
+          );
+        }
+      })
+      .catch(() => {
+        // API offline: fall back to the built-in showcase events.
+        if (!cancelled) setDeck(EVENTS);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [locale, t]);
 
   useEffect(() => {
     if (prefersStillMotion()) {
@@ -104,6 +135,11 @@ export default function Swipe() {
   function decide(direction: -1 | 1) {
     if (!card || exit !== null) return;
 
+    if (direction === 1) {
+      const picks = JSON.parse(localStorage.getItem(PICKS_KEY) ?? "{}");
+      localStorage.setItem(PICKS_KEY, JSON.stringify({ ...picks, [card.id]: card }));
+    }
+
     const previous = JSON.parse(localStorage.getItem(SWIPE_KEY) ?? "[]");
     localStorage.setItem(
       SWIPE_KEY,
@@ -121,7 +157,7 @@ export default function Swipe() {
         return;
       }
 
-      setIndex((current) => (current + 1) % deck.length);
+      setIndex((current) => (current + 1) % (deck?.length ?? 1));
       setExit(null);
       setDx(0);
       setDragging(false);
@@ -147,7 +183,12 @@ export default function Swipe() {
     <Screen>
       <FlowSteps step={2} />
 
-      {card ? (
+      {deck === null ? (
+        <div
+          aria-busy="true"
+          className="bg-surface ring-ink/10 mx-6 mt-3 min-h-[220px] flex-1 animate-pulse rounded-[24px] ring-1"
+        />
+      ) : card ? (
         <>
           <div className="relative mx-6 mt-3 flex min-h-[220px] flex-1" ref={cardWrap}>
             <div
@@ -215,7 +256,11 @@ export default function Swipe() {
         </div>
       )}
 
-      <div className="px-6 pt-5" key={`copy-${index}`} ref={copyWrap}>
+      <div
+        className={`px-6 pt-5 ${deck === null ? "invisible" : ""}`}
+        key={`copy-${index}`}
+        ref={copyWrap}
+      >
         <p
           className="text-gold text-[11px] leading-[15px] font-medium tracking-[0.16em] uppercase"
           data-copy
