@@ -21,6 +21,7 @@ export default function SeatsPage() {
       if (stored) {
         const parsed = JSON.parse(stored) as SelectedSeat[];
         if (parsed.length > 0) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot read of the seats saved earlier in the flow
           setSelectedSeats(parsed);
           return;
         }

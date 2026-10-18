@@ -199,12 +199,6 @@ export function HallMap({
 
   const [activeSection, setActiveSection] = useState("Cała sala");
 
-  // Keep selectedIds ref in sync
-  useEffect(() => {
-    selectedIdsRef.current = new Set(selectedSeats.map((s) => s.id));
-    queueRender();
-  }, [selectedSeats]);
-
   // Generate seats once
   useEffect(() => {
     seatsRef.current = generateSeats();
@@ -328,11 +322,17 @@ export function HallMap({
     }
   }, []);
 
-  function queueRender() {
+  const queueRender = useCallback(() => {
     if (renderQueuedRef.current) return;
     renderQueuedRef.current = true;
     requestAnimationFrame(render);
-  }
+  }, [render]);
+
+  // Keep selectedIds ref in sync
+  useEffect(() => {
+    selectedIdsRef.current = new Set(selectedSeats.map((s) => s.id));
+    queueRender();
+  }, [selectedSeats, queueRender]);
 
   /* ---------- animated transform ---------- */
 
@@ -557,7 +557,7 @@ export function HallMap({
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [cancelAutoAnimation, handleSeatClick]);
+  }, [cancelAutoAnimation, handleSeatClick, queueRender]);
 
   /* ---------- initial render + resize ---------- */
 
@@ -572,7 +572,7 @@ export function HallMap({
     const onResize = () => queueRender();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [render]);
+  }, [render, queueRender]);
 
   /* ---------- section button click ---------- */
 
@@ -590,13 +590,13 @@ export function HallMap({
     cancelAutoAnimation();
     transformRef.current.scale = Math.min(transformRef.current.scale * 1.3, 4);
     queueRender();
-  }, [cancelAutoAnimation]);
+  }, [cancelAutoAnimation, queueRender]);
 
   const zoomOut = useCallback(() => {
     cancelAutoAnimation();
     transformRef.current.scale = Math.max(transformRef.current.scale / 1.3, 0.4);
     queueRender();
-  }, [cancelAutoAnimation]);
+  }, [cancelAutoAnimation, queueRender]);
 
   /* ---------- JSX ---------- */
 
