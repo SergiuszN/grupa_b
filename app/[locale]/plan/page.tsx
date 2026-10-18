@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { gsap } from "gsap";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { CtaButton } from "@/components/ui";
 import { PARTY_KEY } from "@/lib/taste";
 import { prefersStillMotion } from "@/lib/motion";
 
@@ -92,15 +93,14 @@ export default function Plan() {
           </div>
 
           <div className="flex items-center justify-between">
-            <button
+            <CtaButton
               aria-label={t("fewer")}
-              className="border-ink focus-visible:outline-gold flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[26px] leading-none font-light transition-colors hover:bg-paper focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-30"
               disabled={people === MIN}
+              iconLeft={<Minus aria-hidden="true" size={24} strokeWidth={1.5} />}
               onClick={() => change(people - 1)}
-              type="button"
-            >
-              <Minus aria-hidden="true" size={24} strokeWidth={1.5} />
-            </button>
+              size="icon"
+              variant="outline"
+            />
 
             <div aria-live="polite" className="flex flex-col items-center">
               <div className="flex items-center gap-2.5">
@@ -128,15 +128,14 @@ export default function Plan() {
               </p>
             </div>
 
-            <button
+            <CtaButton
               aria-label={t("more")}
-              className="bg-gold text-paper hover:bg-gold-deep focus-visible:outline-ink flex size-14 shrink-0 items-center justify-center rounded-full text-[26px] leading-none font-light transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-30"
               disabled={people === MAX}
+              iconLeft={<Plus aria-hidden="true" size={24} strokeWidth={1.5} />}
               onClick={() => change(people + 1)}
-              type="button"
-            >
-              <Plus aria-hidden="true" size={24} strokeWidth={1.5} />
-            </button>
+              size="icon"
+              variant="primary"
+            />
           </div>
 
           <div className="flex flex-col gap-2.5 pt-1">

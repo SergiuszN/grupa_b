@@ -16,6 +16,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Screen } from "@/components/flow/screen";
 import { PlayButton } from "@/components/calendar/play-button";
 import { Link } from "@/i18n/routing";
+import { CtaButton } from "@/components/ui";
 import { eventIdFromSlug } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -334,31 +335,35 @@ export default async function EventPage({
       <div className="flex-1" />
 
       <div className="border-line bg-paper/95 sticky bottom-0 mt-8 flex items-center gap-3 border-t px-6 py-3 backdrop-blur">
-        <Link
+        <CtaButton
           aria-label={t("back")}
-          className="border-ink text-ink hover:bg-surface focus-visible:outline-gold flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           href="/calendar"
-        >
-          <ArrowLeft aria-hidden="true" size={20} strokeWidth={1.8} />
-        </Link>
+          iconLeft={<ArrowLeft aria-hidden="true" size={20} strokeWidth={1.8} />}
+          size="icon"
+          variant="outline"
+        />
 
         {tickets && !isFree ? (
-          <a
-            className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-14 flex-1 items-center justify-between gap-3 rounded-full px-6 text-[15px] leading-5 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+          <CtaButton
+            className="justify-between"
+            flex1
             href={tickets}
+            iconLeft={
+              <span className="flex items-center gap-2">
+                <Ticket aria-hidden="true" size={17} strokeWidth={1.8} />
+                {t("buy")}
+              </span>
+            }
             rel="noreferrer"
             target="_blank"
+            variant="primary"
           >
-            <span className="flex items-center gap-2">
-              <Ticket aria-hidden="true" size={17} strokeWidth={1.8} />
-              {t("buy")}
-            </span>
             <span>
               {price
                 ? `${price === performance?.price_max ? "" : `${t("from")} `}${price} zł`
                 : ""}
             </span>
-          </a>
+          </CtaButton>
         ) : (
           <div className="border-line text-muted flex h-14 flex-1 items-center justify-center rounded-full border text-[15px] leading-5 font-medium">
             {isFree ? t("free") : t("unavailable")}

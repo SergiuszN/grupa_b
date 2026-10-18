@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { CtaButton } from "@/components/ui";
 import { EVENTS, localizeEvent } from "@/lib/events";
 import { PreviewPlayer } from "@/components/swipe/preview-player";
 import { SWIPE_KEY } from "@/lib/taste";
@@ -265,26 +266,26 @@ export default function Swipe() {
       </div>
 
       <div className="mt-auto flex gap-2.5 px-6 pt-5 pb-[calc(env(safe-area-inset-bottom)+20px)]">
-        <button
+        <CtaButton
           aria-label={t("skip")}
-          className="border-ink hover:bg-surface focus-visible:outline-gold flex h-14 flex-1 items-center justify-center gap-2 rounded-full border-[1.5px] text-[14px] font-medium tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 active:scale-[0.98] disabled:opacity-40"
           disabled={!card || exit !== null}
+          flex1
+          iconLeft={<X aria-hidden="true" size={18} strokeWidth={1.8} />}
           onClick={() => decide(-1)}
-          type="button"
+          variant="outline"
         >
-          <X aria-hidden="true" size={18} strokeWidth={1.8} />
           {t("skip")}
-        </button>
-        <button
+        </CtaButton>
+        <CtaButton
           aria-label={t("like")}
-          className="bg-gold text-paper hover:bg-gold-deep focus-visible:outline-ink flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-[14px] font-bold tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 active:scale-[0.98] disabled:opacity-40"
           disabled={!card || exit !== null}
+          flex1
+          iconLeft={<Check aria-hidden="true" size={18} strokeWidth={2} />}
           onClick={() => decide(1)}
-          type="button"
+          variant="primary"
         >
-          <Check aria-hidden="true" size={18} strokeWidth={2} />
           {t("like")}
-        </button>
+        </CtaButton>
       </div>
 
       <p aria-live="polite" className="sr-only">

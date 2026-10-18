@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { FlowArrows, FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { CtaButton } from "@/components/ui";
 import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 import { sentenceCase } from "@/lib/format";
@@ -163,13 +164,15 @@ export default function Checkout() {
       </div>
 
       <div className="flex flex-1 flex-col items-center gap-4 px-6 pt-[22px]" data-flow="actions">
-        <Link
-          className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] w-full items-center justify-center gap-2 rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+        <CtaButton
+          fullWidth
           href="/success"
+          iconLeft={<Ticket aria-hidden="true" size={18} strokeWidth={1.8} />}
+          size="md"
+          variant="primary"
         >
-          <Ticket aria-hidden="true" size={18} strokeWidth={1.8} />
           {t("buy")}
-        </Link>
+        </CtaButton>
 
         <div className="flex items-center justify-center gap-[22px] text-[14px] leading-[18px] font-medium">
           <a

@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { CtaButton } from "@/components/ui";
 
 export type FlowItem = { href: string; label: string };
 
@@ -56,19 +56,6 @@ export function FlowSteps({
   );
 }
 
-const base =
-  "flex size-14 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4";
-
-const outline: Record<Tone, string> = {
-  dark: "border-paper text-paper hover:bg-paper/10 focus-visible:outline-gold",
-  light: "border-ink text-ink hover:bg-surface focus-visible:outline-gold",
-};
-
-const filled: Record<Tone, string> = {
-  dark: "bg-gold text-white hover:bg-gold-deep focus-visible:outline-paper",
-  light: "bg-gold text-white hover:bg-gold-deep focus-visible:outline-ink",
-};
-
 export function FlowArrows({
   step,
   items = FLOW,
@@ -96,23 +83,26 @@ export function FlowArrows({
       data-flow="actions"
     >
       {previous ? (
-        <Link
+        <CtaButton
           aria-label={`Poprzedni krok: ${previous.label}`}
-          className={`${base} ${outline[tone]}`}
           href={previous.href}
-        >
-          <ArrowLeft aria-hidden="true" size={18} strokeWidth={1.8} />
-        </Link>
+          iconLeft={<ArrowLeft aria-hidden="true" size={18} strokeWidth={1.8} />}
+          size="icon"
+          tone={tone}
+          variant="outline"
+        />
       ) : null}
 
       {href ? (
-        <Link
-          className={`${filled[tone]} flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-[15px] leading-5 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4`}
+        <CtaButton
+          flex1
           href={href}
+          iconRight={<ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />}
+          tone={tone}
+          variant="primary"
         >
           {label}
-          <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
-        </Link>
+        </CtaButton>
       ) : (
         <span className="flex-1" />
       )}

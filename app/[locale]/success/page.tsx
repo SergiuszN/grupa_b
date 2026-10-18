@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { FlowSteps } from "@/components/flow/flow-nav";
 import { Screen } from "@/components/flow/screen";
+import { CtaButton } from "@/components/ui";
 import { useTranslations } from "next-intl";
 import { useFlow } from "@/lib/use-flow";
 import { prefersStillMotion } from "@/lib/motion";
@@ -156,13 +157,15 @@ export default function Success() {
       </div>
 
       <div className="px-6 pb-2" data-flow="actions">
-        <Link
-          className="bg-gold text-ink hover:bg-gold-deep focus-visible:outline-ink flex h-[52px] items-center justify-center gap-2 rounded-full text-[16px] leading-5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+        <CtaButton
+          fullWidth
           href="/onboarding"
+          iconLeft={<Info aria-hidden="true" size={18} strokeWidth={1.8} />}
+          size="md"
+          variant="primary"
         >
-          <Info aria-hidden="true" size={18} strokeWidth={1.8} />
           {t("info")}
-        </Link>
+        </CtaButton>
       </div>
 
     </Screen>
