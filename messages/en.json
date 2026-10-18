@@ -244,6 +244,104 @@
     "reset": "Clear",
     "noMatches": "No events match these filters."
   },
+  "CalendarFilters": {
+    "filters": "Filters",
+    "close": "Close filters",
+    "quick": "Quick picks",
+    "results": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "show": "{count, plural, =0 {No results} one {Show # result} other {Show # results}}",
+    "clear": "Clear filters",
+    "share": "Share",
+    "copied": "Link copied",
+    "searchLabel": "Search for a performer, composer, series or title",
+    "searchPlaceholder": "Performer, composer, series…",
+    "noResults": "Nothing matches these filters.",
+    "tryInstead": "Try without one of them:",
+    "without": "Without: {label}",
+    "groups": {
+      "when": "When",
+      "types": "Type",
+      "audiences": "For whom",
+      "moods": "Mood",
+      "venues": "Venue",
+      "price": "Price",
+      "duration": "Duration",
+      "access": "Accessibility",
+      "q": "Search"
+    },
+    "when": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "weekend": "This weekend",
+      "week": "This week",
+      "month": "Month",
+      "range": "Date range"
+    },
+    "from": "From",
+    "to": "To",
+    "types": {
+      "symphonic": "Symphonic",
+      "chamber": "Chamber",
+      "jazz": "Jazz",
+      "concert": "Other concerts",
+      "education": "Education",
+      "exhibition": "Exhibition",
+      "tour": "Guided tour",
+      "festival": "Festival",
+      "external": "External event",
+      "other": "Other"
+    },
+    "audiences": {
+      "children": "Children",
+      "families": "Families",
+      "preschool": "Preschools",
+      "youth": "Teenagers",
+      "schools": "Schools",
+      "adults": "Adults",
+      "seniors": "Seniors",
+      "beginners": "First-timers"
+    },
+    "age": "Child's age",
+    "anyAge": "Any",
+    "years": "{age, plural, one {# year} other {# years}}",
+    "moods": {
+      "classical-super-hits": "Classical super hits",
+      "emotional": "Emotional",
+      "energy": "Energy",
+      "relax": "Relax",
+      "something-extraordinary": "Something unusual"
+    },
+    "venues": {
+      "symphony": "Symphony Hall",
+      "chamber": "Chamber Hall",
+      "galleries": "Galleries & foyer",
+      "outside": "Outside the building"
+    },
+    "price": {
+      "free": "Free",
+      "30": "up to 30 zł",
+      "50": "up to 50 zł",
+      "100": "up to 100 zł"
+    },
+    "duration": {
+      "45": "up to 45 min",
+      "90": "up to 90 min",
+      "long": "longer"
+    },
+    "access": {
+      "mobility": "Mobility",
+      "visual": "Visual",
+      "hearing": "Hearing",
+      "sensory": "Sensory information"
+    },
+    "ticket": {
+      "sold_out": "Sold out",
+      "free": "Free",
+      "registration_required": "Registration",
+      "last_seats": "Last seats",
+      "from": "from {price} zł"
+    }
+  },
   "Landing": {
     "headline1": "The Philharmonic",
     "headline2": "starts online.",

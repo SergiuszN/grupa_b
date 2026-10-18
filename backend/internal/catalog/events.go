@@ -143,7 +143,17 @@ type Accessibility struct {
 // CalendarEntry is a performance together with its event card.
 type CalendarEntry struct {
 	Performance
-	Event EventSummary `json:"event"`
+	Event  EventSummary `json:"event"`
+	Facets *EventFacets `json:"facets,omitempty"`
+}
+
+// EventFacets lets clients filter the calendar locally without fetching every event card.
+type EventFacets struct {
+	Audiences     []Audience `json:"audiences"`
+	Moods         []string   `json:"moods"`
+	Accessibility []string   `json:"accessibility"` // types that are available or partial
+	Series        []string   `json:"series"`
+	People        []string   `json:"people"` // performers and composers
 }
 
 // where builds conditions over events e, performances p and venues v.
@@ -317,11 +327,94 @@ func (s *Store) ListPerformances(ctx context.Context, f Filter) ([]CalendarEntry
 		byEvent[e.ID] = e
 	}
 
+	facets, err := s.eventFacets(ctx, f.Lang, ids)
+	if err != nil {
+		return nil, 0, err
+	}
+
 	out := make([]CalendarEntry, len(perfs))
 	for i, p := range perfs {
-		out[i] = CalendarEntry{Performance: p.Performance, Event: byEvent[p.eventID]}
+		out[i] = CalendarEntry{Performance: p.Performance, Event: byEvent[p.eventID], Facets: facets[p.eventID]}
 	}
 	return out, total, nil
+}
+
+// eventFacets loads filterable attributes of many events in a few batched queries.
+func (s *Store) eventFacets(ctx context.Context, lang string, ids []int64) (map[int64]*EventFacets, error) {
+	out := make(map[int64]*EventFacets, len(ids))
+	for _, id := range ids {
+		out[id] = &EventFacets{Audiences: []Audience{}, Moods: []string{}, Accessibility: []string{}, Series: []string{}, People: []string{}}
+	}
+	if len(ids) == 0 {
+		return out, nil
+	}
+	in := "(" + placeholders(len(ids)) + ")"
+	idArgs := anyArgs(ids)
+
+	rows, err := s.db.QueryContext(ctx, `SELECT ea.event_id, ag.slug, ea.min_age, ea.max_age
+		FROM event_audiences ea JOIN audience_groups ag ON ag.id = ea.audience_id
+		WHERE ea.event_id IN `+in+` ORDER BY ag.id`, idArgs...)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var id int64
+		var a Audience
+		if err := rows.Scan(&id, &a.Slug, &a.MinAge, &a.MaxAge); err != nil {
+			rows.Close()
+			return nil, err
+		}
+		out[id].Audiences = append(out[id].Audiences, a)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	lists := []struct {
+		query string
+		args  []any
+		field func(*EventFacets) *[]string
+	}{
+		{`SELECT em.event_id, m.slug FROM event_moods em JOIN moods m ON m.id = em.mood_id
+			WHERE em.event_id IN ` + in + ` ORDER BY m.slug`, idArgs,
+			func(f *EventFacets) *[]string { return &f.Moods }},
+		{`SELECT event_id, accessibility_type FROM event_accessibility
+			WHERE status IN ('available', 'partial') AND event_id IN ` + in + ` ORDER BY accessibility_type`, idArgs,
+			func(f *EventFacets) *[]string { return &f.Accessibility }},
+		{`SELECT es.event_id, COALESCE(st.name, s.slug, '') FROM event_series es JOIN series s ON s.id = es.series_id
+			` + translationJoin("series_translations", "st", "series_id", "s") + `
+			WHERE es.event_id IN ` + in + ` ORDER BY 2`, append([]any{lang}, idArgs...),
+			func(f *EventFacets) *[]string { return &f.Series }},
+		{`SELECT ea.event_id, a.display_name FROM event_artists ea JOIN artists a ON a.id = ea.artist_id
+			WHERE ea.event_id IN ` + in + `
+			UNION SELECT ew.event_id, c.display_name FROM event_works ew JOIN works w ON w.id = ew.work_id
+			JOIN artists c ON c.id = w.composer_id WHERE ew.event_id IN ` + in, append(idArgs, idArgs...),
+			func(f *EventFacets) *[]string { return &f.People }},
+	}
+	for _, l := range lists {
+		rows, err := s.db.QueryContext(ctx, l.query, l.args...)
+		if err != nil {
+			return nil, err
+		}
+		for rows.Next() {
+			var id int64
+			var v string
+			if err := rows.Scan(&id, &v); err != nil {
+				rows.Close()
+				return nil, err
+			}
+			if v != "" {
+				field := l.field(out[id])
+				*field = append(*field, v)
+			}
+		}
+		rows.Close()
+		if err := rows.Err(); err != nil {
+			return nil, err
+		}
+	}
+	return out, nil
 }
 
 // GetEvent returns the full event card with all performances.

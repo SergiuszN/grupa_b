@@ -695,6 +695,28 @@ components:
           properties:
             event:
               $ref: "#/components/schemas/EventSummary"
+            facets:
+              type: object
+              description: Atrybuty do filtrowania kalendarza po stronie klienta.
+              properties:
+                audiences:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      slug: { type: string }
+                      min_age: { type: integer, nullable: true }
+                      max_age: { type: integer, nullable: true }
+                moods: { type: array, items: { type: string } }
+                accessibility:
+                  type: array
+                  description: Rodzaje dostępności o statusie available lub partial.
+                  items: { type: string, enum: [mobility, visual, hearing, sensory] }
+                series: { type: array, items: { type: string } }
+                people:
+                  type: array
+                  description: Wykonawcy i kompozytorzy.
+                  items: { type: string }
     ArtistRef:
       type: object
       properties:

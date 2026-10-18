@@ -244,6 +244,104 @@
     "reset": "Zurücksetzen",
     "noMatches": "Keine Veranstaltungen für diese Filter."
   },
+  "CalendarFilters": {
+    "filters": "Filter",
+    "close": "Filter schließen",
+    "quick": "Schnellauswahl",
+    "results": "{count, plural, =0 {Keine Ergebnisse} one {# Ergebnis} other {# Ergebnisse}}",
+    "show": "{count, plural, =0 {Keine Ergebnisse} one {# Ergebnis anzeigen} other {# Ergebnisse anzeigen}}",
+    "clear": "Filter zurücksetzen",
+    "share": "Teilen",
+    "copied": "Link kopiert",
+    "searchLabel": "Nach Künstler, Komponist, Reihe oder Titel suchen",
+    "searchPlaceholder": "Künstler, Komponist, Reihe…",
+    "noResults": "Nichts passt zu diesen Filtern.",
+    "tryInstead": "Versuche es ohne einen davon:",
+    "without": "Ohne: {label}",
+    "groups": {
+      "when": "Wann",
+      "types": "Art",
+      "audiences": "Für wen",
+      "moods": "Stimmung",
+      "venues": "Ort",
+      "price": "Preis",
+      "duration": "Dauer",
+      "access": "Barrierefreiheit",
+      "q": "Suche"
+    },
+    "when": {
+      "today": "Heute",
+      "tomorrow": "Morgen",
+      "weekend": "Dieses Wochenende",
+      "week": "Diese Woche",
+      "month": "Monat",
+      "range": "Zeitraum"
+    },
+    "from": "Von",
+    "to": "Bis",
+    "types": {
+      "symphonic": "Sinfonisch",
+      "chamber": "Kammermusik",
+      "jazz": "Jazz",
+      "concert": "Weitere Konzerte",
+      "education": "Bildung",
+      "exhibition": "Ausstellung",
+      "tour": "Führung",
+      "festival": "Festival",
+      "external": "Gastveranstaltung",
+      "other": "Sonstiges"
+    },
+    "audiences": {
+      "children": "Kinder",
+      "families": "Familien",
+      "preschool": "Kindergärten",
+      "youth": "Jugendliche",
+      "schools": "Schulen",
+      "adults": "Erwachsene",
+      "seniors": "Senioren",
+      "beginners": "Einsteiger"
+    },
+    "age": "Alter des Kindes",
+    "anyAge": "Beliebig",
+    "years": "{age, plural, one {# Jahr} other {# Jahre}}",
+    "moods": {
+      "classical-super-hits": "Classical super hits",
+      "emotional": "Emotional",
+      "energy": "Energie",
+      "relax": "Entspannung",
+      "something-extraordinary": "Etwas Besonderes"
+    },
+    "venues": {
+      "symphony": "Sinfoniesaal",
+      "chamber": "Kammermusiksaal",
+      "galleries": "Galerien & Foyer",
+      "outside": "Außerhalb des Gebäudes"
+    },
+    "price": {
+      "free": "Kostenlos",
+      "30": "bis 30 zł",
+      "50": "bis 50 zł",
+      "100": "bis 100 zł"
+    },
+    "duration": {
+      "45": "bis 45 Min.",
+      "90": "bis 90 Min.",
+      "long": "länger"
+    },
+    "access": {
+      "mobility": "Mobilität",
+      "visual": "Sehen",
+      "hearing": "Hören",
+      "sensory": "Sensorische Hinweise"
+    },
+    "ticket": {
+      "sold_out": "Ausverkauft",
+      "free": "Kostenlos",
+      "registration_required": "Anmeldung",
+      "last_seats": "Letzte Plätze",
+      "from": "ab {price} zł"
+    }
+  },
   "Landing": {
     "headline1": "Die Philharmonie",
     "headline2": "beginnt online.",

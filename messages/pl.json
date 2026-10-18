@@ -244,6 +244,104 @@
     "reset": "Wyczyść",
     "noMatches": "Brak wydarzeń dla tych filtrów."
   },
+  "CalendarFilters": {
+    "filters": "Filtry",
+    "close": "Zamknij filtry",
+    "quick": "Szybkie wybory",
+    "results": "{count, plural, =0 {Brak wyników} one {# wynik} few {# wyniki} many {# wyników} other {# wyniku}}",
+    "show": "{count, plural, =0 {Brak wyników} one {Pokaż # wynik} few {Pokaż # wyniki} many {Pokaż # wyników} other {Pokaż # wyniku}}",
+    "clear": "Wyczyść filtry",
+    "share": "Udostępnij",
+    "copied": "Link skopiowany",
+    "searchLabel": "Szukaj wykonawcy, kompozytora, cyklu lub tytułu",
+    "searchPlaceholder": "Wykonawca, kompozytor, cykl…",
+    "noResults": "Nic nie pasuje do tych filtrów.",
+    "tryInstead": "Spróbuj bez jednego z nich:",
+    "without": "Bez: {label}",
+    "groups": {
+      "when": "Kiedy",
+      "types": "Rodzaj",
+      "audiences": "Dla kogo",
+      "moods": "Nastrój",
+      "venues": "Miejsce",
+      "price": "Cena",
+      "duration": "Czas trwania",
+      "access": "Dostępność",
+      "q": "Wyszukiwanie"
+    },
+    "when": {
+      "today": "Dziś",
+      "tomorrow": "Jutro",
+      "weekend": "Ten weekend",
+      "week": "Ten tydzień",
+      "month": "Miesiąc",
+      "range": "Zakres dat"
+    },
+    "from": "Od",
+    "to": "Do",
+    "types": {
+      "symphonic": "Symfoniczny",
+      "chamber": "Kameralny",
+      "jazz": "Jazz",
+      "concert": "Inne koncerty",
+      "education": "Edukacja",
+      "exhibition": "Wystawa",
+      "tour": "Zwiedzanie",
+      "festival": "Festiwal",
+      "external": "Wydarzenie zewnętrzne",
+      "other": "Inne"
+    },
+    "audiences": {
+      "children": "Dzieci",
+      "families": "Rodziny",
+      "preschool": "Przedszkola",
+      "youth": "Młodzież",
+      "schools": "Szkoły",
+      "adults": "Dorośli",
+      "seniors": "Seniorzy",
+      "beginners": "Debiutanci"
+    },
+    "age": "Wiek dziecka",
+    "anyAge": "Dowolny",
+    "years": "{age, plural, one {# rok} few {# lata} many {# lat} other {# roku}}",
+    "moods": {
+      "classical-super-hits": "Classical super hits",
+      "emotional": "Emotional",
+      "energy": "Energy",
+      "relax": "Relaks",
+      "something-extraordinary": "Coś niezwykłego"
+    },
+    "venues": {
+      "symphony": "Sala Symfoniczna",
+      "chamber": "Sala Kameralna",
+      "galleries": "Galerie i foyer",
+      "outside": "Poza budynkiem"
+    },
+    "price": {
+      "free": "Bezpłatne",
+      "30": "do 30 zł",
+      "50": "do 50 zł",
+      "100": "do 100 zł"
+    },
+    "duration": {
+      "45": "do 45 min",
+      "90": "do 90 min",
+      "long": "dłużej"
+    },
+    "access": {
+      "mobility": "Ruchowa",
+      "visual": "Wzrokowa",
+      "hearing": "Słuchowa",
+      "sensory": "Informacje sensoryczne"
+    },
+    "ticket": {
+      "sold_out": "Wyprzedane",
+      "free": "Bezpłatne",
+      "registration_required": "Zapisy",
+      "last_seats": "Ostatnie miejsca",
+      "from": "od {price} zł"
+    }
+  },
   "Landing": {
     "headline1": "Filharmonia",
     "headline2": "zaczyna się online.",
