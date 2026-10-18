@@ -52,9 +52,9 @@ export default async function Onboarding() {
         </div>
 
         <div
-          className="min-h-[220px] flex-1 rounded-[20px] bg-[#E7E2D8] bg-cover bg-[50%]"
+          className="outline-line min-h-[220px] flex-1 rounded-[20px] bg-[#E7E2D8] bg-cover bg-[50%] outline outline-1"
           data-flow="media"
-          style={{ backgroundImage: "url(/images/hall-symphonic.jpg)" }}
+          style={{ backgroundImage: "url(/images/image-style.jpeg)" }}
         />
 
         <div className="bg-surface rounded-[20px] px-[18px] py-4" data-flow="copy">
