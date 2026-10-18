@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Link } from "@/i18n/routing";
+import { useSearchParams } from "next/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { eventSlug } from "@/lib/format";
 import {
   CalendarDays,
@@ -64,6 +64,7 @@ export type CalendarListProps = {
   terms?: CalendarTerm[];
   labels: CalendarLabels;
   emptyLabel: string;
+  initialCategory?: string;
 };
 
 function CalendarSkeletonItem() {
@@ -102,8 +103,32 @@ export function CalendarList({
   terms,
   labels,
   emptyLabel,
+  initialCategory,
 }: CalendarListProps) {
-  const [filter, setFilter] = useState<Filter>("all");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const currentParam = searchParams.get("category");
+  const filter: Filter = (
+    currentParam && FILTERS.some((f) => f.key === currentParam)
+      ? currentParam
+      : initialCategory && FILTERS.some((f) => f.key === initialCategory)
+        ? initialCategory
+        : "all"
+  ) as Filter;
+
+  function handleFilterChange(key: Filter) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (key === "all") {
+      params.delete("category");
+    } else {
+      params.set("category", key);
+    }
+    const qs = params.toString();
+    const target = qs ? `${pathname}?${qs}` : pathname;
+    router.replace(target, { scroll: false });
+  }
 
   // Mode A: Day-grouped terms
   const hasDayGroups = Array.isArray(days) && Array.isArray(terms);
@@ -166,7 +191,7 @@ export function CalendarList({
                   : "border-line text-ink hover:bg-surface border"
               }`}
               key={key}
-              onClick={() => setFilter(key)}
+              onClick={() => handleFilterChange(key)}
               type="button"
             >
               <Icon aria-hidden="true" size={15} strokeWidth={1.6} />
